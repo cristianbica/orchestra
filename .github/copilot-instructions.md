@@ -7,12 +7,6 @@ This repository uses `.ai/` as the canonical source of agent roles, workflows, p
 - Use workflows in `.ai/workflows/`.
 - When starting a workflow, answer the intake questions (max 3 blocking ones; "unknown" is ok) to ensure smooth delegation.
 
-## About scope
-
-> This is the Orchestra **template repository itself**. If you're using Orchestra in your own repo (after running `install.sh`), you're editing `.ai/` — which was copied from `src/ai/` and should be customized for your app.
->
-> In this repo, `.ai/docs/` documents the Orchestra framework. In your repo, `.ai/docs/` (and `.ai/MEMORY.md`) should document YOUR application.
-
 ## Hard gates
 - For any non-trivial code change: require a plan in `.ai/plans/` and explicit user approval before implementing.
 - Do not expand scope beyond the approved plan.

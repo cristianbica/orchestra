@@ -1,54 +1,68 @@
 # Humans: how to use this repo’s AI system
 
-This repo treats `.ai/` as the canonical source of truth for agent roles, workflows, plans, and docs.
 
-## Start here
-- Read `.ai/README.md`.
-- Choose a workflow from `.ai/workflows/`.
+## Examples
 
-## The default loop
-- Conductor: picks the smallest workflow and enforces gates.
-- Architect: writes a plan when work is non-trivial.
-- Builder: implements *only after* the plan is explicitly approved.
-- Inspector: reviews the diff against the plan and repo conventions.
-- Archivist: updates `.ai/docs/**` and `.ai/MEMORY.md`.
+### Implement a feature (plan gate enforced)
 
-## Plan gate (important)
-- Any non-trivial change requires a plan in `.ai/plans/<YYYY-MM-DD>-<slug>.md`.
-- Use the template in `.ai/templates/plan.template.md`.
-- Do not implement until the plan is explicitly approved.
+```
+User: Conductor implement feature: add a dark mode toggle
 
-## Where outputs go
-- Plans: `.ai/plans/`
-- Feature docs: `.ai/docs/features/`
-- Pattern docs: `.ai/docs/patterns/`
-- Agent guides (operating the AI system): `.ai/agents/guides/`
-- Curated memory (durable facts only): `.ai/MEMORY.md`
+Conductor: asks 1–3 intake questions
+Architect: writes a plan in .ai/plans/
+User: explicitly approves the plan
+Builder: implements ONLY the approved plan
+Inspector: reviews for correctness + plan adherence
+Archivist: updates docs/memory as needed
+```
 
-## Definition of done (every task)
-- Verification: list the exact commands/tests run (or explain why none).
-- doc impact: updated | none | deferred
-- memory impact: if you learned a durable repo fact (commands, conventions, layout), add 1 short bullet to `.ai/MEMORY.md`.
+### Fix a bug
 
-## Example prompts (copy/paste)
-- “Conductor: run the `document` workflow using `.ai/plans/01-bootstrap.md`.”
-- “Conductor: run the `fix-bug` workflow for <bug description>.”
-- “Conductor: run the `implement-feature` workflow for <feature description>.”
-## How to start a workflow (intake)
-- Say "Conductor: start the `<workflow>` workflow".
-- Answer the intake questions (max 3 blocking ones; "unknown" is ok).
-- Conductor will then delegate accordingly.
+```
+User: Conductor fix bug: API returns stale cached data
 
-Copy/paste template:
-- “Conductor: start the `implement-feature` workflow.”
-## How to give follow-up suggestions
-When reviewing an implementation (or giving feedback mid-implementation), paste suggestions as a tight checklist and explicitly say they should be handled under the already-approved plan (same workflow run).
+Conductor: intake questions (expected vs actual, repro, evidence)
+Architect: writes a fix plan
+Builder: implements the fix
+Inspector: verifies the change matches the plan
+```
 
-Copy/paste template:
-- “Conductor: apply my feedback as adjustments under the already-approved plan (same workflow; no new plan unless scope changes).
-  Builder: implement ONLY these items:
-  - Tests: <what’s missing>
-  - Translations/i18n: <what keys/strings are missing>
-  - Docs: <what page to update, if needed>
-  Constraints: no new UX/flows/features; no new deps; no data model/security changes.
-  Report verification commands run + doc impact.”
+### Refactor code (plan gate enforced)
+
+```
+User: Conductor refactor: clean up user authentication flow
+Conductor: asks 1–3 intake questions
+Architect: writes a refactor plan in .ai/plans/
+User: explicitly approves the plan
+Builder: implements ONLY the approved plan
+Inspector: reviews for correctness + plan adherence
+Archivist: updates docs/memory as needed
+```
+
+### Fix a security issue (plan gate enforced)
+
+```
+User: Conductor fix security issue: patch vulnerable dependency
+Conductor: asks 1–3 intake questions (vulnerability details, repro, evidence)
+Architect: writes a security fix plan in .ai/plans/
+User: explicitly approves the plan
+Builder: implements ONLY the approved plan
+Inspector: reviews for correctness + plan adherence
+Archivist: updates docs/memory as needed
+```
+
+### Update documentation
+
+```
+User: Conductor document: update API docs for user endpoints
+Conductor: asks 1–3 intake questions (target doc, audience/intent, source of truth)
+Archivist: updates docs based on intake answers
+```
+
+### Refresh context
+
+```
+User: Conductor refresh context
+Conductor: routes to Archivist to execute refresh plan
+Archivist: executes context refresh plan in .ai/plans/02-refresh-context.md
+```
