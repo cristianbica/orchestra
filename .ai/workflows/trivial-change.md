@@ -1,5 +1,11 @@
 # Workflow: trivial-change
 
+## Intake (Conductor)
+Conductor asks (only if unclear):
+1) Confirm scope: Is this strictly formatting/typos/docs wording only (no behavior change)?
+2) Target location: Which file(s)/section(s)?
+3) Constraints: Any wording preferences or terminology to preserve?
+
 Use ONLY for:
 - Typo fixes, formatting, comments
 - Small edits with no behavior changes (typically <= 10 lines)

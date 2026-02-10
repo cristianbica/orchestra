@@ -34,7 +34,13 @@ This repo treats `.ai/` as the canonical source of truth for agent roles, workfl
 - “Conductor: run the `document` workflow using `.ai/plans/0000-00-01-bootstrap.md`.”
 - “Conductor: run the `fix-bug` workflow for <bug description>.”
 - “Conductor: run the `implement-feature` workflow for <feature description>.”
+## How to start a workflow (intake)
+- Say "Conductor: start the `<workflow>` workflow".
+- Answer the intake questions (max 3 blocking ones; "unknown" is ok).
+- Conductor will then delegate accordingly.
 
+Copy/paste template:
+- “Conductor: start the `implement-feature` workflow.”
 ## How to give follow-up suggestions
 When reviewing an implementation (or giving feedback mid-implementation), paste suggestions as a tight checklist and explicitly say they should be handled under the already-approved plan (same workflow run).
 

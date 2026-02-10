@@ -1,5 +1,15 @@
 # Workflow: implement-feature
 
+## Intake (Conductor)
+Conductor asks:
+1) Feature summary: What are we building (1–2 sentences) + top 3 acceptance criteria?
+2) References: Any similar existing flow/file/feature to mirror? (link/path or "none")
+3) Constraints: Any hard constraints? (e.g. no schema change, behind a flag, backwards-compatible, timeline)
+
+Optional follow-ups (only if relevant):
+- Security/data: authz rules, PII, audit logging requirements?
+- UX surface: which screens/routes/APIs are affected?
+
 Inputs:
 - A feature request and constraints.
 

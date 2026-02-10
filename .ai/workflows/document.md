@@ -1,5 +1,14 @@
 # Workflow: document (initial / refresh)
 
+## Intake (Conductor)
+Conductor asks:
+1) Target doc(s): Which file(s) should be created/updated? (path(s) or "not sure")
+2) Audience + intent: Who is this for and what should they be able to do after reading?
+3) Source of truth: What inputs should the doc reflect (code, ticket, decision record), and what's explicitly out-of-scope?
+
+Optional follow-ups (only if relevant):
+- Format constraints: any required structure (sections/checklists/examples)?
+
 Purpose:
 - Build or refresh `.ai/docs/` from the current app codebase.
 - For first-time setup, execute `.ai/plans/0000-00-01-bootstrap.md` (copy it to your repo first).

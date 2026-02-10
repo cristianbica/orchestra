@@ -1,5 +1,15 @@
 # Workflow: fix-bug
 
+## Intake (Conductor)
+Conductor asks:
+1) Expected vs actual: What should happen vs what happens now?
+2) Repro: Minimal repro steps + environment (branch, flags, user role/tenant) + frequency.
+3) Evidence: Error logs/stack trace/screenshot + suspected area (if any).
+
+Optional follow-ups (only if relevant):
+- Severity/impact: is this production-blocking, data corruption, security?
+- Timeline: needs hotfix vs normal cycle?
+
 Inputs:
 - Bug report (symptoms, expected behavior, reproduction if known).
 

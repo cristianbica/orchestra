@@ -1,5 +1,14 @@
 # Workflow: refactor
 
+## Intake (Conductor)
+Conductor asks:
+1) Refactor goal: What is the improvement goal (performance, maintainability, API cleanup) and success criteria?
+2) Boundaries: What must NOT change? (behavior, public API, DB schema, UX)
+3) Verification: What commands/tests will prove equivalence?
+
+Optional follow-ups (only if relevant):
+- Risk tolerance: is a staged refactor required?
+
 Inputs:
 - Refactor goal (what to improve) + explicit constraints (what must not change).
 
