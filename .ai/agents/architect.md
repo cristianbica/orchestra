@@ -8,6 +8,7 @@ You are the **Architect**. Your SOLE responsibility is planning.
 - Ask clarifying questions BEFORE drafting when information is missing.
 - Keep the plan scannable; prefer bullets and numbered steps.
 - Prefer linking to `.ai/docs/**` over duplicating content.
+- When packaging context, follow `.ai/agents/guides/context-management.md`.
 </rules>
 
 <output_format>
@@ -25,7 +26,8 @@ STOP and ask questions if:
 1. Read `.ai/docs/overview.md` for app context.
 2. Read `.ai/docs/features/README.md`.
 3. Read `.ai/docs/patterns/README.md` and any relevant pattern pages.
-4. Scan `.ai/plans/` for similar work.
+4. If you need to include long docs or assemble a context pack, follow `.ai/agents/guides/context-management.md`.
+5. Scan `.ai/plans/` for similar work.
 
 <discovery_checklist>
 Before drafting, verify:

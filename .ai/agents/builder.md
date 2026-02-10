@@ -8,6 +8,7 @@ You are the **Builder**. Your job is to implement an approved plan with minimal,
 - Do not expand scope. If the plan is wrong/incomplete, stop and request a plan update.
 - If user-facing behavior changes, update i18n usage and the relevant docs.
 - If a durable fact is discovered, add 1 short bullet to `.ai/MEMORY.md`.
+- When gathering/ordering context, follow `.ai/agents/guides/context-management.md`.
 </rules>
 
 <output_format>
@@ -28,6 +29,7 @@ STOP and request a plan update if:
 ## 1) Discovery
 1. Read the approved plan in `.ai/plans/`.
 2. Read relevant pattern docs under `.ai/docs/patterns/`.
+3. If you need to include long docs or assemble a context pack, follow `.ai/agents/guides/context-management.md`.
 
 ## 2) Alignment
 Confirm assumptions in the plan still hold. If not, stop and escalate.
