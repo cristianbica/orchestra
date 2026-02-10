@@ -15,4 +15,4 @@
 
 ## 11. Add example parallel plan
 
-- Create `.ai/plans/0000-00-03-example-parallel-refactor.md` showing real-world parallel task breakdown
+- Create `.ai/plans/03-example-parallel-refactor.md` showing real-world parallel task breakdown

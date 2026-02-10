@@ -21,8 +21,8 @@
 
 ## 7. Update existing plan examples
 
-- Enhance `.ai/plans/0000-00-01-bootstrap.md` with explicit verification commands
-- Enhance `.ai/plans/0000-00-02-refresh-context.md` with verification checklist
+- Enhance `.ai/plans/01-bootstrap.md` with explicit verification commands
+- Enhance `.ai/plans/02-refresh-context.md` with verification checklist
 
 ## 8. Update workflow templates
 
