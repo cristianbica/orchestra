@@ -33,3 +33,15 @@ This repo treats `.ai/` as the canonical source of truth for agent roles, workfl
 - “Conductor: run the `document` workflow using `.ai/plans/0000-00-01-bootstrap.md`.”
 - “Conductor: run the `fix-bug` workflow for <bug description>.”
 - “Conductor: run the `implement-feature` workflow for <feature description>.”
+
+## How to give follow-up suggestions
+When reviewing an implementation (or giving feedback mid-implementation), paste suggestions as a tight checklist and explicitly say they should be handled under the already-approved plan (same workflow run).
+
+Copy/paste template:
+- “Conductor: apply my feedback as adjustments under the already-approved plan (same workflow; no new plan unless scope changes).
+  Builder: implement ONLY these items:
+  - Tests: <what’s missing>
+  - Translations/i18n: <what keys/strings are missing>
+  - Docs: <what page to update, if needed>
+  Constraints: no new UX/flows/features; no new deps; no data model/security changes.
+  Report verification commands run + doc impact.”
