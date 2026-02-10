@@ -22,6 +22,7 @@ This repo treats `.ai/` as the canonical source of truth for agent roles, workfl
 - Plans: `.ai/plans/`
 - Feature docs: `.ai/docs/features/`
 - Pattern docs: `.ai/docs/patterns/`
+- Agent guides (operating the AI system): `.ai/agents/guides/`
 - Curated memory (durable facts only): `.ai/MEMORY.md`
 
 ## Definition of done (every task)

@@ -10,6 +10,10 @@ This repository uses `.ai/` as the canonical source of agent roles, workflows, p
 - For any non-trivial code change: require a plan in `.ai/plans/` and explicit user approval before implementing.
 - Do not expand scope beyond the approved plan.
 
+## Delegation
+- When the task requires planning or repo-wide discovery, delegate to the appropriate agent role instead of doing everything inline.
+- Follow: `.ai/agents/guides/delegation.md`.
+
 ## Required reporting (end of each task)
 - Verification: list the exact tests/commands run (or explain why none).
 - `doc impact`: updated | none | deferred (and link to what changed).
@@ -19,6 +23,7 @@ This repository uses `.ai/` as the canonical source of agent roles, workflows, p
 - App context: `.ai/docs/overview.md`
 - Feature docs: `.ai/docs/features/`
 - Pattern docs: `.ai/docs/patterns/`
+- Agent operation guides: `.ai/agents/guides/`
 - Curated memory: `.ai/MEMORY.md`
 
 ## Agents
