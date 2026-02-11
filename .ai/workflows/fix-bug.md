@@ -15,8 +15,9 @@ Inputs:
 
 Steps:
 1. Conductor routes to Architect.
-2. Architect writes a minimal plan in `.ai/plans/`.
-3. Approval gate: do not implement until the plan is explicitly approved.
+2. Architect produces a plan artifact (file or inline).
+	- Inline plan allowed only if (a) it is short (<= 25 non-empty lines), or (b) the user explicitly requests with: “no plan file” or “don’t write a plan file”.
+3. Approval gate: do not implement until the plan artifact is explicitly approved.
 4. Builder implements the fix.
 4a. Feedback handling (user feedback == Inspector findings): if the user provides feedback at any time after plan approval (during implementation or after), treat it like reviewer findings and implement it as an adjustment pass under the already-approved plan within the same workflow run. Never create a new plan unless the user explicitly asks.
 5. Verification: run the most relevant checks and report what was run.
@@ -25,7 +26,7 @@ Steps:
 8. Closeout: explicitly state "doc impact" and "memory impact".
 
 Outputs:
-- Plan: `.ai/plans/<YYYY-MM-DD>-<slug>.md`
+- Plan: inline in-chat OR `.ai/plans/<YYYY-MM-DD>-<slug>.md`
 - Updated docs when behavior changes.
 
 Done criteria:
