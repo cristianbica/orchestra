@@ -37,6 +37,32 @@ Designed for teams building with AI agents, this system enforces planning gates,
 - **Installation script**: [install.sh](../../install.sh) — distributes `.ai/` and tool wrappers to target repos
 - **Tool templates**: [src/tools/](../../src/tools/) — Copilot, Claude Code, OpenCode wrappers
 
+## Repo operating rules (contributors)
+
+These rules apply when contributing to **this repository**.
+
+### Allowed edits
+
+- `.ai/docs/` — Keep documentation of the current project.
+- `.ai/plans/` — Keep current plans.
+- `.ai/MEMORY.md` — Keep curated, durable repo facts.
+
+### Forbidden edits
+
+Do **not** change these paths (treat them as read-only):
+
+- `.ai/agents/`
+- `.ai/workflows/`
+- `.ai/templates/`
+- `.ai/HUMANS.md`
+
+### Canonical source
+
+- `src/` is the canonical source and may be changed.
+- Anything under `src/` is distributed to users, so keep additions generic and template-safe.
+
+If any other document conflicts with this section, **this section wins**.
+
 ## Business domains
 
 Not applicable (this is a template/framework, not a domain application).

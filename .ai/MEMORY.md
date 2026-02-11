@@ -18,6 +18,7 @@ This is a template distribution repo. No traditional build/test/lint commands ap
 - **Approval**: Explicit user approval required before implementing non-trivial changes
 - **Memory**: Only durable facts (commands, conventions, invariants, layout); max ~200 lines total
 - **Canonical sources**: `src/ai/` + `src/tools/` are the template sources when present
+- **Repo editing policy (this repo)**: Edit only `.ai/docs/`, `.ai/plans/`, `.ai/MEMORY.md`; never edit `.ai/agents/`, `.ai/workflows/`, `.ai/templates/`, `.ai/HUMANS.md`; treat `src/` as canonical and keep it generic (distributed)
 
 ## Invariants (non-negotiable)
 
