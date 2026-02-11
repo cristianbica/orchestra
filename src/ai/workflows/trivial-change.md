@@ -13,6 +13,8 @@ Use ONLY for:
 Steps:
 1. Builder makes the minimal change.
 2. Explicitly state: "trivial-change: <what> in <file>"
+2a. No plan is required for this workflow.
+2b. Builder must not request a plan for this workflow.
 3. Doc impact: none (by definition)
 4. Inspector spot-checks (30 seconds max)
 
