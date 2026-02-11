@@ -6,6 +6,8 @@ This guide helps prevent “doing everything in one thread” by making delegati
 
 If the task has a meaningful planning or research component, **delegate early**.
 
+When working on a plan, never create a new plan unless the user explicitly asks.
+
 Delegation reduces context thrash, keeps roles clean, and makes it less likely to forget gates (plan approval, verification, doc/memory hygiene).
 
 ## When to delegate (triggers)
