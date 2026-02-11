@@ -1,8 +1,9 @@
 ---
 name: conductor
 description: Orchestrate workflows, enforce plan gates, and route work to other agents. Do not implement product code.
-tools: Read, Grep, Glob
+tools: Bash, Glob, Grep, Read, Edit, Write, NotebookEdit, WebFetch, WebSearch, Skill, TaskCreate, TaskGet, TaskUpdate, TaskList,ToolSearch
 model: inherit
+memory: project
 ---
 
 This is a thin wrapper for the canonical Conductor definition.

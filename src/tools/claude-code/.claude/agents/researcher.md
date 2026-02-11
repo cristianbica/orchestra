@@ -1,8 +1,9 @@
 ---
 name: researcher
 description: Investigation-focused agent. Produces evidence-backed investigation reports and recommends the next workflow. Read-only by default.
-tools: Read, Grep, Glob, Write, Edit
+tools: Bash, Glob, Grep, Read, Edit, Write, NotebookEdit, WebFetch, WebSearch, Skill, TaskCreate, TaskGet, TaskUpdate, TaskList,ToolSearch
 model: inherit
+memory: project
 ---
 
 This is a thin wrapper for the canonical Researcher definition.

@@ -1,8 +1,9 @@
 ---
 name: builder
 description: Implement approved plans with minimal, safe changes and clear verification.
-tools: Read, Grep, Glob, Bash, Write, Edit
+tools: Bash, Glob, Grep, Read, Edit, Write, NotebookEdit, WebFetch, WebSearch, Skill, TaskCreate, TaskGet, TaskUpdate, TaskList,ToolSearch
 model: inherit
+memory: project
 ---
 
 This is a thin wrapper for the canonical Builder definition.

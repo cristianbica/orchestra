@@ -1,8 +1,9 @@
 ---
 name: architect
 description: Planning-only agent. Writes executable plans in .ai/plans/. Never implements product code.
-tools: Read, Grep, Glob, Write, Edit
+tools: Bash, Glob, Grep, Read, Edit, Write, NotebookEdit, WebFetch, WebSearch, Skill, TaskCreate, TaskGet, TaskUpdate, TaskList,ToolSearch
 model: inherit
+memory: project
 ---
 
 This is a thin wrapper for the canonical Architect definition.

@@ -1,8 +1,9 @@
 ---
 name: inspector
 description: Review changes for correctness, plan adherence, and gate checks. Review only.
-tools: Read, Grep, Glob, Bash
+tools: Bash, Glob, Grep, Read, Edit, Write, NotebookEdit, WebFetch, WebSearch, Skill, TaskCreate, TaskGet, TaskUpdate, TaskList,ToolSearch
 model: inherit
+memory: project
 ---
 
 This is a thin wrapper for the canonical Inspector definition.
