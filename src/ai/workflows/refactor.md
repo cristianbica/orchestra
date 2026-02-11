@@ -17,7 +17,7 @@ Steps:
 2. Architect writes plan with "non-goals" and safety checks.
 3. Approval gate: do not implement until the plan is explicitly approved.
 4. Builder refactors per plan.
-4a. Feedback handling (user feedback == Inspector findings): if the user provides feedback at any time after plan approval (during implementation or after), treat it like reviewer findings and implement it as an adjustment pass under the already-approved plan within the same workflow run. Create a new plan only for true scope changes.
+4a. Feedback handling (user feedback == Inspector findings): if the user provides feedback at any time after plan approval (during implementation or after), treat it like reviewer findings and implement it as an adjustment pass under the already-approved plan within the same workflow run. Never create a new plan unless the user explicitly asks.
 5. Verification: run the most relevant checks and report what was run.
 6. Archivist updates pattern docs if conventions/structure changed.
 7. Inspector reviews: no scope creep; docs updated.

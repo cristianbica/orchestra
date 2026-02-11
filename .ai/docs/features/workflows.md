@@ -26,6 +26,7 @@ Each non-trivial workflow follows this pattern:
 ## Key invariants
 
 - **NEVER implement without an approved plan** (on non-trivial workflows)
+- **NEVER create a new plan unless the user explicitly asks** (when working on a plan)
 - **ALWAYS enforce doc hygiene** — use `doc impact: updated | none | deferred`
 - **ALWAYS enforce memory hygiene** — add durable facts only (max ~200 lines total in MEMORY.md)
 - **Verify before documenting** — Phase 2 of bootstrap validates all commands
