@@ -21,6 +21,8 @@ Start here for app context: [.ai/docs/overview.md](.ai/docs/overview.md)
 - For context refresh: [.ai/workflows/document.md](.ai/workflows/document.md)
 - For changes, pick one:
 	- [.ai/workflows/trivial-change.md](.ai/workflows/trivial-change.md) (typos, formatting only)
+	- [.ai/workflows/document.md](.ai/workflows/document.md)
+	- [.ai/workflows/investigate.md](.ai/workflows/investigate.md)
 	- [.ai/workflows/implement-feature.md](.ai/workflows/implement-feature.md)
 	- [.ai/workflows/fix-bug.md](.ai/workflows/fix-bug.md)
 	- [.ai/workflows/refactor.md](.ai/workflows/refactor.md)

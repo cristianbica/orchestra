@@ -11,8 +11,8 @@ It’s designed to help you build and maintain shared project context over time 
 
 It includes:
 
-- 5 agent roles (Conductor, Architect, Builder, Inspector, Archivist)
-- 5 workflows (`document`, `implement-feature`, `fix-bug`, `refactor`, `trivial-change`)
+- 6 agent roles (Conductor, Researcher, Architect, Builder, Inspector, Archivist)
+- 6 workflows (`document`, `investigate`, `implement-feature`, `fix-bug`, `refactor`, `trivial-change`)
 - A canonical `.ai/` folder layout for plans, docs, patterns, and agent guides
 - Optional tool wrappers you can drop into your repo (VS Code Copilot, Claude Code, OpenCode)
 

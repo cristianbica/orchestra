@@ -17,6 +17,7 @@ Delegate when any of these are true:
 - You need to **scan/search** many files to find the right starting point.
 - The request is **ambiguous** and needs targeted clarifying questions.
 - You’re doing **two different modes** of work (e.g. research + implementation).
+- You need a **timeboxed investigation** to reduce uncertainty before planning.
 
 Don’t delegate when:
 - The change is trivially small and local.
@@ -26,6 +27,7 @@ Don’t delegate when:
 
 Within this repo’s framework:
 - Conductor: orchestrates + enforces gates (no product code)
+- Researcher: investigation only (evidence, feature maps, options, root-cause hypotheses)
 - Architect: planning only
 - Builder: implementation only (after plan approval)
 - Inspector: review only

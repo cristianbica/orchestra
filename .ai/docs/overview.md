@@ -5,8 +5,8 @@
 ## What this app does
 
 This is the **canonical template for AI-assisted development workflows**. It provides:
-- A multi-agent system (5 roles: Conductor, Architect, Builder, Inspector, Archivist)
-- Five structured workflows for common development tasks
+- A multi-agent system (6 roles: Conductor, Researcher, Architect, Builder, Inspector, Archivist)
+- Six structured workflows for common development tasks
 - Reusable documentation templates and agent guides
 - Tool-specific wrappers (GitHub Copilot, Claude Code, OpenCode)
 - An installation system to bootstrap `.ai/` dirs in target repositories
@@ -30,8 +30,8 @@ Designed for teams building with AI agents, this system enforces planning gates,
   - User repos edit `.ai/` locally; never edit `src/ai/` directly
   - `src/ai/docs/` serves as a template; user repos copy it and customize for their app
 - **Local mirror**: `.ai/` (this repo only) — a working copy used to exercise the workflows
-- **Agent definitions**: [src/ai/agents/](../../src/ai/agents/) — Conductor, Architect, Builder, Inspector, Archivist
-- **Workflow definitions**: [src/ai/workflows/](../../src/ai/workflows/) — document, implement-feature, fix-bug, refactor, trivial-change
+- **Agent definitions**: [src/ai/agents/](../../src/ai/agents/) — Conductor, Researcher, Architect, Builder, Inspector, Archivist
+- **Workflow definitions**: [src/ai/workflows/](../../src/ai/workflows/) — document, investigate, implement-feature, fix-bug, refactor, trivial-change
 - **Documentation templates**: [src/ai/docs/](../../src/ai/docs/) — overview, features, patterns
 - **Bootstrap plan**: [src/ai/plans/01-bootstrap.md](../../src/ai/plans/01-bootstrap.md) — initial setup for target repos
 - **Installation script**: [install.sh](../../install.sh) — distributes `.ai/` and tool wrappers to target repos

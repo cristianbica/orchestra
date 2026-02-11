@@ -27,6 +27,16 @@ Builder: implements the fix
 Inspector: verifies the change matches the plan
 ```
 
+### Investigate (timeboxed, read-only by default)
+
+```
+User: Conductor investigate: figure out why billing exports are slow
+
+Conductor: asks 1–3 intake questions (question, references, constraints + timebox)
+Researcher: investigates and writes an evidence-backed report in .ai/plans/
+Conductor: confirms recommended handoff to fix-bug / refactor / implement-feature / document
+```
+
 ### Refactor code (plan gate enforced)
 
 ```

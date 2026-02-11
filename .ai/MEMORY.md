@@ -14,7 +14,7 @@ This is a template distribution repo. No traditional build/test/lint commands ap
 - **Workflow names**: verb + target (e.g., `implement-feature`, `fix-bug`, `trivial-change`)
 - **Plan files**: `.ai/plans/<YYYY-MM-DD>-<slug>.md` (dated, descriptive slug)
 - **Doc files**: `.ai/docs/{overview,features,patterns,templates}/`
-- **Agent roles**: Conductor, Architect, Builder, Inspector, Archivist (strict boundaries)
+- **Agent roles**: Conductor, Researcher, Architect, Builder, Inspector, Archivist (strict boundaries)
 - **Approval**: Explicit user approval required before implementing non-trivial changes
 - **Memory**: Only durable facts (commands, conventions, invariants, layout); max ~200 lines total
 - **Canonical sources**: `src/ai/` + `src/tools/` are the template sources when present
@@ -22,7 +22,7 @@ This is a template distribution repo. No traditional build/test/lint commands ap
 
 ## Invariants (non-negotiable)
 
-1. **NEVER implement product code** — All five agents are forbidden from implementing feature/bug code
+1. **NEVER implement outside Builder** — Conductor/Researcher/Architect/Inspector/Archivist do not implement code
 2. **NEVER implement without an explicitly approved plan** — Non-trivial workflows require plan in `.ai/plans/` + user approval
 3. **NEVER bypass doc hygiene** — Every task must state `doc impact: updated | none | deferred`
 4. **NEVER bypass memory hygiene** — Only durable, reusable facts; keep under ~200 lines
@@ -42,9 +42,9 @@ This is a template distribution repo. No traditional build/test/lint commands ap
    - In this template repo, `.ai/` is a mirror of `src/ai/`
 
 **Key directories**:
-- `.ai/agents/` — Conductor, Architect, Builder, Inspector, Archivist definitions
+- `.ai/agents/` — Conductor, Researcher, Architect, Builder, Inspector, Archivist definitions
 - `.ai/agents/guides/` — delegation, context-management principles
-- `.ai/workflows/` — document, implement-feature, fix-bug, refactor, trivial-change
+- `.ai/workflows/` — document, investigate, implement-feature, fix-bug, refactor, trivial-change
 - `.ai/plans/` — Planning templates (01-bootstrap.md, 02-refresh-context.md)
 - `.ai/docs/` — Framework documentation (overview, features, patterns)
   - **In user repos**: Customize these docs to describe YOUR app
