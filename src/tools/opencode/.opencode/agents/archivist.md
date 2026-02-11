@@ -1,8 +1,6 @@
 ---
 description: Documentation and memory agent. Updates .ai/docs/** and .ai/MEMORY.md as needed.
-mode: subagent
-tools:
-  bash: false
+mode: all
 ---
 
 This is a thin wrapper for the canonical Archivist definition.

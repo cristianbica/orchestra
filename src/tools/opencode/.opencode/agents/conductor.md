@@ -1,10 +1,6 @@
 ---
 description: Orchestrate workflows, enforce plan gates, and route work to other agents. Do not implement product code.
-mode: subagent
-tools:
-  write: false
-  edit: false
-  bash: false
+mode: all
 ---
 
 This is a thin wrapper for the canonical Conductor definition.

@@ -1,10 +1,6 @@
 ---
 description: Review-only agent. Reviews diffs against the approved plan and repo conventions.
-mode: subagent
-tools:
-  write: false
-  edit: false
-  bash: false
+mode: all
 ---
 
 This is a thin wrapper for the canonical Inspector definition.

@@ -1,10 +1,6 @@
 ---
 description: Planning-only agent. Produces executable plans in .ai/plans/. No code edits.
-mode: subagent
-tools:
-  write: false
-  edit: false
-  bash: false
+mode: all
 ---
 
 This is a thin wrapper for the canonical Architect definition.

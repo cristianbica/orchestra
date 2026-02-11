@@ -1,6 +1,6 @@
 ---
 description: Implementation agent. Only implements an explicitly approved plan.
-mode: subagent
+mode: all
 ---
 
 This is a thin wrapper for the canonical Builder definition.

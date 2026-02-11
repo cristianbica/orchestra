@@ -1,10 +1,6 @@
 ---
 description: Investigation-focused agent. Produces evidence-backed investigation reports and recommends the next workflow. Read-only by default.
-mode: subagent
-tools:
-  write: false
-  edit: false
-  bash: false
+mode: all
 ---
 
 This is a thin wrapper for the canonical Researcher definition.
