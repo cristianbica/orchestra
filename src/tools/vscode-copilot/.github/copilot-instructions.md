@@ -3,7 +3,7 @@
 This repository uses `.ai/` as the canonical source of agent roles, workflows, plans, and documentation.
 
 ## Start here
-- Read `.ai/README.md`.
+- Read /AGENTS.md (repo root).
 - Use workflows in `.ai/workflows/`.
 - When starting a workflow, answer the intake questions (max 3 blocking ones; "unknown" is ok) to ensure smooth delegation.
 

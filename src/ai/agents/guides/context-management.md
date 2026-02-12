@@ -13,7 +13,7 @@ Reason: models tend to weight later instructions more heavily; putting the ask l
 1. **Global rules / role constraints**
    - `AGENTS.md`, agent role file (e.g. `.ai/agents/builder.md`)
 2. **Durable repo docs** (stable, reusable)
-   - `.ai/README.md`, `.ai/docs/overview.md`
+   - `.ai/docs/overview.md`
    - `.ai/docs/patterns/**` (only the relevant ones)
    - `.ai/docs/features/**` (only the relevant ones)
 3. **Task-specific specs**
@@ -70,7 +70,7 @@ Example layout:
 
 <CACHEABLE_CONTEXT>
 - AGENTS.md rules
-- .ai/README.md (selected sections)
+- .ai/docs/overview.md (selected sections)
 - relevant .ai/docs/patterns/* (selected)
 </CACHEABLE_CONTEXT>
 
