@@ -8,7 +8,7 @@ This is the **canonical template for AI-assisted development workflows**. It pro
 - A multi-agent system (6 roles: Conductor, Researcher, Architect, Builder, Inspector, Archivist)
 - Six structured workflows for common development tasks
 - Reusable documentation templates and agent guides
-- Tool-specific wrappers (GitHub Copilot, Claude Code, OpenCode)
+- Tool-specific wrappers (GitHub Copilot, Claude Code, OpenCode, Codex)
 - An installation system to bootstrap `.ai/` dirs in target repositories
 
 Designed for teams building with AI agents, this system enforces planning gates, documentation hygiene, and verified commands before implementation.
@@ -18,7 +18,7 @@ Designed for teams building with AI agents, this system enforces planning gates,
 - **Format**: Markdown + POSIX shell scripts
 - **Distribution**: GitHub (`cristianbica/orchestra`)
 - **Installation**: `bash install.sh [tool-name]` (copies template to target repo)
-- **Tool integrations**: GitHub Copilot, Claude Code, OpenCode
+- **Tool integrations**: GitHub Copilot, Claude Code, OpenCode, Codex
 - **No runtime dependencies**: Pure docs + scripts
 
 ## Repo landmarks
@@ -35,7 +35,7 @@ Designed for teams building with AI agents, this system enforces planning gates,
 - **Documentation templates**: [src/ai/docs/](../../src/ai/docs/) — overview, features, patterns
 - **Bootstrap plan**: [src/ai/plans/01-bootstrap.md](../../src/ai/plans/01-bootstrap.md) — initial setup for target repos
 - **Installation script**: [install.sh](../../install.sh) — distributes `.ai/` and tool wrappers to target repos
-- **Tool templates**: [src/tools/](../../src/tools/) — Copilot, Claude Code, OpenCode wrappers
+- **Tool templates**: [src/tools/](../../src/tools/) — Copilot, Claude Code, OpenCode, Codex wrappers
 
 ## Repo operating rules (contributors)
 

@@ -51,7 +51,7 @@ This is a template distribution repo. No traditional build/test/lint commands ap
 - `.ai/MEMORY.md` — Curated facts about this framework/repo (commands, conventions, invariants)
 
 **Tool integrations**:
-- `src/tools/vscode-copilot/`, `src/tools/claude-code/`, `src/tools/opencode/` — Tool-specific wrappers
+- `src/tools/vscode-copilot/`, `src/tools/claude-code/`, `src/tools/opencode/`, `src/tools/codex/` — Tool-specific wrappers
 
 ## Business domains / Conceptual domains
 

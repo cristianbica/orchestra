@@ -1,0 +1,6 @@
+developer_instructions = "Read .codex/AGENTS.md"
+
+[features]
+collab = true
+# Optional: enable collaboration-mode helpers when supported by your Codex runtime.
+collaboration_modes = true

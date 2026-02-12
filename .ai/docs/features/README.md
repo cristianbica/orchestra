@@ -18,7 +18,7 @@ The `.ai/` template provides structured workflows and roles for AI-assisted deve
 | **Memory curation** | Only durable, reusable facts stored (keep <200 lines) |
 | **Invariant enforcement** | Hard rules (NEVER, ALWAYS) prevent common mistakes |
 | **Template installation** | `install.sh` copies the template into target repos |
-| **Tool wrappers** | Optional wrappers for Copilot, Claude Code, OpenCode |
+| **Tool wrappers** | Optional wrappers for Copilot, Claude Code, OpenCode, Codex |
 
 ## Feature pages
 

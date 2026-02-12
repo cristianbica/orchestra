@@ -14,7 +14,7 @@ It includes:
 - 6 agent roles (Conductor, Researcher, Architect, Builder, Inspector, Archivist)
 - 6 workflows (`document`, `investigate`, `implement-feature`, `fix-bug`, `refactor`, `trivial-change`)
 - A canonical `.ai/` folder layout for plans, docs, patterns, and agent guides
-- Optional tool wrappers you can drop into your repo (VS Code Copilot, Claude Code, OpenCode)
+- Optional tool wrappers you can drop into your repo (VS Code Copilot, Claude Code, OpenCode, Codex)
 
 For the full operating guide, start with [.ai/HUMANS.md](.ai/HUMANS.md).
 
@@ -62,6 +62,7 @@ To include a tool wrapper during install:
 curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/master/install.sh | sh -s -- vscode-copilot
 curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/master/install.sh | sh -s -- claude-code
 curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/master/install.sh | sh -s -- opencode
+curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/master/install.sh | sh -s -- codex
 ```
 
 ### Manual copy (no script)
@@ -77,6 +78,7 @@ cp /path/to/orchestra/src/AGENTS.md ./AGENTS.md
 cp -R /path/to/orchestra/src/tools/vscode-copilot/. .
 cp -R /path/to/orchestra/src/tools/claude-code/. .
 cp -R /path/to/orchestra/src/tools/opencode/. .
+cp -R /path/to/orchestra/src/tools/codex/. .
 ```
 
 ### After install: bootstrap initial context
