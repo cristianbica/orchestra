@@ -4,7 +4,10 @@ This guide helps prevent “doing everything in one thread” by making delegati
 
 ## Core rule
 
-If the task has a meaningful planning or research component, **delegate early**.
+Conductor should **delegate by default** for discovery, research, and planning.
+Conductor’s main job is to mediate between the user and agents, not to execute specialist work inline.
+
+Do docs-first triage (`.ai/docs/overview.md` → docs indexes → `.ai/MEMORY.md`), then delegate targeted discovery instead of running repo-wide investigation inline.
 
 When working on a plan, never create a new plan unless the user explicitly asks.
 
@@ -18,20 +21,24 @@ Delegate when any of these are true:
 - The request is **ambiguous** and needs targeted clarifying questions.
 - You’re doing **two different modes** of work (e.g. research + implementation).
 - You need a **timeboxed investigation** to reduce uncertainty before planning.
+- File/entrypoint is unknown and requires repo-wide discovery.
 
 Don’t delegate when:
 - The change is trivially small and local.
 - You already have the exact file + approach and only need to apply it.
+- No broad search is required beyond quick docs-first checks.
 
 ## Role mapping
 
 Within this repo’s framework:
 - Conductor: orchestrates + enforces gates (no product code)
-- Researcher: investigation only (evidence, feature maps, options, root-cause hypotheses)
+- Researcher: investigation/discovery only (evidence, feature maps, options, root-cause hypotheses)
 - Architect: planning only
 - Builder: implementation only (after plan approval)
 - Inspector: review only
 - Archivist: docs + memory hygiene
+
+If work falls into investigation, planning, implementation, or review, it should be assigned to the corresponding specialist role.
 
 ## Practical “how” (Copilot)
 
