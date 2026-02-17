@@ -22,12 +22,12 @@ With a plan:
 
 ## How it works
 
-1. **User** requests a change (e.g., "implement-feature workflow")
-2. **Conductor** routes to Architect
-3. **Architect** writes `.ai/plans/<date>-<slug>.md` (planning only, no implementation)
+1. **User** requests a change (e.g., "change workflow: feature")
+2. **Conductor** routes to Planner
+3. **Planner** writes `.ai/plans/<date>-<slug>.md` (planning only, no implementation)
 4. **User** reads and explicitly approves the plan
 5. **Builder** implements ONLY the approved plan
-6. **Verification** & **Archivist** close out the task
+6. **Verification** and **Validator** close out the task
 
 ## Types of changes
 
@@ -35,15 +35,16 @@ With a plan:
 |------|----------------|--------------------|
 | Typo fix | No | No |
 | Formatting only | No | No |
-| Bug fix | Yes | Yes |
-| Feature | Yes | Yes |
-| Refactor | Yes | Yes |
+| Investigate | Yes (report plan) | No* |
+| Change (`bug`/`feature`/`refactor`) | Yes | Yes |
 | Docs update | Depends* | No |
 
-*Docs: Use bootstrap/refresh plans for major updates; incremental updates during feature/bug/refactor flows.
+*Approval is required when an investigation is promoted into implementation (`change`).
+
+*Docs: Use bootstrap/refresh plans for major updates; incremental updates during ongoing workflows.
 
 ## See also
 
-- [src/ai/plans/01-bootstrap.md](../../src/ai/plans/01-bootstrap.md) — Example plan structure (Phase 1–4)
-- [src/ai/templates/plan.template.md](../../src/ai/templates/plan.template.md) — Plan template
-- [src/ai/agents/architect.md](../../src/ai/agents/architect.md) — Architect role + discovery checklist
+- [src/ai/plans/01-bootstrap.md](../../../src/ai/plans/01-bootstrap.md) — Example plan structure (Phase 1–4)
+- [src/ai/templates/plan.template.md](../../../src/ai/templates/plan.template.md) — Plan template
+- [src/ai/agents/planner.md](../../../src/ai/agents/planner.md) — Planner role + discovery checklist

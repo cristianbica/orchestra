@@ -5,8 +5,8 @@
 ## What this app does
 
 This is the **canonical template for AI-assisted development workflows**. It provides:
-- A multi-agent system (6 roles: Conductor, Researcher, Architect, Builder, Inspector, Archivist)
-- Six structured workflows for common development tasks
+- A multi-agent system (4 roles: Conductor, Planner, Builder, Validator)
+- Four structured workflows for common development tasks
 - Reusable documentation templates and agent guides
 - Tool-specific wrappers (GitHub Copilot, Claude Code, OpenCode, Codex)
 - An installation system to bootstrap `.ai/` dirs in target repositories
@@ -23,15 +23,18 @@ Designed for teams building with AI agents, this system enforces planning gates,
 
 ## Repo landmarks
 
-- **Canonical sources** (this framework repo):
+- **Canonical project context for this repo**:
+  - `.ai/docs/**` — source of truth for this repository's current documentation context
+  - `src/ai/docs/**` — boilerplate template content for installed user repos (not source of truth for this repo)
+- **Template authoring sources** (what gets distributed):
   - [src/ai/](../../src/ai/) — agent roles, workflows, templates, docs
   - [src/tools/](../../src/tools/) — tool-specific wrapper templates
 - **Installed in user repos as**: `.ai/` (copy of `src/ai/`)
   - User repos edit `.ai/` locally; never edit `src/ai/` directly
   - `src/ai/docs/` serves as a template; user repos copy it and customize for their app
 - **Local mirror**: `.ai/` (this repo only) — a working copy used to exercise the workflows
-- **Agent definitions**: [src/ai/agents/](../../src/ai/agents/) — Conductor, Researcher, Architect, Builder, Inspector, Archivist
-- **Workflow definitions**: [src/ai/workflows/](../../src/ai/workflows/) — document, investigate, implement-feature, fix-bug, refactor, trivial-change
+- **Agent definitions**: [src/ai/agents/](../../src/ai/agents/) — Conductor, Planner, Builder, Validator
+- **Workflow definitions**: [src/ai/workflows/](../../src/ai/workflows/) — document, investigate, change, trivial-change
 - **Documentation templates**: [src/ai/docs/](../../src/ai/docs/) — overview, features, patterns
 - **Bootstrap plan**: [src/ai/plans/01-bootstrap.md](../../src/ai/plans/01-bootstrap.md) — initial setup for target repos
 - **Installation script**: [install.sh](../../install.sh) — distributes `.ai/` and tool wrappers to target repos
@@ -69,7 +72,6 @@ Not applicable (this is a template/framework, not a domain application).
 
 **Instead, conceptual domains:**
 - **Agent orchestration**: Conductor role, workflow routing, plan gates
-- **Planning & architecture**: Architect role, plan structure, discovery patterns
+- **Planning & discovery**: Planner role, plan structure, investigation patterns
 - **Implementation**: Builder role, minimal safe changes, verification
-- **Documentation**: Archivist role, feature/pattern docs, memory curation
-- **Review & quality**: Inspector role, verification, adherence checks
+- **Validation & docs hygiene**: Validator role, gate checks, docs and memory curation

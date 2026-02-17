@@ -52,7 +52,7 @@ Always report what you ran and the result.
 1. Update `.ai/docs/**` if behavior/conventions changed (or explicitly "doc impact: none").
 2. If you discovered a durable fact, append 1 bullet to `.ai/MEMORY.md`.
 
-If the approved plan was inline (no plan file), quote the approved inline plan (or restate it verbatim) in your closeout so Inspector can review against it.
+If the approved plan was inline (no plan file), quote the approved inline plan (or restate it verbatim) in your closeout so Validator can review against it.
 </workflow>
 
 <definition_of_done>

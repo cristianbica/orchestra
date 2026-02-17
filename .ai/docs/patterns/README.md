@@ -10,18 +10,18 @@ The `.ai/` system defines several reusable patterns and conventions for AI-assis
 
 | Pattern | Purpose | Examples |
 |---------|---------|----------|
-| **Workflow routing** | Conductor uses intake questions to route to correct workflow | document, investigate, implement-feature, fix-bug, refactor, trivial-change |
-| **Agent isolation** | Each agent has NEVER/ALWAYS rules to prevent overreach | Architect (planning only) ≠ Builder (implementation only) |
+| **Workflow routing** | Conductor uses intake questions to route to correct workflow | document, investigate, change, trivial-change |
+| **Agent isolation** | Each agent has NEVER/ALWAYS rules to prevent overreach | Planner (planning only) ≠ Builder (implementation only) |
 | **Planning gate** | Plans must exist in `.ai/plans/` and be approved before implementation | All non-trivial workflows require this |
 | **Verified commands** | Commands must be tested before documented | `.ai/MEMORY.md` holds verified commands |
 | **Memory hygiene** | Only durable, reusable facts stored; keep under ~200 lines total | `.ai/MEMORY.md` = commands + conventions + invariants + layout |
 | **Doc hygiene** | Every task must explicitly state doc impact | `doc impact: updated | none | deferred` |
-| **Discovery-first** | Planning always starts with discovery pass | Architect reads `.ai/docs/**` before drafting |
+| **Discovery-first** | Planning always starts with discovery pass | Planner reads `.ai/docs/**` before drafting |
 | **Template architecture** | Source-of-truth lives in `src/`, installs into `.ai/` | `install.sh` copies template into target repos |
 
 ## Core pattern pages
 
-- [agent-roles.md](agent-roles.md) — How the 6 agents interact while respecting boundaries
+- [agent-roles.md](agent-roles.md) — How Conductor/Planner/Builder/Validator interact while respecting boundaries
 - [planning-gate.md](planning-gate.md) — Why plans are required and how they work
 - [discovery-first.md](discovery-first.md) — How discovery informs planning and implementation
 - [architecture.md](architecture.md) — Template layout and installation architecture

@@ -59,7 +59,7 @@ curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/master/insta
 To include a tool wrapper during install:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/master/install.sh | sh -s -- vscode-copilot
+curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/master/install.sh | sh -s -- copilot
 curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/master/install.sh | sh -s -- claude-code
 curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/master/install.sh | sh -s -- opencode
 curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/master/install.sh | sh -s -- codex
@@ -75,7 +75,7 @@ cp -R /path/to/orchestra/src/. .ai/
 cp /path/to/orchestra/src/AGENTS.md ./AGENTS.md
 
 # Optional: tool-specific wrapper
-cp -R /path/to/orchestra/src/tools/vscode-copilot/. .
+cp -R /path/to/orchestra/src/tools/copilot/. .
 cp -R /path/to/orchestra/src/tools/claude-code/. .
 cp -R /path/to/orchestra/src/tools/opencode/. .
 cp -R /path/to/orchestra/src/tools/codex/. .

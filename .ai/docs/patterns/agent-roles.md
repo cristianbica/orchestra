@@ -2,37 +2,36 @@
 
 ## What it is
 
-The `.ai/` system has five specialized agent roles, each with NEVER/ALWAYS rules that prevent overreach and enforce separation of concerns.
+The `.ai/` system has four specialized agent roles, each with NEVER/ALWAYS rules that prevent overreach and enforce separation of concerns.
 
-## The five agents
+## The four agents
 
 | Role | Job | NEVER | ALWAYS |
 |------|-----|-------|--------|
 | **Conductor** | Route requests, enforce gates | Implement product code | Enforce doc + memory hygiene |
-| **Architect** | Write plans, do discovery | Implement product code | Do discovery pass before drafting |
+| **Planner** | Investigate and write plans/reports | Implement product code | Do discovery pass before drafting |
 | **Builder** | Implement approved plans | Implement without approved plan | Do smallest change that satisfies plan |
-| **Inspector** | Review changes against plan + conventions | Approve without reviewing | Check for i18n, doc impact, correctness |
-| **Archivist** | Update docs and memory after changes | Implement product code | Document only what exists (no speculation) |
+| **Validator** | Validate gates and maintain docs/memory hygiene | Approve without reviewing | Check plan adherence, i18n, docs, memory |
 
 ## Why isolation matters
 
-- **Builder without Architect** → scope creep, missing requirements
-- **Architect without Builder separation** → plans that are too prescriptive or implementer-focused
-- **Archivist without doc path** → docs drift from code
+- **Builder without Planner** → scope creep, missing requirements
+- **Planner without Builder separation** → plans that are too prescriptive or implementer-focused
+- **Validator without doc path** → docs drift from code
 - **Conductor without role clarity** → confusion about who does what
 
 ## Example: Implementing a feature
 
-1. **Conductor** asks intake questions, routes to Architect
-2. **Architect** (ALONE) discovers, writes plan, does NOT implement
+1. **Conductor** asks intake questions, routes to Planner
+2. **Planner** (ALONE) discovers, writes plan, does NOT implement
 3. **User** approves plan (explicit approval required)
 4. **Builder** implements plan (ALONE), reports results
-5. **Archivist** updates docs (after Builder completes)
-6. **Inspector** reviews against plan + repo conventions
+5. **Validator** reviews against plan + repo conventions
+6. **Validator** updates docs/memory only where needed
 
 No agent skips their role or extends beyond their boundaries.
 
 ## See also
 
-- [src/ai/agents/](../../src/ai/agents/) — Full agent role definitions
+- [src/ai/agents/](../../../src/ai/agents/) — Full agent role definitions
 - [planning-gate.md](planning-gate.md) — Why the gate exists and how approval works

@@ -16,13 +16,13 @@ Steps:
 2a. No plan is required for this workflow.
 2b. Builder must not request a plan for this workflow.
 3. Doc impact: none (by definition)
-4. Inspector spot-checks (30 seconds max)
+4. Validator spot-checks (30 seconds max)
 
-If you're unsure whether it's trivial → use fix-bug or refactor instead.
+If you're unsure whether it's trivial → use `change` instead.
 
 Outputs:
 - The minimal change (no plan required)
 
 Done criteria:
 - Change is documented in the commit/PR description
-- Inspector confirmed it's genuinely trivial
+- Validator confirmed it's genuinely trivial

@@ -22,7 +22,7 @@ With discovery:
 
 ## The discovery checklist
 
-Architect MUST verify before drafting:
+Planner MUST verify before drafting:
 - [ ] I understood the goal and success criteria
 - [ ] I checked `.ai/docs/overview.md` for app context
 - [ ] I read `.ai/docs/features/README.md` and relevant feature pages
@@ -31,7 +31,7 @@ Architect MUST verify before drafting:
 - [ ] I know how to verify success (tests/commands to run)
 - [ ] I identified which `.ai/docs/**` pages will need updating
 
-See [src/ai/agents/architect.md](../../src/ai/agents/architect.md#discovery_checklist) for the full checklist.
+See [src/ai/agents/planner.md](../../../src/ai/agents/planner.md) for the full checklist.
 
 ## Example: Discovering constraints
 
@@ -52,5 +52,5 @@ Without discovery:
 
 ## See also
 
-- [src/ai/agents/architect.md](../../src/ai/agents/architect.md) — Full Architect role with discovery rules
-- [src/ai/agents/guides/context-management.md](../../src/ai/agents/guides/context-management.md) — Efficient discovery & assembly
+- [src/ai/agents/planner.md](../../../src/ai/agents/planner.md) — Full Planner role with discovery rules
+- [src/ai/agents/guides/context-management.md](../../../src/ai/agents/guides/context-management.md) — Efficient discovery & assembly

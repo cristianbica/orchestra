@@ -22,7 +22,7 @@ The `.ai/` template provides structured workflows and roles for AI-assisted deve
 
 ## Feature pages
 
-- [workflows.md](workflows.md) — 5 structured workflows for different task types
-- [implement-feature.md](implement-feature.md) — New feature workflow with planning & approval gates
+- [workflows.md](workflows.md) — Current workflow set and gate behavior
+- [implement-feature.md](implement-feature.md) — `change` workflow usage for feature/bug/refactor work
 - [installation.md](installation.md) — How the template is distributed into target repos
 - [tool-wrappers.md](tool-wrappers.md) — Tool-specific wrapper templates bundled with the repo
