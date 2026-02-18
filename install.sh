@@ -64,7 +64,7 @@ if [ -n "${SRC_DIR-}" ]; then
   SRC_ROOT="$SRC_DIR"
 else
   TMP_DIR=$(mktemp -d)
-  curl -fsSL "https://github.com/cristianbica/orchestra/archive/refs/heads/master.tar.gz" \
+  curl -fsSL "https://github.com/cristianbica/orchestra/archive/refs/heads/next.tar.gz" \
     | tar -xz -C "$TMP_DIR"
   SRC_ROOT=$(find "$TMP_DIR" -maxdepth 1 -mindepth 1 -type d | head -n 1)
 fi
