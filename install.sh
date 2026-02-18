@@ -79,6 +79,8 @@ fi
 
 mkdir -p "$AI_DIR"
 
+cleanup_legacy_files
+
 for item in "$BLUEPRINT_SRC"/*; do
   [ -e "$item" ] || continue
   name=$(basename "$item")
@@ -131,5 +133,3 @@ if [ -n "$TOOL_NAME" ]; then
   fi
   cp -R "$TOOL_SRC"/. "$DEST_DIR/"
 fi
-
-cleanup_legacy_files
