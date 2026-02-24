@@ -4,6 +4,7 @@ set -eu
 TOOL_NAME=${1-}
 DEST_DIR=$PWD
 AI_DIR="$DEST_DIR/.ai"
+REF=${REF-master}
 
 if [ "$TOOL_NAME" = "vscode-copilot" ]; then
   TOOL_NAME="copilot"
@@ -64,8 +65,9 @@ if [ -n "${SRC_DIR-}" ]; then
   SRC_ROOT="$SRC_DIR"
 else
   TMP_DIR=$(mktemp -d)
-  curl -fsSL "https://github.com/cristianbica/orchestra/archive/refs/heads/next.tar.gz" \
-    | tar -xz -C "$TMP_DIR"
+  curl -fsSL "https://github.com/cristianbica/orchestra/archive/refs/heads/$REF.zip" \
+    -o "$TMP_DIR/archive.zip"
+  unzip -q "$TMP_DIR/archive.zip" -d "$TMP_DIR"
   SRC_ROOT=$(find "$TMP_DIR" -maxdepth 1 -mindepth 1 -type d | head -n 1)
 fi
 

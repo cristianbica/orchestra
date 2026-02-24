@@ -53,16 +53,22 @@ This template installs into an existing repo by copying `.ai/` plus a root `AGEN
 Run this from your target repository root:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/master/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/refs/heads/master/install.sh | sh
+```
+
+Install from a specific branch/tag/SHA:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/refs/heads/next/install.sh | REF=next sh
 ```
 
 To include a tool wrapper during install:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/master/install.sh | sh -s -- copilot
-curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/master/install.sh | sh -s -- claude-code
-curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/master/install.sh | sh -s -- opencode
-curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/master/install.sh | sh -s -- codex
+curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/refs/heads/master/install.sh | sh -s -- copilot
+curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/refs/heads/master/install.sh | sh -s -- claude-code
+curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/refs/heads/master/install.sh | sh -s -- opencode
+curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/refs/heads/master/install.sh | sh -s -- codex
 ```
 
 ### Manual copy (no script)
