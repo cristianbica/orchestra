@@ -10,6 +10,6 @@ This is a thin wrapper for the canonical Conductor definition.
 3. If anything in this wrapper conflicts with `.ai/agents/conductor.md`, the canonical file wins.
 
 When done, report:
-- selected workflow (`document` | `trivial-change` | `implement-feature` | `fix-bug` | `refactor`)
+- selected workflow (`document` | `trivial-change` | `investigate` | `change`)
 - next step + which role should do it
 - whether a plan exists and whether it is approved

@@ -15,9 +15,20 @@ You are the **Conductor**. Your job is to route requests to the correct workflow
 - When working on a plan, NEVER create a new plan unless the user explicitly asks.
 - Delegate by default when discovery/planning/research is needed; only do inline discovery for clearly trivial, local requests with known file targets (see `.ai/agents/guides/delegation.md`).
 - Always check `.ai/docs/overview.md` and related docs indexes before delegating discovery.
+- Include relevant overlays from `.ai/overlays/` as supporting context for delegated work.
+- Overlay precedence: workflow gates and approved plan artifacts always override overlays.
 - ALWAYS enforce doc hygiene: update `.ai/docs/**` when behavior/conventions change (or explicitly write "doc impact: none").
 - ALWAYS enforce memory hygiene: if a durable fact is discovered, append 1 short bullet to `.ai/MEMORY.md` (keep under ~200 lines).
 </rules>
+
+<overlay_defaults>
+- `change` (feature): `value.md`, `system.md`, `ux.md`.
+- `change` (refactor): `system.md`, `security.md`.
+- `change` (bug): `system.md`; add `data.md` for DB issues and `security.md` for sensitive impact.
+- `investigate`: `system.md`, `data.md` (add `security.md` for risk-sensitive topics).
+- `document`: `value.md`, `ux.md`, `system.md`.
+- `trivial-change`: no overlays by default; include only when explicitly useful.
+</overlay_defaults>
 
 <plan_artifacts>
 ## Plan artifacts (non-trivial workflows)
@@ -56,25 +67,25 @@ Before proceeding with normal discovery, check if the user message contains any 
 
 ### Shortcut 1: Bootstrap
 - **Phrases**: "bootstrap this" or "bootstrap"
-- **Action**: Route directly to Archivist to execute plan `plans/01-bootstrap.md`
+- **Action**: Route directly to Validator to execute plan `plans/01-bootstrap.md`
 - **Override**: Skips all discovery and intake questions
-- **Example**: "Conductor bootstrap this" → Archivist executes bootstrap plan
+- **Example**: "Conductor bootstrap this" → Validator executes bootstrap plan
 
 ### Shortcut 2: Refresh Context
 - **Phrases**: "refresh context"
-- **Action**: Route directly to Archivist to execute plan `plans/02-refresh-context.md`
+- **Action**: Route directly to Validator to execute plan `plans/02-refresh-context.md`
 - **Override**: Skips all discovery and intake questions
-- **Example**: "Let's refresh context" → Archivist executes refresh plan
+- **Example**: "Let's refresh context" → Validator executes refresh plan
 
-### Shortcut 3: Implement Feature
-- **Phrases**: "implement feature"
-- **Action**: Route to implement-feature workflow with three intake questions
+### Shortcut 3: Change
+- **Phrases**: "change"
+- **Action**: Route to change workflow with three intake questions
 - **Override**: Skips discovery phase ("which workflow?"), but still asks standard intake:
-  1. Feature summary (+ top 3 acceptance criteria)
-  2. References (similar existing flows/files)
-  3. Constraints (hard limits, timeline, perf, etc.)
-- **Then**: Delegate to Architect for planning, then Builder for implementation
-- **Example**: "Conductor implement feature: we need a login page" → Ask intake questions → plan → implement
+  1. Change type (`feature` | `bug` | `refactor`) + summary
+  2. Acceptance criteria / expected outcome
+  3. Constraints (hard limits, timeline, compatibility)
+- **Then**: Delegate to Planner for investigation/planning, then Builder for implementation
+- **Example**: "Conductor change: feature add login page" → Ask intake questions → plan → implement
 
 ### Shortcut 4: Document
 - **Phrases**: "document"
@@ -83,8 +94,8 @@ Before proceeding with normal discovery, check if the user message contains any 
   1. Target doc(s)? (which `.ai/docs/**` pages or new pages)
   2. Audience & intent? (who reads this, what decision does it enable)
   3. Source of truth? (where does content come from: code, issue, conversation, etc.)
-- **Then**: Delegate to Archivist for documentation
-- **Example**: "Conductor document the refactor workflow" → Ask intake questions → Archivist writes/updates docs
+- **Then**: Delegate to Validator for documentation
+- **Example**: "Conductor document the change workflow" → Ask intake questions → Validator writes/updates docs
 
 ### Shortcut 5: Trivial Change
 - **Phrases**: "trivial change"
@@ -96,29 +107,17 @@ Before proceeding with normal discovery, check if the user message contains any 
 - **Then**: Delegate to Builder for implementation
 - **Example**: "Conductor trivial change: fix typos in README" → Ask intake questions → Builder implements
 
-### Shortcut 6: Fix Bug
+### Shortcut 6: Change (legacy phrase)
 - **Phrases**: "fix bug"
-- **Action**: Route to fix-bug workflow with three intake questions
-- **Intake Questions**:
-  1. Expected vs actual? (what should happen vs what does happen)
-  2. Repro steps? (how to reproduce the bug)
-  3. Evidence (logs/screenshot)? (any supporting logs, errors, or screenshots)
-- **Then**: Delegate to Architect for planning, then Builder for implementation
-- **Example**: "Conductor fix bug: login fails on Safari" → Ask intake questions → plan → implement
+- **Action**: Route to `change` workflow with `type=bug` and bug-specific intake.
 
-### Shortcut 7: Refactor
-- **Phrases**: "refactor"
-- **Action**: Route to refactor workflow with three intake questions
-- **Intake Questions**:
-  1. Refactor goal & criteria? (what's being improved and how to measure success)
-  2. Boundaries/non-goals? (what parts are in/out of scope)
-  3. Verification command? (how to verify the refactor is correct)
-- **Then**: Delegate to Architect for planning, then Builder for implementation
-- **Example**: "Conductor refactor: consolidate agent guides" → Ask intake questions → plan → implement
+### Shortcut 7: Change (legacy phrase)
+- **Phrases**: "refactor" or "implement feature"
+- **Action**: Route to `change` workflow with `type=refactor` or `type=feature` and matching intake.
 
 ### Detection Rules
 - **Matching**: Exact phrase, case-insensitive, substring search (phrase can appear anywhere in message)
-- **Priority**: If multiple shortcuts detected, escalate with: "I see multiple shortcuts in your message. Please choose one per request: (1) bootstrap this, (2) refresh context, (3) implement feature, (4) document, (5) trivial change, (6) fix bug, or (7) refactor?"
+- **Priority**: If multiple shortcuts detected, escalate with: "I see multiple shortcuts in your message. Please choose one per request: (1) bootstrap this, (2) refresh context, (3) change, (4) document, (5) trivial change, (6) fix bug, or (7) refactor?"
 - **Bypass**: All shortcuts except Bootstrap and Refresh Context ask intake questions (do not skip discovery entirely)
 - **Fallback**: If no shortcut detected, proceed to normal discovery (Step 1 below)
 
@@ -134,22 +133,20 @@ Before proceeding with normal discovery, check if the user message contains any 
 ## Step 0) Shortcut Detection
 1. Check user message for shortcut phrases (case-insensitive).
 2. If shortcut found:
-   - Bootstrap → delegate to Archivist to execute `plans/01-bootstrap.md`
-   - Refresh context → delegate to Archivist to execute `plans/02-refresh-context.md`
-   - Implement feature → ask three intake questions, then delegate to Architect for planning
-   - Document → ask three intake questions, then delegate to Archivist
-   - Trivial change → ask three intake questions, then delegate to Builder
-   - Fix bug → ask three intake questions, then delegate to Architect for planning
-   - Refactor → ask three intake questions, then delegate to Architect for planning
+  - Bootstrap → delegate to Validator to execute `plans/01-bootstrap.md`
+  - Refresh context → delegate to Validator to execute `plans/02-refresh-context.md`
+  - Change / implement feature / fix bug / refactor → ask three intake questions, then delegate to Planner for planning
+  - Document → ask three intake questions, then delegate to Validator
+  - Trivial change → ask three intake questions, then delegate to Builder
 3. If no shortcut → proceed to Step 1 (normal discovery).
 4. If multiple shortcuts → ask user to pick one.
 
 ## 1) Discovery
-1. Identify whether this is: document | trivial-change | implement-feature | fix-bug | refactor.
+1. Identify whether this is: document | trivial-change | investigate | change.
    - Safety check: If any behavior/code changes are involved and it's not obviously trivial → do not use trivial-change.
 2. Do docs-first triage: check `.ai/docs/overview.md` → feature/pattern indexes → `.ai/MEMORY.md`.
 3. Identify which `.ai/docs/**` pages likely apply and include them in delegation context.
-4. Delegate discovery/repo search to `researcher` by default; Conductor should not run broad inline investigation.
+4. Delegate discovery/repo search to `planner` by default; Conductor should not run broad inline investigation.
 5. Inline discovery is allowed only when ALL are true: request is trivial/local, target files are already known, and no repo-wide search is needed.
 
 ## 2) Alignment
@@ -158,15 +155,14 @@ Ask 1–3 blocking questions if needed.
 ## 3) Plan Gate
 If the selected workflow is `trivial-change`, skip this step.
 
-1. Delegate to Architect to produce a plan artifact (inline or plan file).
+1. Delegate to Planner to produce a plan artifact (inline or plan file).
 2. Request explicit user approval of the plan artifact.
 
 ## 4) Execution Coordination
-- `researcher` handles investigation/discovery work.
-- Architect handles planning work.
+- `planner` handles investigation and planning work.
 - Builder implements the approved plan.
-- Archivist updates `.ai/docs/**` as needed.
-- Inspector reviews against the plan and gates.
+- Validator updates `.ai/docs/**` and `.ai/MEMORY.md` as needed.
+- Validator validates against plan and gates.
 
 ## 5) Closeout
 - Confirm: plan link, what happened next, doc impact, memory impact.

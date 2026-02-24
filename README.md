@@ -53,16 +53,22 @@ This template installs into an existing repo by copying `.ai/` plus a root `AGEN
 Run this from your target repository root:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/master/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/refs/heads/master/install.sh | sh
+```
+
+Install from a specific branch/tag/SHA:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/refs/heads/next/install.sh | REF=next sh
 ```
 
 To include a tool wrapper during install:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/master/install.sh | sh -s -- vscode-copilot
-curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/master/install.sh | sh -s -- claude-code
-curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/master/install.sh | sh -s -- opencode
-curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/master/install.sh | sh -s -- codex
+curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/refs/heads/master/install.sh | sh -s -- copilot
+curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/refs/heads/master/install.sh | sh -s -- claude-code
+curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/refs/heads/master/install.sh | sh -s -- opencode
+curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/refs/heads/master/install.sh | sh -s -- codex
 ```
 
 ### Manual copy (no script)
@@ -75,7 +81,7 @@ cp -R /path/to/orchestra/src/. .ai/
 cp /path/to/orchestra/src/AGENTS.md ./AGENTS.md
 
 # Optional: tool-specific wrapper
-cp -R /path/to/orchestra/src/tools/vscode-copilot/. .
+cp -R /path/to/orchestra/src/tools/copilot/. .
 cp -R /path/to/orchestra/src/tools/claude-code/. .
 cp -R /path/to/orchestra/src/tools/opencode/. .
 cp -R /path/to/orchestra/src/tools/codex/. .

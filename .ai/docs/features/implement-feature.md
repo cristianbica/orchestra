@@ -1,42 +1,39 @@
-# Feature: Implement-Feature Workflow
+# Feature: Change Workflow (feature | bug | refactor)
 
 ## What it is
 
-The **implement-feature workflow** is for building new features with planning, approval, and verification gates.
+The **change workflow** is the implementation workflow for `feature`, `bug`, and `refactor` requests. It enforces planning, explicit approval, and verification gates.
 
 ## Intake questions
 
 Conductor asks (max 3):
-1. **Feature summary** — What are we building (1–2 sentences) + top 3 acceptance criteria?
-2. **References** — Any similar existing flow/file/feature to mirror? (link/path or "none")
-3. **Constraints** — Any hard constraints? (e.g. no schema change, behind a flag, backwards-compatible, timeline)
+1. **Change type + summary** — Is this a `feature`, `bug`, or `refactor`, and what is the goal?
+2. **Outcome criteria** — Top acceptance criteria (or expected vs actual + repro for bugs).
+3. **Constraints** — Hard limits (API/schema/UX), compatibility, timeline, and risk notes.
 
 Optional:
-- Security/data: authz rules, PII, audit logging?
-- UX surface: which screens/routes/APIs affected?
+- Security/data sensitivity, authz, i18n, tenant/role scope.
 
 ## Execution phases
 
-1. **Conductor** routes to Architect
-2. **Architect** writes plan in `.ai/plans/` (discovery-first)
+1. **Conductor** routes to Planner
+2. **Planner** writes plan artifact in `.ai/plans/` (discovery-first)
 3. **Plan approval gate** — do NOT implement until explicitly approved
 4. **Builder** implements the approved plan (smallest safe change)
 5. **Verification** — run tests/commands from `.ai/MEMORY.md`; record results
-6. **Archivist** updates `.ai/docs/` for the feature + affected patterns
-7. **Inspector** reviews: plan adherence, correctness, i18n, docs
+6. **Validator** validates: plan adherence, correctness, i18n, docs/memory hygiene
 8. **Closeout** — explicitly state `doc impact` and `memory impact`
 
 ## Key rules
 
 | Agent | Rule |
 |-------|------|
-| **Architect** | Planning only; NEVER implement; ALWAYS do discovery before drafting |
+| **Planner** | Investigation/planning only; NEVER implement; ALWAYS do discovery before drafting |
 | **Builder** | NEVER implement without approved plan; do smallest change that satisfies plan |
-| **Archivist** | Docs only; update feature/pattern pages + `.ai/MEMORY.md` if durable facts learned |
-| **Inspector** | Verify against plan + repo conventions before approval |
+| **Validator** | Validate against plan + repo conventions; update docs/memory when needed |
 
 ## See also
 
-- [src/ai/workflows/implement-feature.md](../../src/ai/workflows/implement-feature.md) — Full workflow definition
-- [src/ai/agents/architect.md](../../src/ai/agents/architect.md) — Architect role & discovery checklist
-- [src/ai/plans/01-bootstrap.md](../../src/ai/plans/01-bootstrap.md) — Example plan structure
+- [src/ai/workflows/change.md](../../../src/ai/workflows/change.md) — Full workflow definition
+- [src/ai/agents/planner.md](../../../src/ai/agents/planner.md) — Planner role & discovery checklist
+- [src/ai/plans/01-bootstrap.md](../../../src/ai/plans/01-bootstrap.md) — Example plan structure

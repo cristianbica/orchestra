@@ -4,6 +4,54 @@ set -eu
 TOOL_NAME=${1-}
 DEST_DIR=$PWD
 AI_DIR="$DEST_DIR/.ai"
+REF=${REF-master}
+
+if [ "$TOOL_NAME" = "vscode-copilot" ]; then
+  TOOL_NAME="copilot"
+fi
+
+remove_if_exists() {
+  target=$1
+  if [ -e "$target" ]; then
+    rm -f "$target"
+  fi
+}
+
+cleanup_legacy_files() {
+  remove_if_exists "$AI_DIR/agents/architect.md"
+  remove_if_exists "$AI_DIR/agents/archivist.md"
+  remove_if_exists "$AI_DIR/agents/inspector.md"
+  remove_if_exists "$AI_DIR/agents/researcher.md"
+  remove_if_exists "$AI_DIR/agents/reviewer.md"
+
+  remove_if_exists "$AI_DIR/workflows/implement-feature.md"
+  remove_if_exists "$AI_DIR/workflows/fix-bug.md"
+  remove_if_exists "$AI_DIR/workflows/refactor.md"
+
+  remove_if_exists "$DEST_DIR/.claude/agents/architect.md"
+  remove_if_exists "$DEST_DIR/.claude/agents/archivist.md"
+  remove_if_exists "$DEST_DIR/.claude/agents/inspector.md"
+  remove_if_exists "$DEST_DIR/.claude/agents/researcher.md"
+  remove_if_exists "$DEST_DIR/.claude/agents/reviewer.md"
+
+  remove_if_exists "$DEST_DIR/.codex/agents/architect.md"
+  remove_if_exists "$DEST_DIR/.codex/agents/archivist.md"
+  remove_if_exists "$DEST_DIR/.codex/agents/inspector.md"
+  remove_if_exists "$DEST_DIR/.codex/agents/researcher.md"
+  remove_if_exists "$DEST_DIR/.codex/agents/reviewer.md"
+
+  remove_if_exists "$DEST_DIR/.opencode/agents/architect.md"
+  remove_if_exists "$DEST_DIR/.opencode/agents/archivist.md"
+  remove_if_exists "$DEST_DIR/.opencode/agents/inspector.md"
+  remove_if_exists "$DEST_DIR/.opencode/agents/researcher.md"
+  remove_if_exists "$DEST_DIR/.opencode/agents/reviewer.md"
+
+  remove_if_exists "$DEST_DIR/.github/agents/architect.agent.md"
+  remove_if_exists "$DEST_DIR/.github/agents/archivist.agent.md"
+  remove_if_exists "$DEST_DIR/.github/agents/inspector.agent.md"
+  remove_if_exists "$DEST_DIR/.github/agents/researcher.agent.md"
+  remove_if_exists "$DEST_DIR/.github/agents/reviewer.agent.md"
+}
 
 TMP_DIR=""
 cleanup() {
@@ -17,8 +65,9 @@ if [ -n "${SRC_DIR-}" ]; then
   SRC_ROOT="$SRC_DIR"
 else
   TMP_DIR=$(mktemp -d)
-  curl -fsSL "https://github.com/cristianbica/orchestra/archive/refs/heads/master.tar.gz" \
-    | tar -xz -C "$TMP_DIR"
+  curl -fsSL "https://github.com/cristianbica/orchestra/archive/refs/heads/$REF.zip" \
+    -o "$TMP_DIR/archive.zip"
+  unzip -q "$TMP_DIR/archive.zip" -d "$TMP_DIR"
   SRC_ROOT=$(find "$TMP_DIR" -maxdepth 1 -mindepth 1 -type d | head -n 1)
 fi
 
@@ -31,6 +80,8 @@ if [ ! -d "$BLUEPRINT_SRC" ]; then
 fi
 
 mkdir -p "$AI_DIR"
+
+cleanup_legacy_files
 
 for item in "$BLUEPRINT_SRC"/*; do
   [ -e "$item" ] || continue
@@ -54,6 +105,9 @@ for item in "$BLUEPRINT_SRC"/*; do
         fi
         if [ -f "$item/02-refresh-context.md" ]; then
           cp -f "$item/02-refresh-context.md" "$dest/"
+        fi
+        if [ -f "$item/03-create-overlays.md" ]; then
+          cp -f "$item/03-create-overlays.md" "$dest/"
         fi
         continue
       fi

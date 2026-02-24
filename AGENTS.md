@@ -7,6 +7,7 @@ This file lives at the project root. The `.ai/` folder lives in the project root
 The `.ai/` folder is the canonical source of truth for:
 - Agent roles: [.ai/agents/](.ai/agents/)
 - Workflows: [.ai/workflows/](.ai/workflows/)
+- Overlays: [.ai/overlays/](.ai/overlays/)
 - Templates: [.ai/templates/](.ai/templates/)
 - App documentation: [.ai/docs/](.ai/docs/)
 - Planning artifacts: [.ai/plans/](.ai/plans/)
@@ -23,9 +24,15 @@ Start here for app context: [.ai/docs/overview.md](.ai/docs/overview.md)
 	- [.ai/workflows/trivial-change.md](.ai/workflows/trivial-change.md) (typos, formatting only)
 	- [.ai/workflows/document.md](.ai/workflows/document.md)
 	- [.ai/workflows/investigate.md](.ai/workflows/investigate.md)
-	- [.ai/workflows/implement-feature.md](.ai/workflows/implement-feature.md)
-	- [.ai/workflows/fix-bug.md](.ai/workflows/fix-bug.md)
-	- [.ai/workflows/refactor.md](.ai/workflows/refactor.md)
+	- [.ai/workflows/guided.md](.ai/workflows/guided.md) (hand-held, step-by-step wrapper)
+	- [.ai/workflows/change.md](.ai/workflows/change.md) (`feature` | `bug` | `refactor`)
+
+## Precedence model
+
+- Workflows and their gates are highest priority.
+- Roles execute inside the selected workflow.
+- Overlays provide supporting context and are lowest priority.
+- Approved plans and workflow gates always override overlay guidance.
 
 ## Output conventions
 
@@ -42,6 +49,7 @@ Rules:
 - Prefer minimal scope; do not expand requirements.
 - Keep docs short; link instead of duplicating content.
 - When assembling/pasting context for an agent, follow [.ai/agents/guides/context-management.md](.ai/agents/guides/context-management.md).
+- Overlay precedence: workflow gates and approved plans override overlays.
 - If you discover a durable fact (commands, conventions, layout), update [.ai/MEMORY.md](.ai/MEMORY.md) (keep it under ~200 lines).
 - When changing a feature or a coding convention, ensure related docs are updated under `.ai/docs/` (or explicitly note "doc impact: none").
 - Use the workflows in `.ai/workflows/`.

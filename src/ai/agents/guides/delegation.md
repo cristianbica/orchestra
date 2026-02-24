@@ -32,11 +32,9 @@ Don’t delegate when:
 
 Within this repo’s framework:
 - Conductor: orchestrates + enforces gates (no product code)
-- Researcher: investigation/discovery only (evidence, feature maps, options, root-cause hypotheses)
-- Architect: planning only
+- Planner: investigation + planning (evidence, options, executable plan)
 - Builder: implementation only (after plan approval)
-- Inspector: review only
-- Archivist: docs + memory hygiene
+- Validator: review + docs/memory hygiene
 
 If work falls into investigation, planning, implementation, or review, it should be assigned to the corresponding specialist role.
 
@@ -51,13 +49,13 @@ Minimum delegation pattern:
 ### Copy/paste prompt patterns
 
 - Planning:
-  - “Use a planning subagent to produce a scannable plan with assumptions + verification.”
+  - “Use a planner subagent to investigate briefly, then produce a scannable plan with assumptions + verification.”
 
 - Repo discovery:
   - “Use a subagent to locate the relevant files/entry points and summarize findings.”
 
 - Review:
-  - “Use a review subagent to check plan adherence + doc/memory gates.”
+  - “Use a validator subagent to check plan adherence + doc/memory gates and apply required docs updates.”
 
 ## If subagents are unavailable
 
