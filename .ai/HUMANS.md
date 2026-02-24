@@ -1,5 +1,11 @@
 # Humans: how to use this repo’s AI system
 
+Execution model and precedence:
+- Workflows and workflow gates are highest priority.
+- Roles execute inside the selected workflow.
+- Overlays in `.ai/overlays/` are supporting context.
+- Approved plans and workflow gates override overlays.
+
 
 ## Examples
 

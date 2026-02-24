@@ -13,6 +13,13 @@ Optional follow-ups (only if relevant):
 Inputs:
 - A question to answer (what uncertainty to reduce) + timebox + constraints.
 
+Default overlays:
+- `system.md` + `data.md`
+- Add `security.md` for security/privacy-sensitive investigations.
+
+Precedence:
+- Workflow rules and approved plans for follow-on changes override overlay guidance.
+
 Steps:
 1. Conductor routes to Planner.
 2. Planner performs a timeboxed investigation.

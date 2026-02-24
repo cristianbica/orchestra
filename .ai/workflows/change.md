@@ -12,6 +12,16 @@ Optional follow-ups (only if relevant):
 Inputs:
 - A requested change plus constraints and success criteria.
 
+Default overlays:
+- Feature planning: `value.md` + `system.md` + `ux.md`
+- Refactor: `system.md` + `security.md`
+- Bug investigation: `system.md` (add `data.md` for DB issues, `security.md` for sensitive impact)
+- Add `data.md` when data model/storage/analytics are in scope.
+- Add `security.md` when authn/authz/privacy/risk are in scope.
+
+Precedence:
+- Workflow gates and approved plans override overlay guidance.
+
 Steps:
 1. Conductor routes to Planner.
 2. Planner performs focused discovery and produces a plan artifact (file or inline).

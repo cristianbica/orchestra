@@ -14,6 +14,12 @@ Purpose:
 - For first-time setup, execute `.ai/plans/01-bootstrap.md` (copy it to your repo first).
 - For major refresh or migration, execute `.ai/plans/02-refresh-context.md`.
 
+Default overlays:
+- `value.md` + `ux.md` + `system.md`
+
+Precedence:
+- Workflow gates and approved plans override overlay guidance.
+
 Steps:
 1. Validator scans the codebase.
 2. Update app overview: `.ai/docs/overview.md` (what the app does, tech stack, repo landmarks).
