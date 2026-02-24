@@ -24,6 +24,7 @@ Start here for app context: [.ai/docs/overview.md](.ai/docs/overview.md)
 	- [.ai/workflows/trivial-change.md](.ai/workflows/trivial-change.md) (typos, formatting only)
 	- [.ai/workflows/document.md](.ai/workflows/document.md)
 	- [.ai/workflows/investigate.md](.ai/workflows/investigate.md)
+	- [.ai/workflows/guided.md](.ai/workflows/guided.md) (hand-held, step-by-step wrapper)
 	- [.ai/workflows/change.md](.ai/workflows/change.md) (`feature` | `bug` | `refactor`)
 
 ## Precedence model
