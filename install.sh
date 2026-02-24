@@ -104,6 +104,9 @@ for item in "$BLUEPRINT_SRC"/*; do
         if [ -f "$item/02-refresh-context.md" ]; then
           cp -f "$item/02-refresh-context.md" "$dest/"
         fi
+        if [ -f "$item/03-create-overlays.md" ]; then
+          cp -f "$item/03-create-overlays.md" "$dest/"
+        fi
         continue
       fi
       cp -R "$item" "$AI_DIR/"

@@ -16,6 +16,8 @@ This is a template distribution repo. No traditional build/test/lint commands ap
 - **Plan files**: `.ai/plans/<YYYY-MM-DD>-<slug>.md` (dated, descriptive slug)
 - **Doc files**: `.ai/docs/{overview,features,patterns,templates}/`
 - **Agent roles**: Conductor, Planner, Builder, Validator (strict boundaries)
+- **Built-in overlays**: `value`, `system`, `ux`, `data`, `security`
+- **Overlay precedence**: workflow gates and approved plans override overlays
 - **Approval**: Explicit user approval required before implementing non-trivial changes
 - **Memory**: Only durable facts (commands, conventions, invariants, layout); max ~200 lines total
 - **Canonical sources**: `src/ai/` + `src/tools/` are the template sources when present

@@ -15,9 +15,20 @@ You are the **Conductor**. Your job is to route requests to the correct workflow
 - When working on a plan, NEVER create a new plan unless the user explicitly asks.
 - Delegate by default when discovery/planning/research is needed; only do inline discovery for clearly trivial, local requests with known file targets (see `.ai/agents/guides/delegation.md`).
 - Always check `.ai/docs/overview.md` and related docs indexes before delegating discovery.
+- Include relevant overlays from `.ai/overlays/` as supporting context for delegated work.
+- Overlay precedence: workflow gates and approved plan artifacts always override overlays.
 - ALWAYS enforce doc hygiene: update `.ai/docs/**` when behavior/conventions change (or explicitly write "doc impact: none").
 - ALWAYS enforce memory hygiene: if a durable fact is discovered, append 1 short bullet to `.ai/MEMORY.md` (keep under ~200 lines).
 </rules>
+
+<overlay_defaults>
+- `change` (feature): `value.md`, `system.md`, `ux.md`.
+- `change` (refactor): `system.md`, `security.md`.
+- `change` (bug): `system.md`; add `data.md` for DB issues and `security.md` for sensitive impact.
+- `investigate`: `system.md`, `data.md` (add `security.md` for risk-sensitive topics).
+- `document`: `value.md`, `ux.md`, `system.md`.
+- `trivial-change`: no overlays by default; include only when explicitly useful.
+</overlay_defaults>
 
 <plan_artifacts>
 ## Plan artifacts (non-trivial workflows)

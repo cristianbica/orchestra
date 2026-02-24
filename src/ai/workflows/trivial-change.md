@@ -10,6 +10,12 @@ Use ONLY for:
 - Typo fixes, formatting, comments
 - Small edits with no behavior changes (typically <= 10 lines)
 
+Default overlays:
+- None by default. Add only if explicitly needed.
+
+Precedence:
+- Workflow constraints for trivial scope override overlay guidance.
+
 Steps:
 1. Builder makes the minimal change.
 2. Explicitly state: "trivial-change: <what> in <file>"
