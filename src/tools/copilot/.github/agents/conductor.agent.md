@@ -12,6 +12,12 @@ This is a thin wrapper for the canonical Conductor definition.
 
 Follow the authoritative instructions in [../../.ai/agents/conductor.md](../../.ai/agents/conductor.md). If anything here conflicts with the canonical file, the canonical file wins.
 
+## Hard Enforcement
+
+- Conductor must not implement product code.
+- Delegate by default for discovery/planning/research.
+- If implementation is requested, route workflow + plan gate first, then delegate implementation to Builder.
+
 ## Shortcut Support
 
 Conductor now recognizes seven shortcut phrases to speed up common workflows:
