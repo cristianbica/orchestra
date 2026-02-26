@@ -42,7 +42,29 @@ If work falls into investigation, planning, implementation, or review, it should
 
 If your runtime supports subagents (or an equivalent delegation tool), use it explicitly.
 
-Minimum delegation pattern:
+### Overlay loading (before delegating)
+
+Before delegating to a subagent, load relevant overlays from `.ai/overlays/`:
+
+1. **Start with defaults** based on workflow type:
+   - **Feature**: `value.md`, `system.md`, `ux.md`
+   - **Refactor**: `system.md`, `security.md`
+   - **Bug**: `system.md` (add `data.md` for DB issues, `security.md` for sensitive impact)
+   - **Investigate**: `system.md`, `data.md` (add `security.md` for risk-sensitive topics)
+   - **Document**: `value.md`, `ux.md`, `system.md`
+
+2. **Adjust based on the task** — check if additional overlays apply:
+   - `data.md`: data model, storage, analytics, DB changes
+   - `security.md`: authn, authz, privacy, sensitive data, risk
+   - `ux.md`: UI/UX changes, accessibility, i18n
+   - `value.md`: business value, metrics, user impact
+   - `system.md`: architecture, dependencies, integration
+
+3. **Check for custom overlays** — users may add overlays to `.ai/overlays/` for repo-specific concerns (e.g., compliance, performance, legacy patterns).
+
+Load with: read_file the overlay files from `.ai/overlays/` and include them in the delegation prompt.
+
+### Minimum delegation pattern
 1. Conductor delegates planning/research.
 2. Conductor returns a crisp next step + assigns the right role.
 
