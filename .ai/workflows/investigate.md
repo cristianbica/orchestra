@@ -24,7 +24,7 @@ Steps:
 1. Conductor routes to Planner.
 2. Planner performs a timeboxed investigation.
 3. Planner produces an **investigation report** (file or inline):
-   - Default: `.ai/plans/<YYYY-MM-DD>-<slug>.md`
+   - Default: `.ai/plans/<YYYY-MM-DD>-<INDEX>-<slug>.md`
    - Inline allowed only when short (<= 25 non-empty lines) and user prefers inline.
 4. Promotion rule:
    - If implementation is the next step, stop after the report and recommend the `change` workflow.
@@ -32,7 +32,7 @@ Steps:
 5. Conductor confirms the recommended handoff and routes to the next workflow (`change` | `document`).
 
 Outputs:
-- Investigation report: `.ai/plans/<YYYY-MM-DD>-<slug>.md` (preferred)
+- Investigation report: `.ai/plans/<YYYY-MM-DD>-<INDEX>-<slug>.md` (preferred)
 - Clear recommendation + handoff to next workflow.
 
 Done criteria:

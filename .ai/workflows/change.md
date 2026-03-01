@@ -34,7 +34,7 @@ Steps:
 7. Closeout: explicitly state `doc impact` and `memory impact`.
 
 Outputs:
-- Plan: inline in-chat OR `.ai/plans/<YYYY-MM-DD>-<slug>.md`
+- Plan: inline in-chat OR `.ai/plans/<YYYY-MM-DD>-<INDEX>-<slug>.md`
 - Updated docs when behavior/conventions changed.
 
 Done criteria:

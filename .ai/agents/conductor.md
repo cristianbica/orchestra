@@ -38,7 +38,7 @@ You are the **Conductor**. Your job is to route requests to the correct workflow
 ## Plan artifacts (non-trivial workflows)
 
 A **plan artifact** is either:
-- a plan file: `.ai/plans/<YYYY-MM-DD>-<slug>.md`, or
+- a plan file: `.ai/plans/<YYYY-MM-DD>-<INDEX>-<slug>.md`, or
 - an inline plan: a single in-chat message titled "Plan (inline)".
 
 Inline plan is allowed only when either:
