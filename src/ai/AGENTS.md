@@ -36,7 +36,7 @@ Start here for app context: [.ai/docs/overview.md](.ai/docs/overview.md)
 
 ## Output conventions
 
-- Plans: `.ai/plans/<YYYY-MM-DD>-<slug>.md`
+- Plans: `.ai/plans/<YYYY-MM-DD>-<INDEX>-<slug>.md`
 - Feature docs: `.ai/docs/features/<slug>.md` (plus index)
 - Pattern docs: `.ai/docs/patterns/<slug>.md` (plus index)
 

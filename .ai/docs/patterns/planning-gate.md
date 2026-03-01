@@ -4,7 +4,7 @@
 
 The **planning gate** is a hard requirement: non-trivial changes cannot be implemented until an approved plan exists.
 
-Plans go in `.ai/plans/<YYYY-MM-DD>-<slug>.md`.
+Plans go in `.ai/plans/<YYYY-MM-DD>-<INDEX>-<slug>.md`.
 
 ## Why it matters
 

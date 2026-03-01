@@ -9,4 +9,4 @@ This is a thin wrapper for the canonical Planner definition.
 2. Follow it as the source of truth.
 3. If anything in this wrapper conflicts with `.ai/agents/planner.md`, the canonical file wins.
 
-Output: a plan in `.ai/plans/<YYYY-MM-DD>-<slug>.md` using the repo’s plan template.
+Output: a plan in `.ai/plans/<YYYY-MM-DD>-<INDEX>-<slug>.md` using the repo’s plan template.
