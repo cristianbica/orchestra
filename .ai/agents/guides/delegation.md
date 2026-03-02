@@ -18,6 +18,15 @@ Delegation reduces context thrash, keeps roles clean, and makes it less likely t
 
 Default decision policy: if it is unclear whether to delegate or proceed inline, delegate.
 
+## Forger carve-out (explicit opt-in)
+
+`Forger` is a special, additive mode for single-agent execution.
+
+- Use `Forger` only when the user explicitly requests Forger/single-agent mode.
+- In Forger mode, do not subdelegate; execute phases in one thread with explicit mode switches.
+- Plan approval gates remain unchanged: non-trivial implementation still requires an explicitly approved plan.
+- If Forger is not explicitly selected, use normal delegation (Planner/Builder/Validator) defaults.
+
 ## When to delegate (triggers)
 
 Delegate when any of these are true:

@@ -27,7 +27,9 @@ Steps:
 2. Planner performs focused discovery and produces a plan artifact (file or inline).
 	- Inline plan allowed only if (a) short (<= 25 non-empty lines), or (b) user explicitly requests with: “no plan file” or “don’t write a plan file”.
 3. Approval gate: do not implement until the plan artifact is explicitly approved.
-4. Builder implements the approved plan.
+4. Implementation path:
+	- Default: Builder implements the approved plan.
+	- Opt-in: if user explicitly selected `Forger`, Forger implements in single-agent non-delegating mode.
 4a. Feedback handling (user feedback == validator findings): if user feedback arrives after plan approval, treat it as adjustment work under the same approved plan unless scope changes materially.
 5. Verification: run the most relevant checks and report what was run.
 6. Validator validates plan adherence and gates; updates docs/memory as needed.
