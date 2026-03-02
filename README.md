@@ -1,60 +1,60 @@
-# AI Docs + Agents Template
+# Orchestra: AI Docs + Agents Template
 
-## What's this about
+## What Orchestra is
 
-This repo is a copy-paste **template** for running AI-assisted development with clear roles, repeatable workflows, and a hard planning gate.
+Orchestra is a copy-paste operating model for AI-assisted development, built around overlays, workflows, and role-based execution.
 
-It’s designed to help you build and maintain shared project context over time via:
+It helps teams build and maintain project documentation so agents work with stronger context, follow clear workflows with explicit boundaries, and use overlays for specialization when domain needs differ.
 
-- `.ai/docs/` (overview + feature docs)
-- `.ai/docs/patterns/` (architecture/convention decisions)
+In practice, Orchestra gives your repo:
 
-It includes:
+- Canonical project context in `.ai/` (docs, patterns, plans, overlays, memory)
+- Role-based execution (`Conductor`, `Planner`, `Builder`, `Validator`, optional `Forger`)
+- Repeatable workflows with gates (`change`, `investigate`, `document`, `trivial-change`, `guided`)
+- A hard plan/approval gate for non-trivial changes
 
-- 6 agent roles (Conductor, Researcher, Architect, Builder, Inspector, Archivist)
-- 6 workflows (`document`, `investigate`, `implement-feature`, `fix-bug`, `refactor`, `trivial-change`)
-- A canonical `.ai/` folder layout for plans, docs, patterns, and agent guides
-- Optional tool wrappers you can drop into your repo (VS Code Copilot, Claude Code, OpenCode, Codex)
+## Agents
 
-For the full operating guide, start with [.ai/HUMANS.md](.ai/HUMANS.md).
+| Agent | Directive |
+| --- | --- |
+| `Conductor` | Route requests to the right workflow, enforce gates, and coordinate delegation. |
+| `Planner` | Investigate quickly and produce evidence-backed executable plans. |
+| `Builder` | Implement approved plans with minimal, safe, scoped changes. |
+| `Validator` | Validate correctness, plan adherence, and docs/memory hygiene. |
+| `Forger` (opt-in) | Run the full flow in one agent thread with explicit phase boundaries. |
 
-## Examples
+## Workflows
 
-### Implement a feature (plan gate enforced)
+| Workflow | Description |
+| --- | --- |
+| `change` | Feature/bug/refactor workflow with planning + explicit approval gate. |
+| `investigate` | Timeboxed investigation to reduce uncertainty and recommend next workflow. |
+| `document` | Create or refresh `.ai/docs/` from current source of truth. |
+| `trivial-change` | Tiny no-behavior edits (typos/formatting/docs wording), no plan required. |
+| `guided` | Hand-held wrapper that keeps normal workflow gates intact. |
 
-```
-User: Conductor implement feature: add a dark mode toggle
+Note: you can define your own workflows for your repo when the defaults are not enough.
 
-Conductor: asks 1–3 intake questions
-Architect: writes a plan in .ai/plans/
-User: explicitly approves the plan
-Builder: implements ONLY the approved plan
-Inspector: reviews for correctness + plan adherence
-Archivist: updates docs/memory as needed
-```
+## Overlays
 
-### Fix a bug
+Overlays let you specialize agent guidance for your architecture, product domain, and risk profile without changing core workflows; they keep decisions contextual while preserving shared gates and consistency. Current overlays: `value.md`, `ux.md`, `system.md`, `data.md`, `security.md`. You can also define your own overlays for your repo.
 
-```
-User: Conductor fix bug: API returns stale cached data
+## Conductor vs Forger
 
-Conductor: intake questions (expected vs actual, repro, evidence)
-Architect: writes a fix plan
-Builder: implements the fix
-Inspector: verifies the change matches the plan
-```
+Use `Conductor` by default for larger or more involved tasks. Delegation keeps context focused per phase, improves gate discipline, and reduces context saturation that can increase hallucination risk.
 
-## How to install
+Use `Forger` when you explicitly want faster single-agent execution for tightly scoped work. This can be quicker, but long or complex tasks can fill context faster and increase risk of drift.
 
-This template installs into an existing repo by copying `.ai/` plus a root `AGENTS.md`, and (optionally) a tool-specific wrapper.
+## Quick start
 
-### Install from GitHub
-
-Run this from your target repository root:
+### Install Orchestra into your repository root:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/refs/heads/master/install.sh | sh
 ```
+
+<details>
+<summary>Other install options</summary>
 
 Install from a specific branch/tag/SHA:
 
@@ -62,7 +62,7 @@ Install from a specific branch/tag/SHA:
 curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/refs/heads/next/install.sh | REF=next sh
 ```
 
-To include a tool wrapper during install:
+Include a tool wrapper during install:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/refs/heads/master/install.sh | sh -s -- copilot
@@ -71,9 +71,7 @@ curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/refs/heads/m
 curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/refs/heads/master/install.sh | sh -s -- codex
 ```
 
-### Manual copy (no script)
-
-From your target repository root:
+Manual copy (no script), from your target repository root:
 
 ```sh
 mkdir -p .ai
@@ -87,19 +85,54 @@ cp -R /path/to/orchestra/src/tools/opencode/. .
 cp -R /path/to/orchestra/src/tools/codex/. .
 ```
 
-### After install: bootstrap initial context
+</details>
 
-Once installed in your target repo, bootstrap the initial documentation/context:
+### Then bootstrap initial context:
 
 ```
 User: Conductor bootstrap this
 
-Outcome: your repo gets initial context seeded under .ai/docs/ (and patterns under .ai/docs/patterns/ as needed)
+Outcome: initial context is seeded under .ai/docs/ (and patterns under .ai/docs/patterns/ as needed)
+```
+
+## Examples
+
+### Implement a feature (plan gate enforced)
+
+```
+User: Conductor change: feature add a dark mode toggle
+
+Conductor: asks 1–3 intake questions
+Planner: writes a plan in .ai/plans/
+User: explicitly approves the plan
+Builder: implements ONLY the approved plan
+Validator: reviews for correctness + plan adherence and updates docs/memory as needed
+```
+
+### Fix a bug
+
+```
+User: Conductor fix bug: API returns stale cached data
+
+Conductor: intake questions (expected vs actual, repro, evidence)
+Planner: writes a fix plan
+Builder: implements the fix
+Validator: verifies the change matches the plan
+```
+
+### Trivial change (no plan required)
+
+```
+User: Conductor trivial-change: fix typos in docs
+
+Conductor: confirms wording-only scope
+Builder: applies minimal doc edit
+Validator: quick spot-check
 ```
 
 ## Contributing
 
-- Follow the same process the template enforces: non-trivial changes should have a plan in `.ai/plans/` and explicit approval.
+- Follow the same process Orchestra enforces: non-trivial changes require a plan in `.ai/plans/` and explicit approval before implementation.
 - Keep docs high-signal: update `.ai/docs/` when behavior or conventions change.
 - Keep memory durable: add only long-lived conventions to `.ai/MEMORY.md`.
 
