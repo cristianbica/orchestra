@@ -10,7 +10,7 @@ The `.ai/` system defines several reusable patterns and conventions for AI-assis
 
 | Pattern | Purpose | Examples |
 |---------|---------|----------|
-| **Workflow routing** | Conductor uses intake questions to route to correct workflow | document, investigate, change, trivial-change |
+| **Workflow routing** | Conductor uses intake questions to route to correct workflow | document, investigate, change, trivial-change, guided |
 | **Agent isolation** | Each agent has NEVER/ALWAYS rules to prevent overreach | Planner (planning only) ≠ Builder (implementation only) |
 | **Planning gate** | Plans must exist in `.ai/plans/` and be approved before implementation | All non-trivial workflows require this |
 | **Verified commands** | Commands must be tested before documented | `.ai/MEMORY.md` holds verified commands |
@@ -25,4 +25,5 @@ The `.ai/` system defines several reusable patterns and conventions for AI-assis
 - [planning-gate.md](planning-gate.md) — Why plans are required and how they work
 - [discovery-first.md](discovery-first.md) — How discovery informs planning and implementation
 - [architecture.md](architecture.md) — Template layout and installation architecture
+- [i18n.md](i18n.md) — String and localization hygiene conventions
 - [testing.md](testing.md) — Verification-first workflow pattern

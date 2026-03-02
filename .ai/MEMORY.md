@@ -12,7 +12,8 @@ This is a template distribution repo. No traditional build/test/lint commands ap
 
 ## Conventions
 
-- **Workflow names**: current set is `document`, `investigate`, `change`, `trivial-change`
+- **Primary workflows**: `document`, `investigate`, `change`, `trivial-change`
+- **Workflow wrapper**: `guided` (step-by-step wrapper over target workflows)
 - **Plan files**: `.ai/plans/<YYYY-MM-DD>-<INDEX>-<slug>.md` (dated, index-ordered, descriptive slug)
 - **Doc files**: `.ai/docs/{overview,features,patterns,templates}/`
 - **Agent roles**: Conductor, Planner, Builder, Validator (strict boundaries)
@@ -48,7 +49,7 @@ This is a template distribution repo. No traditional build/test/lint commands ap
 **Key directories**:
 - `.ai/agents/` — Conductor, Planner, Builder, Validator definitions
 - `.ai/agents/guides/` — delegation, context-management principles
-- `.ai/workflows/` — document, investigate, change, trivial-change
+- `.ai/workflows/` — document, investigate, change, trivial-change, guided
 - `.ai/plans/` — Planning templates (01-bootstrap.md, 02-refresh-context.md)
 - `.ai/docs/` — Framework documentation (overview, features, patterns)
   - **In user repos**: Customize these docs to describe YOUR app

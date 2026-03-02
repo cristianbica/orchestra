@@ -2,14 +2,15 @@
 
 ## What it is
 
-Four specialized workflows drive development in the `.ai/` system, each designed for a specific type of task:
+The `.ai/` system uses four primary workflows plus a guided wrapper:
 
 | Workflow | When to use | Approver required? | Planning required? |
 |----------|-------------|-------------------|--------------------|
-| **document** | Create/refresh `.ai/docs/**` | No | Yes (bootstrap/refresh) |
-| **change** | Implement `feature`, `bug`, or `refactor` work | Yes (plan approval) | Yes |
-| **investigate** | Reduce uncertainty and produce a recommendation/report | No (unless promoted to `change`) | Yes |
-| **trivial-change** | Typos, formatting only | No | No |
+| **document** (primary) | Create/refresh `.ai/docs/**` | No | Yes (bootstrap/refresh) |
+| **change** (primary) | Implement `feature`, `bug`, or `refactor` work | Yes (plan approval) | Yes |
+| **investigate** (primary) | Reduce uncertainty and produce a recommendation/report | No (unless promoted to implementation workflow) | Yes |
+| **trivial-change** (primary) | Typos, formatting only | No | No |
+| **guided** (wrapper) | Run a target workflow step-by-step with user confirmation | Follows target workflow gates | Follows target workflow rules |
 
 ## Intake & gates
 
@@ -39,4 +40,5 @@ Each non-trivial workflow follows this pattern:
 - [src/ai/workflows/document.md](../../../src/ai/workflows/document.md) — Full workflow definition
 - [src/ai/workflows/change.md](../../../src/ai/workflows/change.md) — Feature/bug/refactor workflow
 - [src/ai/workflows/investigate.md](../../../src/ai/workflows/investigate.md) — Investigation workflow
+- [src/ai/workflows/guided.md](../../../src/ai/workflows/guided.md) — Hand-held wrapper over target workflows
 - [src/ai/plans/01-bootstrap.md](../../../src/ai/plans/01-bootstrap.md) — Initial setup plan (4-phase discovery & documentation)

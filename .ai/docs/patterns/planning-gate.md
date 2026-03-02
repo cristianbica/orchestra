@@ -24,7 +24,7 @@ With a plan:
 
 1. **User** requests a change (e.g., "change workflow: feature")
 2. **Conductor** routes to Planner
-3. **Planner** writes `.ai/plans/<date>-<slug>.md` (planning only, no implementation)
+3. **Planner** writes `.ai/plans/<YYYY-MM-DD>-<INDEX>-<slug>.md` (planning only, no implementation)
 4. **User** reads and explicitly approves the plan
 5. **Builder** implements ONLY the approved plan
 6. **Verification** and **Validator** close out the task

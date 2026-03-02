@@ -6,7 +6,8 @@
 
 This is the **canonical template for AI-assisted development workflows**. It provides:
 - A multi-agent system (4 roles: Conductor, Planner, Builder, Validator)
-- Four structured workflows for common development tasks
+- Four primary workflows plus a guided wrapper for step-by-step execution
+- A built-in overlay system (`value`, `system`, `ux`, `data`, `security`) to shape planning and delegation
 - Reusable documentation templates and agent guides
 - Tool-specific wrappers (GitHub Copilot, Claude Code, OpenCode, Codex)
 - An installation system to bootstrap `.ai/` dirs in target repositories
@@ -34,7 +35,7 @@ Designed for teams building with AI agents, this system enforces planning gates,
   - `src/ai/docs/` serves as a template; user repos copy it and customize for their app
 - **Local mirror**: `.ai/` (this repo only) — a working copy used to exercise the workflows
 - **Agent definitions**: [src/ai/agents/](../../src/ai/agents/) — Conductor, Planner, Builder, Validator
-- **Workflow definitions**: [src/ai/workflows/](../../src/ai/workflows/) — document, investigate, change, trivial-change
+- **Workflow definitions**: [src/ai/workflows/](../../src/ai/workflows/) — document, investigate, change, trivial-change, guided
 - **Documentation templates**: [src/ai/docs/](../../src/ai/docs/) — overview, features, patterns
 - **Bootstrap plan**: [src/ai/plans/01-bootstrap.md](../../src/ai/plans/01-bootstrap.md) — initial setup for target repos
 - **Installation script**: [install.sh](../../install.sh) — distributes `.ai/` and tool wrappers to target repos
