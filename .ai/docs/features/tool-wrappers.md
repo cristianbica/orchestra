@@ -6,10 +6,10 @@ The repo includes optional wrappers that tailor Orchestra instructions to specif
 
 ## Available wrappers
 
-- **VS Code Copilot**: [src/tools/vscode-copilot/](../../src/tools/vscode-copilot/) - `.github/` wrapper content
-- **Claude Code**: [src/tools/claude-code/](../../src/tools/claude-code/) - `.claude/` wrapper content
-- **OpenCode**: [src/tools/opencode/](../../src/tools/opencode/) - `.opencode/` wrapper content
-- **Codex**: [src/tools/codex/](../../src/tools/codex/) - `.codex/` wrapper content
+- **Copilot**: [src/tools/copilot/](../../../src/tools/copilot/) - `.github/` wrapper content
+- **Claude Code**: [src/tools/claude-code/](../../../src/tools/claude-code/) - `.claude/` wrapper content
+- **OpenCode**: [src/tools/opencode/](../../../src/tools/opencode/) - `.opencode/` wrapper content
+- **Codex**: [src/tools/codex/](../../../src/tools/codex/) - `.codex/` wrapper content
 
 ## Installation behavior
 

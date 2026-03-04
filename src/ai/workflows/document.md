@@ -14,14 +14,20 @@ Purpose:
 - For first-time setup, execute `.ai/plans/01-bootstrap.md` (copy it to your repo first).
 - For major refresh or migration, execute `.ai/plans/02-refresh-context.md`.
 
+Default overlays:
+- `value.md` + `ux.md` + `system.md`
+
+Precedence:
+- Workflow gates and approved plans override overlay guidance.
+
 Steps:
-1. Archivist scans the codebase.
+1. Validator scans the codebase.
 2. Update app overview: `.ai/docs/overview.md` (what the app does, tech stack, repo landmarks).
 3. Update feature index: `.ai/docs/features/README.md`.
 4. Create/update feature pages (for example: `.ai/docs/features/<slug>.md`).
 5. Update pattern index: `.ai/docs/patterns/README.md`.
 6. Update core pattern docs (i18n/testing/architecture) as discovered.
-6a. Feedback handling (user feedback == Inspector findings): if the user provides feedback at any time during or after this workflow run, treat it like reviewer findings and implement it as an adjustment pass within the same workflow run. Never create a new plan unless the user explicitly asks.
+6a. Feedback handling (user feedback == Validator findings): if the user provides feedback at any time during or after this workflow run, treat it like validator findings and implement it as an adjustment pass within the same workflow run. Never create a new plan unless the user explicitly asks.
 7. Add durable discoveries to `.ai/MEMORY.md`.
 
 Outputs:

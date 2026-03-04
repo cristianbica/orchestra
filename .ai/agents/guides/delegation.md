@@ -7,11 +7,25 @@ This guide helps prevent “doing everything in one thread” by making delegati
 Conductor should **delegate by default** for discovery, research, and planning.
 Conductor’s main job is to mediate between the user and agents, not to execute specialist work inline.
 
+Conductor must never implement product code, even when the user asks for immediate implementation.
+If a user request includes implementation language ("implement", "patch", "write code", "just do it"), Conductor routes to the correct workflow and delegates to Builder only after required plan approval.
+
 Do docs-first triage (`.ai/docs/overview.md` → docs indexes → `.ai/MEMORY.md`), then delegate targeted discovery instead of running repo-wide investigation inline.
 
 When working on a plan, never create a new plan unless the user explicitly asks.
 
 Delegation reduces context thrash, keeps roles clean, and makes it less likely to forget gates (plan approval, verification, doc/memory hygiene).
+
+Default decision policy: if it is unclear whether to delegate or proceed inline, delegate.
+
+## Forger carve-out (explicit opt-in)
+
+`Forger` is a special, additive mode for single-agent execution.
+
+- Use `Forger` only when the user explicitly requests Forger/single-agent mode.
+- In Forger mode, do not subdelegate; execute phases in one thread with explicit mode switches.
+- Plan approval gates remain unchanged: non-trivial implementation still requires an explicitly approved plan.
+- If Forger is not explicitly selected, use normal delegation (Planner/Builder/Validator) defaults.
 
 ## When to delegate (triggers)
 
@@ -28,15 +42,15 @@ Don’t delegate when:
 - You already have the exact file + approach and only need to apply it.
 - No broad search is required beyond quick docs-first checks.
 
+Even in "don’t delegate" cases, Conductor still must not implement product code; delegate implementation to Builder.
+
 ## Role mapping
 
 Within this repo’s framework:
 - Conductor: orchestrates + enforces gates (no product code)
-- Researcher: investigation/discovery only (evidence, feature maps, options, root-cause hypotheses)
-- Architect: planning only
+- Planner: investigation + planning (evidence, options, executable plan)
 - Builder: implementation only (after plan approval)
-- Inspector: review only
-- Archivist: docs + memory hygiene
+- Validator: review + docs/memory hygiene
 
 If work falls into investigation, planning, implementation, or review, it should be assigned to the corresponding specialist role.
 
@@ -44,20 +58,42 @@ If work falls into investigation, planning, implementation, or review, it should
 
 If your runtime supports subagents (or an equivalent delegation tool), use it explicitly.
 
-Minimum delegation pattern:
+### Overlay loading (before delegating)
+
+Before delegating to a subagent, load relevant overlays from `.ai/overlays/`:
+
+1. **Start with defaults** based on workflow type:
+   - **Feature**: `value.md`, `system.md`, `ux.md`
+   - **Refactor**: `system.md`, `security.md`
+   - **Bug**: `system.md` (add `data.md` for DB issues, `security.md` for sensitive impact)
+   - **Investigate**: `system.md`, `data.md` (add `security.md` for risk-sensitive topics)
+   - **Document**: `value.md`, `ux.md`, `system.md`
+
+2. **Adjust based on the task** — check if additional overlays apply:
+   - `data.md`: data model, storage, analytics, DB changes
+   - `security.md`: authn, authz, privacy, sensitive data, risk
+   - `ux.md`: UI/UX changes, accessibility, i18n
+   - `value.md`: business value, metrics, user impact
+   - `system.md`: architecture, dependencies, integration
+
+3. **Check for custom overlays** — users may add overlays to `.ai/overlays/` for repo-specific concerns (e.g., compliance, performance, legacy patterns).
+
+Load with: read_file the overlay files from `.ai/overlays/` and include them in the delegation prompt.
+
+### Minimum delegation pattern
 1. Conductor delegates planning/research.
 2. Conductor returns a crisp next step + assigns the right role.
 
 ### Copy/paste prompt patterns
 
 - Planning:
-  - “Use a planning subagent to produce a scannable plan with assumptions + verification.”
+  - “Use a planner subagent to investigate briefly, then produce a scannable plan with assumptions + verification.”
 
 - Repo discovery:
   - “Use a subagent to locate the relevant files/entry points and summarize findings.”
 
 - Review:
-  - “Use a review subagent to check plan adherence + doc/memory gates.”
+  - “Use a validator subagent to check plan adherence + doc/memory gates and apply required docs updates.”
 
 ## If subagents are unavailable
 

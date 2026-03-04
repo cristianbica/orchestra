@@ -17,12 +17,14 @@ The `.ai/` template provides structured workflows and roles for AI-assisted deve
 | **Verified commands** | Commands are tested before documented in memory |
 | **Memory curation** | Only durable, reusable facts stored (keep <200 lines) |
 | **Invariant enforcement** | Hard rules (NEVER, ALWAYS) prevent common mistakes |
+| **Overlays** | Reusable guidance layers (`value`, `system`, `ux`, `data`, `security`) for workflow/delegation context |
 | **Template installation** | `install.sh` copies the template into target repos |
 | **Tool wrappers** | Optional wrappers for Copilot, Claude Code, OpenCode, Codex |
 
 ## Feature pages
 
-- [workflows.md](workflows.md) — 5 structured workflows for different task types
-- [implement-feature.md](implement-feature.md) — New feature workflow with planning & approval gates
+- [workflows.md](workflows.md) — Current workflow set and gate behavior
+- [implement-feature.md](implement-feature.md) — `change` workflow usage for feature/bug/refactor work
+- [overlays.md](overlays.md) — Overlay set, default combinations, and precedence
 - [installation.md](installation.md) — How the template is distributed into target repos
 - [tool-wrappers.md](tool-wrappers.md) — Tool-specific wrapper templates bundled with the repo

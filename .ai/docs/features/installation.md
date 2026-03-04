@@ -17,5 +17,5 @@ If a tool name is passed, the script also copies the corresponding wrapper from 
 
 ## See also
 
-- [install.sh](../../install.sh) - Installer script
+- [install.sh](../../../install.sh) - Installer script
 - [tool-wrappers.md](tool-wrappers.md) - Wrapper templates included in this repo

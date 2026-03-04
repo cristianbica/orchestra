@@ -2,7 +2,7 @@
 
 ## What it is
 
-Orchestra treats verification as a required gate in every non-trivial workflow. The Builder runs the most relevant command available, and the Inspector checks that verification happened.
+Orchestra treats verification as a required gate in every non-trivial workflow. The Builder runs the most relevant command available, and the Validator checks that verification happened.
 
 ## How it shows up here
 
