@@ -7,7 +7,7 @@ It exists to keep changes predictable: shared context in `.ai/`, explicit workfl
 ## Core operating loop
 
 1. Start with `Conductor` and select a workflow.
-2. For non-trivial work, `Planner` creates a plan artifact in `.ai/plans/`.
+2. For non-trivial work, `Planner` creates a plan artifact (inline for short plans; `.ai/plans/` file for larger plans).
 3. Human explicitly approves the plan.
 4. `Builder` implements only approved scope (or `Forger` if explicitly selected).
 5. `Validator` checks correctness, plan adherence, and docs/memory hygiene.

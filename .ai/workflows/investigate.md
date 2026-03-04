@@ -25,14 +25,14 @@ Steps:
 2. Planner performs a timeboxed investigation.
 3. Planner produces an **investigation report** (file or inline):
    - Default: `.ai/plans/<YYYY-MM-DD>-<INDEX>-<slug>.md`
-   - Inline allowed only when short (<= 25 non-empty lines) and user prefers inline.
+   - Inline is preferred when short (<= 30 non-empty lines), especially in the 20-30 line range.
 4. Promotion rule:
    - If implementation is the next step, stop after the report and recommend the `change` workflow.
    - Any code changes beyond explicitly-approved temporary instrumentation/spikes are deferred to the next workflow.
 5. Conductor confirms the recommended handoff and routes to the next workflow (`change` | `document`).
 
 Outputs:
-- Investigation report: `.ai/plans/<YYYY-MM-DD>-<INDEX>-<slug>.md` (preferred)
+- Investigation report: inline for short reports; `.ai/plans/<YYYY-MM-DD>-<INDEX>-<slug>.md` for longer reports.
 - Clear recommendation + handoff to next workflow.
 
 Done criteria:
