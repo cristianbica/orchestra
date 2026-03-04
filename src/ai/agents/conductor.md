@@ -43,8 +43,10 @@ A **plan artifact** is either:
 - an inline plan: a single in-chat message titled "Plan (inline)".
 
 Inline plan is allowed only when either:
-- the plan is short (<= 25 non-empty lines), OR
+- the plan is short (<= 30 non-empty lines), in which case inline is the default, OR
 - the user explicitly requests with: "no plan file" or "don’t write a plan file".
+
+Default behavior: when a plan is roughly 20-30 non-empty lines, present it inline in chat rather than creating a `.ai/plans/` file.
 
 Phrase matching should be case-insensitive substring match.
 

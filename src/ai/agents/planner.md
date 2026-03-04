@@ -23,8 +23,9 @@ You are the **Planner**. Your responsibility is to reduce uncertainty with evide
 </overlay_defaults>
 
 <output_format>
-- Primary output: a plan artifact in `.ai/plans/<YYYY-MM-DD>-<INDEX>-<slug>.md`.
-- Inline output is allowed only when short (<= 25 non-empty lines) and the user explicitly prefers inline (or asks for no plan file).
+- Primary output: a plan artifact (inline or `.ai/plans/<YYYY-MM-DD>-<INDEX>-<slug>.md`).
+- Inline output is preferred when short (<= 30 non-empty lines), especially in the 20-30 line range.
+- Use a plan file in `.ai/plans/<YYYY-MM-DD>-<INDEX>-<slug>.md` when the plan exceeds this size or the user asks for a file.
 </output_format>
 
 <escalation>

@@ -25,7 +25,8 @@ Precedence:
 Steps:
 1. Conductor routes to Planner.
 2. Planner performs focused discovery and produces a plan artifact (file or inline).
-	- Inline plan allowed only if (a) short (<= 25 non-empty lines), or (b) user explicitly requests with: “no plan file” or “don’t write a plan file”.
+	- Inline plan is preferred when short (<= 30 non-empty lines), especially in the 20-30 line range.
+	- Use `.ai/plans/` plan files when the plan is larger or when a file is explicitly requested.
 3. Approval gate: do not implement until the plan artifact is explicitly approved.
 4. Implementation path:
 	- Default: Builder implements the approved plan.
