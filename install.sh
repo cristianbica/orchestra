@@ -119,6 +119,12 @@ for item in "$BLUEPRINT_SRC"/*; do
       fi
       cp -R "$item" "$AI_DIR/"
       ;;
+    RULES.md)
+      if [ -e "$dest" ]; then
+        continue
+      fi
+      cp -f "$item" "$AI_DIR/"
+      ;;
     *)
       if [ -d "$item" ]; then
         mkdir -p "$dest"
