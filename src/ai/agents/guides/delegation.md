@@ -18,6 +18,22 @@ Delegation reduces context thrash, keeps roles clean, and makes it less likely t
 
 Default decision policy: if it is unclear whether to delegate or proceed inline, delegate.
 
+## Routing tree
+
+Use this sequence to decide how far to push inline work before delegating:
+
+1. If the request is trivially local and the target file/entry point is already known, do the smallest inline search needed to confirm the spot.
+2. If the entry point is unclear, the work spans multiple files, or tradeoffs need to be compared, delegate to `Planner` for read-only investigation and a plan.
+3. If implementation is needed and the work is not `trivial-change`, do not start code changes until there is an explicitly approved plan artifact.
+4. If the work can be split into independent slices, delegate those slices in parallel, but keep each slice within the same workflow gate and ownership model.
+
+## Ownership handoffs
+
+- `Planner` plans after read-only exploration.
+- `Builder` implements only after approval.
+- `Validator` verifies with commands and checks the gates.
+- `Conductor` routes, coordinates, and preserves the boundary between workflow phases.
+
 ## Forger carve-out (explicit opt-in)
 
 `Forger` is a special, additive mode for single-agent execution.
@@ -79,6 +95,8 @@ Before delegating to a subagent, load relevant overlays from `.ai/overlays/`:
 3. **Check for custom overlays** — users may add overlays to `.ai/overlays/` for repo-specific concerns (e.g., compliance, performance, legacy patterns).
 
 Load with: read_file the overlay files from `.ai/overlays/` and include them in the delegation prompt.
+
+Overlays are supporting context only. They can shape analysis, but they never replace workflow gates, approval requirements, or role boundaries.
 
 ### Minimum delegation pattern
 1. Conductor delegates planning/research.

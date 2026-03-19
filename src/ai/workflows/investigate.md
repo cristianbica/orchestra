@@ -22,7 +22,7 @@ Precedence:
 
 Steps:
 1. Conductor routes to Planner.
-2. Planner performs a timeboxed investigation.
+2. Planner performs a timeboxed, read-only investigation and looks for existing code, patterns, and reusable utilities first.
 3. Planner produces an **investigation report** (file or inline):
    - Default: `.ai/plans/<YYYY-MM-DD>-<INDEX>-<slug>.md`
    - Inline is preferred when short (<= 30 non-empty lines), especially in the 20-30 line range.
@@ -59,6 +59,7 @@ Done criteria:
 - Files inspected:
 - Commands run:
 - Observations:
+- Reusable code/patterns considered first:
 
 4) **Findings**
 - How it works today (feature map summary, when relevant):
@@ -70,6 +71,8 @@ Done criteria:
 - Option B:
 - Option C (optional):
 - Recommendation + rationale:
+
+Keep lean-context when the investigation is narrow and self-contained: include only the files, commands, and observations needed to support the recommendation.
 
 6) **Handoff**
 - Next workflow: `change` | `document`

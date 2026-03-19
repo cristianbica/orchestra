@@ -14,6 +14,7 @@ Max ~200 lines. Prune oldest/least-used when full. One agent updates per session
 - Code style: ...
 - Built-in overlays: `value`, `system`, `ux`, `data`, `security`; workflow gates and approved plans override overlay guidance.
 - Forger is opt-in only and non-delegating; non-trivial work in Forger still requires explicit plan approval.
+- Planner plans are read-only, executable, and should name critical files, reusable patterns, and verification steps; Validator should verify adversarially with command-backed evidence.
 
 ## Invariants (non-negotiable)
 - ...

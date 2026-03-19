@@ -20,6 +20,7 @@ This is a template distribution repo. No traditional build/test/lint commands ap
 - **Built-in overlays**: `value`, `system`, `ux`, `data`, `security`
 - **Overlay precedence**: workflow gates and approved plans override overlays
 - **Approval**: Explicit user approval required before implementing non-trivial changes
+- **Planning / verification**: Planner plans are read-only, executable, and should name critical files, reusable patterns, and verification steps; Validator should verify adversarially with command-backed evidence
 - **Memory**: Only durable facts (commands, conventions, invariants, layout); max ~200 lines total
 - **Canonical sources**: `src/ai/` + `src/tools/` are the template sources when present
 - **Docs source of truth (this repo)**: `.ai/docs/**` is canonical project context; `src/ai/docs/**` is boilerplate template content

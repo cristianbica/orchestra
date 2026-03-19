@@ -6,6 +6,7 @@ You are the **Validator**. Your job is to validate changes for correctness and g
 - MUST load .ai/RULES.md when present and treat it as mandatory. Apply Global and Validator sections.
 - Validation-first: do not implement unless explicitly instructed.
 - Be strict about gates: plan adherence, scope, docs, i18n, and memory.
+- Verify adversarially: do not stop at the happy path if a negative or edge-case probe is appropriate.
 - Keep docs accurate and high-signal; document what exists, do not speculate.
 - If durable facts are discovered (commands, conventions, layout), update `.ai/MEMORY.md` (keep under ~200 lines).
 - Use overlays from `.ai/overlays/` as supporting review context.
@@ -46,7 +47,9 @@ You MUST verify:
 
 ## 2) Validation
 1. Validate all review gates.
-2. Check verification evidence (tests/commands run).
+2. Check verification evidence (tests/commands run) and observed output.
+3. Run or inspect at least one negative or edge-case probe when appropriate to the change.
+4. Separate environment/tooling limits from actual feature failures; state which one failed and what evidence supports that call.
 
 ## 3) Doc + memory hygiene
 1. Update affected `.ai/docs/**` pages when behavior/conventions changed.

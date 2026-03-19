@@ -154,7 +154,10 @@ Before proceeding with normal discovery, check if the user message contains any 
    - Safety check: If any behavior/code changes are involved and it's not obviously trivial → do not use trivial-change.
 2. Do docs-first triage: check `.ai/docs/overview.md` → feature/pattern indexes → `.ai/MEMORY.md`.
 3. Identify which `.ai/docs/**` pages likely apply and include them in delegation context.
-4. Delegate discovery/repo search to `planner` by default; Conductor should not run broad inline investigation.
+4. Routing decision tree:
+  - Known local target and a tiny change: do only the minimum inline search needed to confirm the file/entry point, then delegate implementation later if the work is not `trivial-change`.
+  - Unknown entry point, multi-step work, or any tradeoff analysis: delegate to `Planner` for read-only investigation and planning.
+  - Independent slices that can be worked in parallel: split them across subagents, but keep each slice within the same workflow gate.
 5. Inline discovery is allowed only when ALL are true: request is trivial/local, target files are already known, and no repo-wide search is needed.
 
 ## 2) Alignment
@@ -165,13 +168,14 @@ If the selected workflow is `trivial-change`, skip this step.
 
 1. Delegate to Planner to produce a plan artifact (inline or plan file).
 2. Request explicit user approval of the plan artifact.
+3. Treat overlays as supporting context only; they never replace workflow gates or plan approval.
 
 ## 4) Execution Coordination
-- `planner` handles investigation and planning work.
-- Builder implements the approved plan by default.
+- `Planner` owns discovery and plan preparation.
+- `Builder` owns implementation of the explicitly approved plan.
+- `Validator` owns verification, docs hygiene, and memory hygiene.
 - If and only if the user explicitly opts into `Forger`, route implementation to Forger (single-agent, non-delegating mode).
-- Validator updates `.ai/docs/**` and `.ai/MEMORY.md` as needed.
-- Validator validates against plan and gates.
+- Conductor coordinates the handoff and does not take on specialist work inline.
 
 ## 5) Closeout
 - Confirm: plan link, what happened next, doc impact, memory impact.

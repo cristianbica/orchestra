@@ -24,15 +24,17 @@ Precedence:
 
 Steps:
 1. Conductor routes to Planner.
-2. Planner performs focused discovery and produces a plan artifact (file or inline).
+2. Planner performs focused, read-only discovery and produces an executable plan artifact (file or inline).
 	- Inline plan is preferred when short (<= 30 non-empty lines), especially in the 20-30 line range.
 	- Use `.ai/plans/` plan files when the plan is larger or when a file is explicitly requested.
+	- The plan must call out the critical files, reusable functions/patterns to reuse first, and the verification steps.
+	- For small independent work units, use lean-context: keep the plan minimal but still executable.
 3. Approval gate: do not implement until the plan artifact is explicitly approved.
 4. Implementation path:
 	- Default: Builder implements the approved plan.
 	- Opt-in: if user explicitly selected `Forger`, Forger implements in single-agent non-delegating mode.
 4a. Feedback handling (user feedback == validator findings): if user feedback arrives after plan approval, treat it as adjustment work under the same approved plan unless scope changes materially.
-5. Verification: run the most relevant checks and report what was run.
+5. Verification: run the most relevant checks and report what was run. Prefer command-backed checks over code-reading-only confirmation.
 6. Validator validates plan adherence and gates; updates docs/memory as needed.
 7. Closeout: explicitly state `doc impact` and `memory impact`.
 
