@@ -10,8 +10,8 @@ Use ONLY for:
 - Typo fixes, formatting, comments
 - Small edits with no behavior changes (typically <= 10 lines)
 
-Default overlays:
-- None by default. Add only if explicitly needed.
+Overlay selection:
+- Conductor chooses overlays by following `.ai/agents/guides/delegation.md`; use `Active overlays: none` only with a brief reason when overlays are intentionally unnecessary.
 
 Precedence:
 - Workflow constraints for trivial scope override overlay guidance.

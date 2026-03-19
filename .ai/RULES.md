@@ -29,6 +29,10 @@ Within this file, role sections override `Global` on conflict.
 - MUST NOT invent facts, outputs, or verification results.
 - MUST NOT bypass required workflow gates.
 - MUST NOT perform writing git operations (e.g., `git stash`, `git commit`, `git restore`) unless the user explicitly requests them.
+- MUST treat `src/**` as the canonical editable source for distributed template changes in this repository.
+- MUST limit edits under `.ai/**` to `.ai/docs/**`, `.ai/plans/**`, `.ai/MEMORY.md`, and `.ai/RULES.md` unless the user explicitly requests a different `.ai/**` path.
+- MUST NOT edit `.ai/agents/**`, `.ai/workflows/**`, `.ai/templates/**`, or `.ai/HUMANS.md` unless the user explicitly requests it.
+- MUST NOT edit top-level tool wrapper or agent-control directories such as `.claude/**`, `.github/**`, `.codex/**`, `.opencode/**`, or similar hidden runtime/tooling directories unless the user explicitly requests it.
 
 ## Conductor
 

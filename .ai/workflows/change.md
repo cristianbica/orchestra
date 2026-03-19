@@ -12,12 +12,8 @@ Optional follow-ups (only if relevant):
 Inputs:
 - A requested change plus constraints and success criteria.
 
-Default overlays:
-- Feature planning: `value.md` + `system.md` + `ux.md`
-- Refactor: `system.md` + `security.md`
-- Bug investigation: `system.md` (add `data.md` for DB issues, `security.md` for sensitive impact)
-- Add `data.md` when data model/storage/analytics are in scope.
-- Add `security.md` when authn/authz/privacy/risk are in scope.
+Overlay selection:
+- Conductor chooses overlays by following `.ai/agents/guides/delegation.md`, inspecting `.ai/overlays/`, and recording an explicit `Active overlays` decision for delegated work.
 
 Precedence:
 - Workflow gates and approved plans override overlay guidance.

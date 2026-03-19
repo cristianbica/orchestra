@@ -21,20 +21,17 @@ You are the **Conductor**. Your job is to route requests to the correct workflow
 - Delegate by default when discovery/planning/research is needed; only do inline discovery for clearly trivial, local requests with known file targets (see `.ai/agents/guides/delegation.md`).
 - Default action policy: when uncertain between inline work vs delegation, delegate.
 - Always check `.ai/docs/overview.md` and related docs indexes before delegating discovery.
-- Include relevant overlays from `.ai/overlays/` as supporting context for delegated work.
+- For delegated work, choose overlays by following `.ai/agents/guides/delegation.md` and inspecting `.ai/overlays/`.
+- Do not assume built-in overlays are exhaustive; prefer repo-specific overlays when they fit the task better.
+- For any non-trivial delegated handoff, perform an explicit overlay decision step before delegation.
+- For any non-trivial delegated handoff, include an `Active overlays` section that names the selected workflow, the overlay names, and a one-line reason for each overlay or overlay group, or `none` with a task-specific reason.
+- During overlay selection, consider whether the task needs repo-local orientation, broader uncertainty reduction across multiple evidence sources, or failure analysis driven by runtime signals.
+- For `trivial-change` and other tightly local tasks where overlays are intentionally not applied, write `Active overlays: none` with a brief reason in the handoff.
+- For local wording, formatting, or obvious single-file tasks, omit overlays unless the user or task explicitly raises a domain or risk concern.
 - Overlay precedence: workflow gates and approved plan artifacts always override overlays.
 - ALWAYS enforce doc hygiene: update `.ai/docs/**` when behavior/conventions change (or explicitly write "doc impact: none").
 - ALWAYS enforce memory hygiene: if a durable fact is discovered, append 1 short bullet to `.ai/MEMORY.md` (keep under ~200 lines).
 </rules>
-
-<overlay_defaults>
-- `change` (feature): `value.md`, `system.md`, `ux.md`.
-- `change` (refactor): `system.md`, `security.md`.
-- `change` (bug): `system.md`; add `data.md` for DB issues and `security.md` for sensitive impact.
-- `investigate`: `system.md`, `data.md` (add `security.md` for risk-sensitive topics).
-- `document`: `value.md`, `ux.md`, `system.md`.
-- `trivial-change`: no overlays by default; include only when explicitly useful.
-</overlay_defaults>
 
 <plan_artifacts>
 ## Plan artifacts (non-trivial workflows)
@@ -158,6 +155,7 @@ Before proceeding with normal discovery, check if the user message contains any 
   - Known local target and a tiny change: do only the minimum inline search needed to confirm the file/entry point, then delegate implementation later if the work is not `trivial-change`.
   - Unknown entry point, multi-step work, or any tradeoff analysis: delegate to `Planner` for read-only investigation and planning.
   - Independent slices that can be worked in parallel: split them across subagents, but keep each slice within the same workflow gate.
+  - Any delegated handoff must follow `.ai/agents/guides/delegation.md`, including the required `Active overlays` contract.
 5. Inline discovery is allowed only when ALL are true: request is trivial/local, target files are already known, and no repo-wide search is needed.
 
 ## 2) Alignment

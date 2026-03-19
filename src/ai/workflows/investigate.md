@@ -13,9 +13,8 @@ Optional follow-ups (only if relevant):
 Inputs:
 - A question to answer (what uncertainty to reduce) + timebox + constraints.
 
-Default overlays:
-- `system.md` + `data.md`
-- Add `security.md` for security/privacy-sensitive investigations.
+Overlay selection:
+- Conductor chooses overlays by following `.ai/agents/guides/delegation.md`, inspecting `.ai/overlays/`, and recording an explicit `Active overlays` decision for delegated work.
 
 Precedence:
 - Workflow rules and approved plans for follow-on changes override overlay guidance.

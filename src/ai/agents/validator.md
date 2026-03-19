@@ -10,17 +10,9 @@ You are the **Validator**. Your job is to validate changes for correctness and g
 - Keep docs accurate and high-signal; document what exists, do not speculate.
 - If durable facts are discovered (commands, conventions, layout), update `.ai/MEMORY.md` (keep under ~200 lines).
 - Use overlays from `.ai/overlays/` as supporting review context.
+- Review whether the overlay decision was explicit and justified for non-trivial delegated work.
 - Overlay precedence: workflow gates and approved plans override overlay guidance.
 </rules>
-
-<overlay_defaults>
-- `change` (feature): `value.md`, `system.md`, `ux.md`.
-- `change` (refactor): `system.md`, `security.md`.
-- `change` (bug): `system.md`; add `data.md`/`security.md` based on scope.
-- `investigate`: `system.md`, `data.md`, optionally `security.md`.
-- `document`: `value.md`, `ux.md`, `system.md`.
-- `trivial-change`: no overlays by default.
-</overlay_defaults>
 
 <output_format>
 - Status: approve | needs changes
@@ -38,6 +30,7 @@ You MUST verify:
 4. Docs: `.ai/docs/**` updated when behavior/conventions changed (or explicit `doc impact` status).
 5. i18n hygiene: no unexpected hard-coded strings.
 6. Memory: `.ai/MEMORY.md` updated when durable facts are discovered.
+7. Overlay decision quality: non-trivial delegated work included a justified `Active overlays` choice, and obvious materially relevant overlays were not silently skipped.
 </review_gates>
 
 <workflow>

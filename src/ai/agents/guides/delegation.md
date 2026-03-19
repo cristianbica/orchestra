@@ -76,27 +76,46 @@ If your runtime supports subagents (or an equivalent delegation tool), use it ex
 
 ### Overlay loading (before delegating)
 
-Before delegating to a subagent, load relevant overlays from `.ai/overlays/`:
+Before delegating to a subagent, make an explicit overlay decision and load any selected overlays from `.ai/overlays/`:
 
-1. **Start with defaults** based on workflow type:
-   - **Feature**: `value.md`, `system.md`, `ux.md`
-   - **Refactor**: `system.md`, `security.md`
-   - **Bug**: `system.md` (add `data.md` for DB issues, `security.md` for sensitive impact)
-   - **Investigate**: `system.md`, `data.md` (add `security.md` for risk-sensitive topics)
-   - **Document**: `value.md`, `ux.md`, `system.md`
+1. **Inspect what exists** in `.ai/overlays/` before choosing anything. This is required for non-trivial delegated handoffs. Do not assume the built-in overlays are exhaustive.
 
-2. **Adjust based on the task** — check if additional overlays apply:
-   - `data.md`: data model, storage, analytics, DB changes
-   - `security.md`: authn, authz, privacy, sensitive data, risk
-   - `ux.md`: UI/UX changes, accessibility, i18n
-   - `value.md`: business value, metrics, user impact
-   - `system.md`: architecture, dependencies, integration
+2. **Choose by material fit** based on the workflow, task, plan, and repo context:
+  - start with the smallest set that clearly matters;
+  - prefer repo-specific overlays when they fit better than general-purpose ones;
+  - consider whether the task mainly needs repo-local orientation, broader uncertainty reduction across multiple evidence sources, or failure analysis grounded in runtime signals;
+  - skip overlays that do not change the work or review criteria in a meaningful way.
 
-3. **Check for custom overlays** — users may add overlays to `.ai/overlays/` for repo-specific concerns (e.g., compliance, performance, legacy patterns).
+3. **Check for custom overlays** — users may add overlays to `.ai/overlays/` for repo-specific concerns, constraints, or patterns.
 
-Load with: read_file the overlay files from `.ai/overlays/` and include them in the delegation prompt.
+Load with: read_file the selected overlay files from `.ai/overlays/` and include them in the delegation prompt.
+
+Only include overlays that materially apply. If you cannot explain why an overlay matters in one line, do not include it.
+
+For non-trivial delegated work, `Active overlays` must never be omitted. You must either:
+- name one or more overlays with one-line reasons, or
+- write `Active overlays: none` with a task-specific reason why no overlay materially changes the work.
 
 Overlays are supporting context only. They can shape analysis, but they never replace workflow gates, approval requirements, or role boundaries.
+
+### Required handoff contract
+
+For any non-trivial delegated handoff, include this structure near the top of the prompt:
+
+- `Workflow:` `<workflow name>`
+- `Active overlays:`
+  - `<overlay name>` — `<one-line reason>`
+  - Repeat only for overlays that materially apply.
+  - If none apply, write `none` — `<task-specific reason>`
+- `Relevant docs:` `<paths or none>`
+- `Code context:` `<paths or excerpts>`
+- `Ask:` `<single explicit request>`
+
+If overlays are intentionally omitted for `trivial-change` or another tightly local task, write `Active overlays: none` with a brief reason instead of an empty list.
+
+Conductor chooses the initial overlays for delegated work. The receiving agent may refine that set only when task evidence justifies it, and should say why briefly when doing so.
+
+Keep the `Active overlays` block lean. Name the overlays and give one-line justification; do not paste overlay contents into the handoff unless the downstream agent truly needs an excerpt.
 
 ### Minimum delegation pattern
 1. Conductor delegates planning/research.

@@ -36,7 +36,7 @@ You can define additional workflows for your repo when needed.
 
 ## Overlays
 
-Overlays let you specialize agent guidance for your architecture, product domain, and risk profile without changing core workflows; they keep decisions contextual while preserving shared gates and consistency. Current overlays: `value.md`, `ux.md`, `system.md`, `data.md`, `security.md`. You can also define your own overlays for your repo.
+Overlays let you specialize agent guidance for your architecture, product domain, and risk profile without changing core workflows; they keep decisions contextual while preserving shared gates and consistency. Current built-in overlays include `value.md`, `ux.md`, `system.md`, `data.md`, `security.md`, `webdev.md`, `frontend.md`, `api.md`, `integration.md`, `devops.md`, `performance.md`, `testing.md`, `review.md`, `payments.md`, `privacy.md`, `dx.md`, `i18n.md`, `reliability.md`, and `mobile.md`. You can also define your own overlays for your repo.
 
 ## Conductor vs Forger
 

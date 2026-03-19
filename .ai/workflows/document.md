@@ -14,8 +14,8 @@ Purpose:
 - For first-time setup, execute `.ai/plans/01-bootstrap.md` (copy it to your repo first).
 - For major refresh or migration, execute `.ai/plans/02-refresh-context.md`.
 
-Default overlays:
-- `value.md` + `ux.md` + `system.md`
+Overlay selection:
+- Conductor chooses overlays by following `.ai/agents/guides/delegation.md`, inspecting `.ai/overlays/`, and recording an explicit `Active overlays` decision for delegated work.
 
 Precedence:
 - Workflow gates and approved plans override overlay guidance.
