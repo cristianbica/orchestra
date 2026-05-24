@@ -13,6 +13,7 @@ Max ~200 lines. Prune oldest/least-used when full. One agent updates per session
 - Import style: ...
 - Code style: ...
 - Built-in overlays: `value`, `system`, `ux`, `data`, `security`, `webdev`, `frontend`, `api`, `integration`, `devops`, `performance`, `testing`, `review`, `payments`, `privacy`, `dx`, `i18n`, `reliability`, `mobile`; workflow gates and approved plans override overlay guidance.
+- Context budget: keep always-on context lean; load role/workflow/overlay/docs/plan files on demand; include `Active overlays` and `Do not load` in non-trivial handoffs.
 - Forger is opt-in only and non-delegating; non-trivial work in Forger still requires explicit plan approval.
 - Planner plans are read-only, executable, and should name critical files, reusable patterns, and verification steps; Validator should verify adversarially with command-backed evidence.
 

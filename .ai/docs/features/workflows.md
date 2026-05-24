@@ -23,6 +23,10 @@ Each non-trivial workflow follows this pattern:
 5. **Verification** (run tests/commands + record results)
 6. **Validator review + docs/memory hygiene** (update `.ai/docs/**` and `.ai/MEMORY.md` as needed)
 
+## Context budget
+
+Handoffs should name files to load instead of pasting full canonical files. Non-trivial handoffs include `Active overlays` and `Do not load` so agents avoid unrelated folders, stale plans, and irrelevant adapter files.
+
 ## Key invariants
 
 - **NEVER implement without an approved plan** (on non-trivial workflows)

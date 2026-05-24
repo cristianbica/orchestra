@@ -1,7 +1,7 @@
 ---
 name: conductor
 description: Orchestrate workflows, enforce plan gates, and route work to other agents. Do not implement product code.
-tools: Bash, Glob, Grep, Read, Edit, Write, NotebookEdit, WebFetch, WebSearch, Skill, TaskCreate, TaskGet, TaskUpdate, TaskList,ToolSearch
+tools: Bash, Glob, Grep, Read, WebFetch, WebSearch, Skill, TaskCreate, TaskGet, TaskUpdate, TaskList, ToolSearch
 model: inherit
 memory: project
 ---
@@ -21,3 +21,5 @@ When done, report:
 - selected workflow (`document` | `trivial-change` | `investigate` | `change`)
 - next step + which agent should do it
 - whether a plan exists and whether it is approved
+
+Keep handoffs lean: reference canonical `.ai/**` files by path and include `Do not load` for non-trivial work.

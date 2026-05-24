@@ -11,9 +11,17 @@ The repo includes optional wrappers that tailor Orchestra instructions to specif
 - **OpenCode**: [src/tools/opencode/](../../../src/tools/opencode/) - `.opencode/` wrapper content
 - **Codex**: [src/tools/codex/](../../../src/tools/codex/) - `.codex/` wrapper content
 
+## Adapter shape
+
+- Wrappers stay thin and point to canonical `.ai/agents/**` and `.ai/workflows/**`.
+- Codex uses standalone `.codex/agents/*.toml` custom-agent files plus `[agents]` limits in `.codex/config.toml`.
+- Claude Code includes project skills for repeatable Orchestra workflows.
+- Copilot keeps global instructions lean and adds `.github/instructions/*.instructions.md` for path-specific guidance.
+- OpenCode agent wrappers use permissions to keep planning/validation read-only and implementation edit-capable.
+
 ## Installation behavior
 
-`install.sh` copies the wrapper directory contents into the target repo root after installing `.ai/`.
+`install.sh` copies the wrapper directory contents into the target repo root after installing `.ai/`. Codex installs also remove old Markdown role wrappers from `.codex/agents/`.
 
 ## See also
 

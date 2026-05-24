@@ -1,6 +1,9 @@
 ---
 description: Single-agent executor. Implements approved work end-to-end with explicit phases and no subagent delegation.
 mode: all
+permission:
+  edit: ask
+  bash: ask
 ---
 
 This is a thin wrapper for the canonical Forger definition.

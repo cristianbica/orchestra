@@ -10,6 +10,7 @@ This is the **canonical template for AI-assisted development workflows**. It pro
 - A built-in overlay system (`value`, `system`, `ux`, `data`, `security`) to shape planning and delegation
 - Reusable documentation templates and agent guides
 - Tool-specific wrappers (GitHub Copilot, Claude Code, OpenCode, Codex)
+- Context-budget rules that keep always-on prompts lean and lazy-load detailed context
 - An installation system to bootstrap `.ai/` dirs in target repositories
 
 Designed for teams building with AI agents, this system enforces planning gates, documentation hygiene, and verified commands before implementation.
@@ -21,6 +22,7 @@ Designed for teams building with AI agents, this system enforces planning gates,
 - **Installation**: `bash install.sh [tool-name]` (copies template to target repo)
 - **Tool integrations**: GitHub Copilot, Claude Code, OpenCode, Codex
 - **No runtime dependencies**: Pure docs + scripts
+- **Verification**: `scripts/verify.sh` checks installer and adapter smoke expectations
 
 ## Repo landmarks
 

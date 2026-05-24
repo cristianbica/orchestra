@@ -14,6 +14,7 @@ Inputs:
 
 Overlay selection:
 - Conductor chooses overlays by following `.ai/agents/guides/delegation.md`, inspecting `.ai/overlays/`, and recording an explicit `Active overlays` decision for delegated work.
+- Default to no overlays for tightly local work; add overlays only when they materially change planning, implementation, or validation.
 
 Precedence:
 - Workflow gates and approved plans override overlay guidance.
@@ -23,6 +24,7 @@ Steps:
 2. Planner performs focused, read-only discovery and produces an executable plan artifact (file or inline).
 	- Inline plan is preferred when short (<= 30 non-empty lines), especially in the 20-30 line range.
 	- Use `.ai/plans/` plan files when the plan is larger or when a file is explicitly requested.
+	- Handoffs name files to load and what not to load instead of pasting full canonical files.
 	- The plan must call out the critical files, reusable functions/patterns to reuse first, and the verification steps.
 	- For small independent work units, use lean-context: keep the plan minimal but still executable.
 3. Approval gate: do not implement until the plan artifact is explicitly approved.

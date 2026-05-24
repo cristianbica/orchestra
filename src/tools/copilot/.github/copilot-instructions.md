@@ -2,10 +2,10 @@
 
 This repository uses `.ai/` as the canonical source of agent roles, workflows, plans, and documentation.
 
-## Start here
+## Always-on context
 - Read /AGENTS.md (repo root).
-- Use workflows in `.ai/workflows/`.
-- When starting a workflow, answer the intake questions (max 3 blocking ones; "unknown" is ok) to ensure smooth delegation.
+- Load role, workflow, overlay, docs, and plan files on demand.
+- Keep task handoffs lean: name files to load, include selected overlays, and state what not to load for non-trivial work.
 
 ## Hard gates
 - For any non-trivial code change: require a plan in `.ai/plans/` and explicit user approval before implementing.
@@ -26,6 +26,7 @@ This repository uses `.ai/` as the canonical source of agent roles, workflows, p
 - Pattern docs: `.ai/docs/patterns/`
 - Agent operation guides: `.ai/agents/guides/`
 - Curated memory: `.ai/MEMORY.md`
+- Path-specific `.ai/**` guidance: `.github/instructions/ai.instructions.md`
 
 ## Agents
 Custom Copilot agents live under `.github/agents/` and are thin wrappers around `.ai/agents/`.

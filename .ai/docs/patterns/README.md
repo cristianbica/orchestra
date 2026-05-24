@@ -18,6 +18,7 @@ The `.ai/` system defines several reusable patterns and conventions for AI-assis
 | **Doc hygiene** | Every task must explicitly state doc impact | `doc impact: updated | none | deferred` |
 | **Discovery-first** | Planning always starts with discovery pass | Planner reads `.ai/docs/**` before drafting |
 | **Template architecture** | Source-of-truth lives in `src/`, installs into `.ai/` | `install.sh` copies template into target repos |
+| **Context budget** | Handoffs name files and task evidence instead of dumping full docs | `Active overlays`, `Do not load`, inline plans when short |
 
 ## Core pattern pages
 
@@ -27,3 +28,4 @@ The `.ai/` system defines several reusable patterns and conventions for AI-assis
 - [architecture.md](architecture.md) — Template layout and installation architecture
 - [i18n.md](i18n.md) — String and localization hygiene conventions
 - [testing.md](testing.md) — Verification-first workflow pattern
+- [context-budget.md](context-budget.md) — Lean always-on context and lazy loading

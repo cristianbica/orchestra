@@ -53,6 +53,14 @@ cleanup_legacy_files() {
   remove_if_exists "$DEST_DIR/.github/agents/reviewer.agent.md"
 }
 
+cleanup_codex_markdown_agents() {
+  remove_if_exists "$DEST_DIR/.codex/agents/builder.md"
+  remove_if_exists "$DEST_DIR/.codex/agents/conductor.md"
+  remove_if_exists "$DEST_DIR/.codex/agents/forger.md"
+  remove_if_exists "$DEST_DIR/.codex/agents/planner.md"
+  remove_if_exists "$DEST_DIR/.codex/agents/validator.md"
+}
+
 TMP_DIR=""
 cleanup() {
   if [ -n "$TMP_DIR" ] && [ -d "$TMP_DIR" ]; then
@@ -141,6 +149,9 @@ if [ -n "$TOOL_NAME" ]; then
   if [ ! -d "$TOOL_SRC" ]; then
     echo "Template not found for tool: $TOOL_NAME" >&2
     exit 1
+  fi
+  if [ "$TOOL_NAME" = "codex" ]; then
+    cleanup_codex_markdown_agents
   fi
   cp -R "$TOOL_SRC"/. "$DEST_DIR/"
 fi

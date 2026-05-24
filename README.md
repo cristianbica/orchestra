@@ -6,12 +6,15 @@ Orchestra is a copy-paste operating model for AI-assisted development, built aro
 
 It helps teams build and maintain project documentation so agents work with stronger context, follow clear workflows with explicit boundaries, and use overlays for specialization when domain needs differ.
 
+Orchestra keeps always-on context small: root instructions and pointers load first, while workflows, roles, overlays, docs, plans, and task evidence are loaded only when needed.
+
 In practice, Orchestra gives your repo:
 
 - Canonical project context in `.ai/` (docs, patterns, plans, overlays, memory)
 - Role-based execution (`Conductor`, `Planner`, `Builder`, `Validator`, optional `Forger`)
 - Repeatable workflows with gates (`change`, `investigate`, `document`, `trivial-change`, `guided`)
 - A hard plan/approval gate for non-trivial changes
+- Tool-native adapters for Codex, Claude Code, GitHub Copilot, and OpenCode
 
 ## Agents
 
@@ -37,7 +40,7 @@ Note: you can define your own workflows for your repo when the defaults are not 
 
 ## Overlays
 
-Overlays let you specialize agent guidance for your architecture, product domain, and risk profile without changing core workflows; they keep decisions contextual while preserving shared gates and consistency. Current overlays: `value.md`, `ux.md`, `system.md`, `data.md`, `security.md`. You can also define your own overlays for your repo.
+Overlays let you specialize agent guidance for your architecture, product domain, and risk profile without changing core workflows. Load them selectively when they materially affect a task; trivial/local work should usually use no overlays. You can also define your own overlays for your repo.
 
 ## Conductor vs Forger
 

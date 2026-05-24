@@ -13,7 +13,15 @@ The `.ai/` folder is the canonical source of truth for:
 - Planning artifacts: [.ai/plans/](.ai/plans/)
 - Curated memory: [.ai/MEMORY.md](.ai/MEMORY.md)
 
-Start here for app context: [.ai/docs/overview.md](.ai/docs/overview.md)
+Start here for app context: [.ai/docs/overview.md](.ai/docs/overview.md).
+
+## Context tiers
+
+- Always-on: this root `AGENTS.md`, `.ai/RULES.md`, tool-wrapper entry files, and pointers only.
+- On-demand: role files, workflow files, overlays, guides, docs, and plans.
+- Task evidence: focused code excerpts, command output, diffs, and acceptance criteria.
+
+Do not paste full role/workflow/overlay files into handoffs when naming the path is enough.
 
 ## How to work
 
@@ -44,6 +52,8 @@ Start here for app context: [.ai/docs/overview.md](.ai/docs/overview.md)
 
 - Each doc file should aim to fit on one screen.
 - Prefer linking to other docs over repeating content.
+- Prefer short inline plans; use plan files only when the plan is large, persistent, or explicitly requested.
+- Handoffs should name files to load, selected overlays, and what not to load for non-trivial delegation.
 
 Rules:
 - Prefer minimal scope; do not expand requirements.

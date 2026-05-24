@@ -4,3 +4,7 @@ developer_instructions = "Read .codex/AGENTS.md"
 collab = true
 # Optional: enable collaboration-mode helpers when supported by your Codex runtime.
 collaboration_modes = true
+
+[agents]
+max_threads = 6
+max_depth = 1

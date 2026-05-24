@@ -29,11 +29,14 @@ Within this file, role sections override `Global` on conflict.
 - MUST NOT invent facts, outputs, or verification results.
 - MUST NOT bypass required workflow gates.
 - MUST NOT perform writing git operations (e.g., `git stash`, `git commit`, `git restore`) unless the user explicitly requests them.
+- MUST keep context lean: reference canonical files by path unless an excerpt is necessary for the task.
+- MUST include "what not to load" in non-trivial delegation when broad folders or large files could waste context.
 
 ## Conductor
 
 - MUST select and enforce the correct workflow before execution.
 - MUST NOT implement product code.
+- MUST choose overlays by material task fit; default to no overlays for trivial/local work.
 
 ## Planner
 

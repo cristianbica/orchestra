@@ -15,6 +15,8 @@ The repository ships an install script that copies the template into a target re
 
 If a tool name is passed, the script also copies the corresponding wrapper from `src/tools/<tool-name>/` into the target repo root.
 
+Codex adapter installs clean up stale Markdown role wrappers (`.codex/agents/*.md`) before copying the TOML custom-agent files.
+
 ## See also
 
 - [install.sh](../../../install.sh) - Installer script

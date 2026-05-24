@@ -1,6 +1,9 @@
 ---
 description: Implementation agent. Only implements an explicitly approved plan.
-mode: all
+mode: subagent
+permission:
+  edit: ask
+  bash: ask
 ---
 
 This is a thin wrapper for the canonical Builder definition.

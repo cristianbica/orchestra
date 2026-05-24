@@ -9,6 +9,7 @@ This is a template distribution repo. No traditional build/test/lint commands ap
 - **Install**: `bash ./install.sh [tool-name]` - Copy `src/ai/` into `.ai/` and optional tool wrapper (inspected; not executed in this refresh)
 - **Installer syntax check**: `bash -n install.sh` - Validate installer shell syntax without executing it
 - **Verify**: No build, test, or lint commands (pure markdown + scripts; no runtime)
+- **Repo verification**: `scripts/verify.sh` - Runs installer/adapter smoke checks, Codex TOML field checks, and root instruction budget check
 
 ## Conventions
 
@@ -23,6 +24,8 @@ This is a template distribution repo. No traditional build/test/lint commands ap
 - **Planning / verification**: Planner plans are read-only, executable, and should name critical files, reusable patterns, and verification steps; Validator should verify adversarially with command-backed evidence
 - **Memory**: Only durable facts (commands, conventions, invariants, layout); max ~200 lines total
 - **Canonical sources**: `src/ai/` + `src/tools/` are the template sources when present
+- **Context budget**: Keep always-on context lean; load roles/workflows/overlays/docs/plans on demand; non-trivial handoffs include `Active overlays` and `Do not load`
+- **Codex adapter**: Project custom agents are standalone `.codex/agents/*.toml` files with `name`, `description`, and `developer_instructions`; `[agents]` config defaults to `max_threads = 6`, `max_depth = 1`
 - **Docs source of truth (this repo)**: `.ai/docs/**` is canonical project context; `src/ai/docs/**` is boilerplate template content
 - **Repo editing policy (this repo)**: Edit only `.ai/docs/`, `.ai/plans/`, `.ai/MEMORY.md`; never edit `.ai/agents/`, `.ai/workflows/`, `.ai/templates/`, `.ai/HUMANS.md`; treat `src/` as canonical and keep it generic (distributed)
 
