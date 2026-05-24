@@ -4,11 +4,6 @@ Read `.codex/AGENTS.md` before answering project questions.
 Follow `.codex/AGENTS.md`, then load the referenced canonical `.ai/**` instructions as needed.
 """
 
-[features]
-collab = true
-# Optional: enable collaboration-mode helpers when supported by your Codex runtime.
-collaboration_modes = true
-
 [agents]
 max_threads = 6
 max_depth = 1
