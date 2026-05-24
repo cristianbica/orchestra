@@ -22,6 +22,16 @@ Within this file, role sections override `Global` on conflict.
 - MUST apply `.ai/RULES.md` precedence: role section overrides `Global` on conflict.
 - MUST report any `.ai/RULES.md` rules ignored due to higher-precedence constraints.
 
+## Core rules
+
+These are binding rules for changing Orchestra itself.
+
+- MUST preserve controllable flow: keep research, plan, implement, and verify as explicit phases with clear gates.
+- MUST preserve context-aware development: ground agent behavior in the repo's actual docs, memory, commands, conventions, architecture, and code.
+- MUST preserve token economics: keep always-on context lean and load detailed guidance only when it materially improves the task.
+- MUST preserve tool portability: keep the same Orchestra mental model across supported tools and use adapters only to translate into tool-native formats.
+- MUST preserve evidence-based trust: make agent claims auditable through inspected files, command output, explicit assumptions, and verified durable facts.
+
 ## Global
 
 - MUST keep changes within the user-approved scope.

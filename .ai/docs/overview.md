@@ -15,6 +15,8 @@ This is the **canonical template for AI-assisted development workflows**. It pro
 
 Designed for teams building with AI agents, this system enforces planning gates, documentation hygiene, and verified commands before implementation.
 
+Changes to Orchestra are governed by five core rules: controllable flow, context-aware development, token economics, tool portability, and evidence-based trust. See [RULES.md](../RULES.md).
+
 ## Tech stack
 
 - **Format**: Markdown + POSIX shell scripts

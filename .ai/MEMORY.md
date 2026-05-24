@@ -22,6 +22,7 @@ This is a template distribution repo. No traditional build/test/lint commands ap
 - **Overlay precedence**: workflow gates and approved plans override overlays
 - **Approval**: Explicit user approval required before implementing non-trivial changes
 - **Planning / verification**: Planner plans are read-only, executable, and should name critical files, reusable patterns, and verification steps; Validator should verify adversarially with command-backed evidence
+- **Core rules**: Orchestra changes must preserve controllable flow, context-aware development, token economics, tool portability, and evidence-based trust
 - **Memory**: Only durable facts (commands, conventions, invariants, layout); max ~200 lines total
 - **Canonical sources**: `src/ai/` + `src/tools/` are the template sources when present
 - **Context budget**: Keep always-on context lean; load roles/workflows/overlays/docs/plans on demand; non-trivial handoffs include `Active overlays` and `Do not load`
