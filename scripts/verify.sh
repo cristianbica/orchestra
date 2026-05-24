@@ -102,10 +102,7 @@ done
 
 check_file "$tmp/codex/.codex/AGENTS.md"
 check_file "$tmp/codex/.codex/config.toml"
-check_file "$tmp/claude-code/.claude/skills/orchestra-change/SKILL.md"
-check_file "$tmp/claude-code/.claude/skills/orchestra-investigate/SKILL.md"
-check_file "$tmp/claude-code/.claude/skills/orchestra-validate/SKILL.md"
-check_file "$tmp/claude-code/.claude/skills/orchestra-refresh-context/SKILL.md"
+check_absent "$tmp/claude-code/.claude/skills"
 check_file "$tmp/copilot/.github/instructions/ai.instructions.md"
 check_file "$tmp/opencode/.opencode/AGENTS.md"
 
