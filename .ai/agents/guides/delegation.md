@@ -18,6 +18,8 @@ Delegation reduces context thrash, keeps roles clean, and makes it less likely t
 
 Default decision policy: if it is unclear whether to delegate or proceed inline, delegate.
 
+Keep handoffs lean: name canonical files, include only task evidence, and explicitly say what not to load when broad folders could distract from the task.
+
 ## Routing tree
 
 Use this sequence to decide how far to push inline work before delegating:
@@ -109,6 +111,7 @@ For any non-trivial delegated handoff, include this structure near the top of th
   - If none apply, write `none` — `<task-specific reason>`
 - `Relevant docs:` `<paths or none>`
 - `Code context:` `<paths or excerpts>`
+- `Do not load:` `<paths/folders to skip, or none>`
 - `Ask:` `<single explicit request>`
 
 If overlays are intentionally omitted for `trivial-change` or another tightly local task, write `Active overlays: none` with a brief reason instead of an empty list.

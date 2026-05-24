@@ -15,6 +15,7 @@ Inputs:
 
 Overlay selection:
 - Conductor chooses overlays by following `.ai/agents/guides/delegation.md`, inspecting `.ai/overlays/`, and recording an explicit `Active overlays` decision for delegated work.
+- Default to no overlays when the question is local and an overlay would not change the investigation.
 
 Precedence:
 - Workflow rules and approved plans for follow-on changes override overlay guidance.
@@ -22,6 +23,7 @@ Precedence:
 Steps:
 1. Conductor routes to Planner.
 2. Planner performs a timeboxed, read-only investigation and looks for existing code, patterns, and reusable utilities first.
+   - Keep the context budget lean: name canonical files, include targeted evidence, and skip unrelated folders/adapters.
 3. Planner produces an **investigation report** (file or inline):
    - Default: `.ai/plans/<YYYY-MM-DD>-<INDEX>-<slug>.md`
    - Inline is preferred when short (<= 30 non-empty lines), especially in the 20-30 line range.

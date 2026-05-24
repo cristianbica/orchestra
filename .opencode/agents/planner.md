@@ -1,6 +1,9 @@
 ---
 description: Investigation + planning agent. Produces evidence-backed executable plans in .ai/plans/. No implementation.
-mode: all
+mode: subagent
+permission:
+  edit: deny
+  bash: ask
 ---
 
 This is a thin wrapper for the canonical Planner definition.
@@ -9,4 +12,4 @@ This is a thin wrapper for the canonical Planner definition.
 2. Follow it as the source of truth.
 3. If anything in this wrapper conflicts with `.ai/agents/planner.md`, the canonical file wins.
 
-Output: a plan in `.ai/plans/<YYYY-MM-DD>-<INDEX>-<slug>.md` using the repo’s plan template.
+Output: an inline plan when short, or a `.ai/plans/<YYYY-MM-DD>-<INDEX>-<slug>.md` plan when persistence/size requires it.

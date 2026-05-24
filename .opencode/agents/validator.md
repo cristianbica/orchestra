@@ -1,6 +1,9 @@
 ---
 description: Validation agent. Validates plan adherence and gate checks, and ensures docs/memory hygiene.
-mode: all
+mode: subagent
+permission:
+  edit: deny
+  bash: ask
 ---
 
 This is a thin wrapper for the canonical Validator definition.
@@ -9,4 +12,4 @@ This is a thin wrapper for the canonical Validator definition.
 2. Follow it as the source of truth.
 3. If anything in this wrapper conflicts with `.ai/agents/validator.md`, the canonical file wins.
 
-Output format: status (approve | needs changes), must-fix, optional, doc impact, memory impact.
+Output format: status (approve | needs changes), must-fix, optional, doc impact, memory impact. If docs/memory edits are required, report them as must-fix for an edit-capable pass.

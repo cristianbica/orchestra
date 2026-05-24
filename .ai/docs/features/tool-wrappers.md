@@ -15,6 +15,7 @@ The repo includes optional wrappers that tailor Orchestra instructions to specif
 
 - Wrappers stay thin and point to canonical `.ai/agents/**` and `.ai/workflows/**`.
 - Codex uses standalone `.codex/agents/*.toml` custom-agent files plus `[agents]` limits in `.codex/config.toml`.
+- Codex keeps the minimal Orchestra conductor identity directly in `.codex/config.toml`, then points to `.codex/AGENTS.md` and canonical `.ai/**` instructions for full role behavior.
 - Claude Code includes `CLAUDE.md` and role agents; it does not install project skills.
 - Copilot keeps global instructions lean and adds `.github/instructions/*.instructions.md` for path-specific guidance.
 - OpenCode agent wrappers use permissions to keep planning/validation read-only and implementation edit-capable.

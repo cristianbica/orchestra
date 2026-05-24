@@ -35,6 +35,18 @@ Include:
 Avoid:
 - Dumping whole repos, large unrelated logs, or many near-duplicate files.
 - Mixing multiple tasks/asks in one prompt; split into separate requests.
+- Pasting full canonical role, workflow, or overlay files when a path reference is enough.
+- Loading `ideas/`, archives, old plans, or unrelated adapters unless the task explicitly asks for them.
+
+## Context budget contract
+
+For non-trivial handoffs, include:
+- Files to load by path, not by pasted contents, unless a short excerpt is required.
+- Active overlays, or `none` with a task-specific reason.
+- What not to load, especially broad folders and stale artifacts.
+- Evidence needed for the current phase only: acceptance criteria for planning, diffs and command output for validation.
+
+Prefer inline plans when short (<= 30 non-empty lines). Use plan files when the plan needs persistence, exceeds that size, or the user asks for a file.
 
 ## Long documents: use explicit boundaries
 

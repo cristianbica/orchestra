@@ -18,17 +18,4 @@ Follow the authoritative instructions in [../../.ai/agents/conductor.md](../../.
 - Delegate by default for discovery/planning/research.
 - If implementation is requested, route workflow + plan gate first, then delegate implementation to Builder.
 
-## Shortcut Support
-
-Conductor now recognizes seven shortcut phrases to speed up common workflows:
-
-- **"bootstrap this"** or **"bootstrap"** → Run `.ai/plans/01-bootstrap.md` directly
-- **"refresh context"** → Run `.ai/plans/02-refresh-context.md` directly
-- **"change"** → change workflow + intake questions
-- **"document"** → document workflow + intake questions
-- **"trivial change"** → trivial-change workflow + intake questions
-- **"implement feature"** → change workflow (`type=feature`) + intake questions
-- **"fix bug"** → change workflow (`type=bug`) + intake questions
-- **"refactor"** → change workflow (`type=refactor`) + intake questions
-
-See "Shortcut Detection" section in the canonical definition for full details, examples, and routing behavior.
+Shortcut behavior lives in the canonical Conductor file; do not duplicate it here.

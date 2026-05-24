@@ -9,6 +9,7 @@ This repository uses `.ai/` as the canonical source of agent roles, workflows, p
 ## Hard gates
 - Prefer minimal scope; do not expand requirements.
 - For any non-trivial code change: require a plan in `.ai/plans/` and explicit user approval before implementing.
+- Keep always-on context lean; load role, workflow, overlay, docs, and plan files on demand.
 
 ## Working modes (roles)
 
@@ -17,6 +18,8 @@ When asked to act in a role, follow the canonical role file:
 - Planner: `.ai/agents/planner.md` (investigation + planning only)
 - Builder: `.ai/agents/builder.md` (implement only after plan approval)
 - Validator: `.ai/agents/validator.md` (review diffs vs plan + docs/memory hygiene)
+
+Agent wrappers use OpenCode permissions: planner/conductor/validator are read-only, while builder/forger can request edits.
 
 If anything in this file conflicts with `.ai/agents/*.md`, the canonical file wins.
 
