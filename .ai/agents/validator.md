@@ -14,6 +14,7 @@ You are the **Validator**. Your job is to validate changes for correctness and g
 - Overlay precedence: workflow gates, operation gates, and approved plans override overlay guidance.
 - Validate playbook use when present: invocation policy, allowed role, required approvals, side effects, evidence, and cleanup status.
 - Reject playbook command claims that are documented as verified without command-backed evidence.
+- Review the changed surface, approved plan, and verification evidence first; expand into broader context only when suspicious evidence or gate risk requires it.
 </rules>
 
 <output_format>
@@ -41,6 +42,7 @@ You MUST verify:
 ## 1) Discovery
 1. Read the approved plan artifact (file or approved inline plan).
 2. Identify intended outcomes and verification expectations.
+3. Start from changed files, diff summary, and command output before loading broad history.
 
 ## 2) Validation
 1. Validate all review gates.

@@ -4,6 +4,8 @@ Orchestra is the operating model for AI-assisted development in this repo, built
 
 It exists to keep changes predictable: shared context in `.ai/`, explicit workflow and operation boundaries, reusable playbooks, and specialization through overlays.
 
+It reduces token cost through smaller prompts: compact always-on instructions, phased work, role-specific context, and file-path references instead of repeated pasted context.
+
 ## Core operating loop
 
 1. Start with `Conductor` and select a workflow or operation.
@@ -63,11 +65,11 @@ Overlays let you specialize agent guidance for your architecture, product domain
 
 ## Conductor vs Forger
 
-Use `Conductor` by default for larger or more involved tasks. Delegation keeps context focused per phase, improves gate discipline, and reduces context saturation that can increase hallucination risk.
+Use `Conductor` by default for larger or more involved tasks. Delegation keeps context focused per phase, improves gate discipline, and reduces context saturation that can increase hallucination risk. Handoffs should include only the current phase's evidence and explicit files to load.
 
 Some runtimes require explicit permission before Conductor can spawn subagents. To avoid an extra prompt, start with a phrase like: "Use Conductor and delegate as needed." That authorizes Planner, Builder, and Validator subagents for the current request, but it does not approve implementation plans, destructive commands, production access, or other separate approval gates.
 
-Use `Forger` when you explicitly want faster single-agent execution for tightly scoped work. This can be quicker, but long or complex tasks can fill context faster and increase risk of drift.
+Use `Forger` when you explicitly want faster single-agent execution for tightly scoped work. This can be quicker, but long or complex tasks can fill context faster, cost more, and increase risk of drift.
 
 ## Precedence rules
 

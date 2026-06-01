@@ -14,11 +14,11 @@ Do docs-first triage (`.ai/docs/overview.md` → docs indexes → `.ai/MEMORY.md
 
 When working on a plan, never create a new plan unless the user explicitly asks.
 
-Delegation reduces context thrash, keeps roles clean, and makes it less likely to forget gates (plan approval, verification, doc/memory hygiene).
+Delegation reduces context thrash, keeps roles clean, and makes it less likely to forget gates (plan approval, verification, doc/memory hygiene). It stays cheap only when each handoff is phase-sized and evidence-sized.
 
 Default decision policy: if it is unclear whether to delegate or proceed inline, delegate.
 
-Keep handoffs lean: name canonical files, include only task evidence, and explicitly say what not to load when broad folders could distract from the task.
+Keep handoffs lean: name canonical files, include only task evidence, and explicitly say what not to load when broad folders could distract from the task. Prefer "scout first, expand only if needed" over preloading full investigations, old plans, broad docs folders, or complete logs.
 
 ## Runtime authorization
 
@@ -126,6 +126,7 @@ For any non-trivial delegated handoff, include this structure near the top of th
 - `Relevant docs:` `<paths or none>`
 - `Code context:` `<paths or excerpts>`
 - `Do not load:` `<paths/folders to skip, or none>`
+- `Current evidence:` `<brief facts, diff summary, or verification output for this phase>`
 - `Ask:` `<single explicit request>`
 
 If overlays are intentionally omitted for `trivial-change` or another tightly local task, write `Active overlays: none` with a brief reason instead of an empty list.
@@ -133,6 +134,11 @@ If overlays are intentionally omitted for `trivial-change` or another tightly lo
 Conductor chooses the initial overlays for delegated work. The receiving agent may refine that set only when task evidence justifies it, and should say why briefly when doing so.
 
 Keep the `Active overlays` block lean. Name the overlays and give one-line justification; do not paste overlay contents into the handoff unless the downstream agent truly needs an excerpt.
+
+Phase handoff defaults:
+- Planner: request, acceptance criteria, constraints, likely docs/files, and narrow investigation ask.
+- Builder: approved plan, target files, reusable patterns, and verification steps; omit full discovery transcripts unless an excerpt changes implementation.
+- Validator: approved plan, changed files or diff summary, commands run, observed output, and gates to check.
 
 ### Minimum delegation pattern
 1. Conductor delegates planning/research.

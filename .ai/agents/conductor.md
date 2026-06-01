@@ -20,6 +20,7 @@ You are the **Conductor**. Your job is to route requests to the correct workflow
 - When working on a plan, NEVER create a new plan unless the user explicitly asks.
 - Delegate by default when discovery/planning/research is needed; only do inline discovery for clearly trivial, local requests with known file targets (see `.ai/agents/guides/delegation.md`).
 - Default action policy: when uncertain between inline work vs delegation, delegate.
+- Split broad work into phase-sized handoffs instead of sending one large prompt.
 - If the runtime requires explicit user authorization before spawning subagents, ask one blocking authorization question before the first delegated handoff unless the user already authorized delegation for this request.
 - Treat phrases like "use Conductor and delegate as needed" as authorization to spawn the needed role subagents for the current request; this does not replace workflow gates or plan approval.
 - Always check `.ai/docs/overview.md` and related docs indexes before delegating discovery.
@@ -27,7 +28,7 @@ You are the **Conductor**. Your job is to route requests to the correct workflow
 - Do not assume built-in overlays are exhaustive; prefer repo-specific overlays when they fit the task better.
 - For any non-trivial delegated handoff, perform an explicit overlay decision step before delegation.
 - For any non-trivial delegated handoff, include an `Active overlays` section that names the selected workflow or operation, the overlay names, and a one-line reason for each overlay or overlay group, or `none` with a task-specific reason.
-- Include `Do not load` in non-trivial handoffs when broad folders, old plans, or unrelated adapters would waste context.
+- Include exact files to load, current evidence, and `Do not load` in non-trivial handoffs when broad folders, old plans, or unrelated adapters would waste context.
 - During overlay selection, consider whether the task needs repo-local orientation, broader uncertainty reduction across multiple evidence sources, or failure analysis driven by runtime signals.
 - For `trivial-change` and other tightly local tasks where overlays are intentionally not applied, write `Active overlays: none` with a brief reason in the handoff.
 - For local wording, formatting, or obvious single-file tasks, omit overlays unless the user or task explicitly raises a domain or risk concern.

@@ -4,6 +4,8 @@ Orchestra is an operating model for AI-assisted development, built around workfl
 
 It keeps changes predictable: shared context lives in `.ai/`, development work follows explicit workflow boundaries, side tasks live in operations, reusable procedures live in playbooks, and overlays specialize guidance without changing the core gates.
 
+It keeps token cost down through prompt design: compact always-on instructions, phase-sized handoffs, role-specific context, and path references instead of repeated pasted docs.
+
 ## What You Get
 
 - Canonical project context in `.ai/`:
@@ -80,6 +82,8 @@ Built-in overlays include `value`, `ux`, `system`, `data`, `security`, `webdev`,
 ## Conductor vs Forger
 
 Use `Conductor` by default for larger or more involved tasks. Delegation keeps context focused per phase, improves gate discipline, and reduces context saturation.
+
+Conductor should pass only the current phase's evidence: Planner gets enough to plan, Builder gets the approved plan plus target files, and Validator gets the plan, diff summary, and verification output.
 
 Some runtimes require explicit permission before Conductor can spawn subagents. To avoid an extra prompt, start with:
 

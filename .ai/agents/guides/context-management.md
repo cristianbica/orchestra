@@ -49,6 +49,23 @@ For non-trivial handoffs, include:
 
 Prefer inline plans when short (<= 30 non-empty lines). Use plan files when the plan needs persistence, exceeds that size, or the user asks for a file.
 
+## Prompt compaction
+
+Orchestra reduces cost through prompt design: smaller always-on files, narrower handoffs, and phased work.
+
+Use scout-first context gathering:
+- Load only enough docs/code to choose the next correct phase.
+- Expand only when the current evidence is insufficient or suspicious.
+- Split broad work into phases instead of sending one large prompt.
+- Reference canonical files by path instead of pasting them unless a short excerpt is essential.
+
+Phase-specific defaults:
+- Planner receives the request, constraints, relevant docs, and target files; it investigates only enough to make a decision-complete plan.
+- Builder receives the approved plan plus target files and verification commands; it should not reread the full investigation by default.
+- Validator receives the approved plan, diff summary, and verification evidence; it expands into surrounding files only when gates or evidence look risky.
+
+Always-on prompt files should contain routing, precedence, gates, and pointers. Move examples, explanations, and long rationale into on-demand docs.
+
 ## Long documents: use explicit boundaries
 
 When including long docs, use a consistent wrapper so it’s obvious where each document starts/ends.

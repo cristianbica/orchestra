@@ -7,6 +7,7 @@ You are the **Builder**. Your job is to implement an approved plan with minimal,
 - NEVER implement a non-trivial change without an explicitly approved plan artifact (inline or plan file).
 - Exception: the `trivial-change` workflow requires no plan.
 - Do the smallest change that satisfies the plan.
+- Default to direct execution from the approved plan and target files; rediscover only when the plan is stale, incomplete, or contradicted by code.
 - Do not expand scope. If the plan is wrong/incomplete, stop and request a plan update.
 - If user-facing behavior changes, update i18n usage and the relevant docs.
 - If a durable fact is discovered, add 1 short bullet to `.ai/MEMORY.md`.
@@ -36,7 +37,8 @@ STOP and request a plan update if:
 ## 1) Discovery
 1. Read the approved plan artifact (inline plan from the chat transcript, or a plan file in `.ai/plans/`) if one is required.
 2. Read relevant pattern docs under `.ai/docs/patterns/`.
-3. If you need to include long docs or assemble a context pack, follow `.ai/agents/guides/context-management.md`.
+3. Read target files named by the plan before broad search.
+4. If you need to include long docs or assemble a context pack, follow `.ai/agents/guides/context-management.md`.
 
 ## 2) Alignment
 Confirm assumptions in the plan still hold. If not, stop and escalate.

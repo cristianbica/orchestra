@@ -63,7 +63,7 @@ Do not paste full role/workflow/operation/playbook/overlay files into handoffs w
 - Each doc file should aim to fit on one screen.
 - Prefer linking to other docs over repeating content.
 - Prefer short inline plans; use plan files only when the plan is large, persistent, or explicitly requested.
-- Handoffs should name files to load, selected overlays, and what not to load for non-trivial delegation.
+- Handoffs should name exact files to load, selected overlays, current evidence, and what not to load.
 - Playbook handoffs should name relevant `.ai/playbooks/**` files and the invocation policy.
 
 Rules:
