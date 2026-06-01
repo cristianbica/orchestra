@@ -17,6 +17,21 @@ remove_if_exists() {
   fi
 }
 
+remove_file_blocking_template_dirs() {
+  src=$1
+  dest_root=$2
+
+  for item in "$src"/.[!.]* "$src"/..?* "$src"/*; do
+    [ -e "$item" ] || continue
+    [ -d "$item" ] || continue
+    name=$(basename "$item")
+    dest="$dest_root/$name"
+    if [ -e "$dest" ] && [ ! -d "$dest" ]; then
+      rm -f "$dest"
+    fi
+  done
+}
+
 cleanup_legacy_files() {
   remove_if_exists "$AI_DIR/agents/architect.md"
   remove_if_exists "$AI_DIR/agents/archivist.md"
@@ -156,5 +171,6 @@ if [ -n "$TOOL_NAME" ]; then
   if [ "$TOOL_NAME" = "codex" ]; then
     cleanup_codex_markdown_agents
   fi
+  remove_file_blocking_template_dirs "$TOOL_SRC" "$DEST_DIR"
   cp -R "$TOOL_SRC"/. "$DEST_DIR/"
 fi

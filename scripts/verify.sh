@@ -128,13 +128,21 @@ for tool in codex claude-code copilot opencode; do
   (cd "$dest" && SRC_DIR="$ROOT" sh "$ROOT/install.sh" "$tool")
 done
 
+dest="$tmp/codex-file-collision"
+mkdir -p "$dest"
+: > "$dest/.codex"
+(cd "$dest" && SRC_DIR="$ROOT" sh "$ROOT/install.sh" codex)
+
 for role in conductor planner builder validator forger; do
   check_file "$tmp/codex/.codex/agents/$role.toml"
   check_absent "$tmp/codex/.codex/agents/$role.md"
+  check_file "$tmp/codex-file-collision/.codex/agents/$role.toml"
 done
 
 check_file "$tmp/codex/.codex/AGENTS.md"
 check_file "$tmp/codex/.codex/config.toml"
+check_file "$tmp/codex-file-collision/.codex/AGENTS.md"
+check_file "$tmp/codex-file-collision/.codex/config.toml"
 check_file "$tmp/codex/.ai/playbooks/README.md"
 check_contains "$tmp/codex/.ai/playbooks/README.md" "custom-playbook-preserved"
 check_file "$tmp/claude-code/.ai/playbooks/README.md"
