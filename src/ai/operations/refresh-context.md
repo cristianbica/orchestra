@@ -1,4 +1,4 @@
-# Plan: Refresh Context
+# Operation: Refresh Context
 
 Date: <YYYY-MM-DD when you run this>
 
@@ -8,7 +8,7 @@ Run this when:
 - Documentation is stale or misaligned with current codebase
 - Migrating from different agent system (ai-try-1, ai-try-2, custom docs, etc.)
 
-Execute via the `document` workflow.
+Execute through the `document` workflow or as a direct Conductor operation routed to Validator.
 
 ## Goal
 - Preserve valuable existing documentation
@@ -17,7 +17,7 @@ Execute via the `document` workflow.
 - Validate everything still works
 
 ## Non-goals
-- Starting from scratch (use 01-bootstrap.md for that)
+- Starting from scratch (use `bootstrap.md` for that)
 - Preserving documentation that's now wrong/obsolete
 - 100% coverage on first pass (focus on critical updates)
 
@@ -48,7 +48,7 @@ Execute via the `document` workflow.
    - **Archive**: outdated but might be useful for reference
    - **Delete**: obsolete, wrong, or duplicated
 
-4. **Identify what's missing** compared to 01-bootstrap.md expectations:
+4. **Identify what's missing** compared to `bootstrap.md` expectations:
    - Commands verified?
    - Invariants documented?
    - Business domains identified?
@@ -56,7 +56,7 @@ Execute via the `document` workflow.
    - Core patterns documented?
 
 ### Phase 2: Verify Current State (Archivist - test everything)
-Run the same command verification as 01-bootstrap.md Phase 2:
+Run the same command verification as `bootstrap.md` Phase 2:
 1. Bootstrap/install: Does it still work? Any new dependencies?
 2. Build: Still builds? New warnings/errors?
 3. Test: Test command changed? Suite still runs?
@@ -169,4 +169,4 @@ Updates entire `.ai/docs/**` structure:
 If refresh goes wrong:
 1. Restore from `.ai-archive/<YYYY-MM-DD>/`
 2. Revert changes to MEMORY.md, overview.md
-3. Consider running 01-bootstrap.md fresh instead
+3. Consider running the `bootstrap` operation fresh instead

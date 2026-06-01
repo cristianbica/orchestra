@@ -7,7 +7,8 @@ The repository ships an install script that copies the template into a target re
 ## How it works
 
 - `install.sh` copies `src/ai/` into `.ai/` in the target repo.
-- If `.ai/docs/`, `.ai/MEMORY.md`, or `.ai/plans/` already exist, the script preserves them and only refreshes the bootstrap and refresh plans.
+- If `.ai/docs/`, `.ai/playbooks/`, `.ai/MEMORY.md`, or `.ai/plans/` already exist, the script preserves repo-local content.
+- Built-in side tasks install under `.ai/operations/`; legacy built-in side-task files are removed from `.ai/workflows/` and `.ai/plans/`.
 - If `SRC_DIR` is set, the script copies from that local path.
 - Otherwise, it downloads the template from GitHub and uses that as the source.
 

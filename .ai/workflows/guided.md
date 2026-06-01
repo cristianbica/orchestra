@@ -2,7 +2,7 @@
 
 ## Intake (Conductor)
 Conductor asks:
-1) Target workflow: Which workflow should this guide? (`change` | `investigate` | `document`)
+1) Target workflow or operation: Which should this guide? (`change` | `investigate` | `document` | operation slug)
 2) Goal + constraints: What should we achieve in this guided run?
 3) Step granularity: approve each step, or approve small batches (2-3 steps)?
 
@@ -15,6 +15,7 @@ Inputs:
 Purpose:
 - Provide step-by-step, user-steered execution without changing workflow gates.
 - Support optional micro inline plans when the user wants tighter control.
+- Guide operations such as `define-playbook` or `run-playbook` when the user wants approval at each operation step.
 
 Micro-plan format (optional, 3-8 lines):
 - Intent
@@ -23,7 +24,7 @@ Micro-plan format (optional, 3-8 lines):
 - Quick check
 
 Steps:
-1. Conductor routes to selected target workflow in guided mode.
+1. Conductor routes to the selected target workflow or operation in guided mode.
 2. Propose next step (or micro-plan), then wait for user decision.
 3. User chooses: `continue` | `revise step` | `switch to normal` | `stop`.
 4. Execute only the approved step scope.
@@ -32,7 +33,8 @@ Steps:
 7. If scope expands materially, escalate to normal workflow planning and approval.
 
 Precedence:
-- Target workflow gates and approved plans override guided suggestions.
+- Target workflow/operation gates and approved plans override guided suggestions.
+- Playbook invocation policy and step-level approval gates still apply inside guided runs.
 - Guided mode never bypasses non-trivial approval requirements.
 
 Outputs:

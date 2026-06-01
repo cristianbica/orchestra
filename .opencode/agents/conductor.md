@@ -1,9 +1,7 @@
 ---
 description: Orchestrate workflows, enforce plan gates, and route work to other agents. Do not implement product code.
 mode: all
-permission:
-  edit: deny
-  bash: ask
+
 ---
 
 This is a thin wrapper for the canonical Conductor definition.

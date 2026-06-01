@@ -80,6 +80,31 @@ for role in conductor planner builder validator forger; do
   check_file "src/ai/agents/$role.md"
 done
 
+check_file "src/ai/playbooks/README.md"
+check_file "src/ai/templates/playbook.template.md"
+check_file "src/ai/operations/README.md"
+check_file "src/ai/operations/bootstrap.md"
+check_file "src/ai/operations/refresh-context.md"
+check_file "src/ai/operations/create-overlays.md"
+check_file "src/ai/operations/define-playbook.md"
+check_file "src/ai/operations/run-playbook.md"
+check_absent "src/ai/workflows/define-playbook.md"
+check_absent "src/ai/workflows/run-playbook.md"
+check_absent "src/ai/plans/01-bootstrap.md"
+check_absent "src/ai/plans/02-refresh-context.md"
+check_absent "src/ai/plans/03-create-overlays.md"
+check_file "src/ai/plans/.gitkeep"
+for workflow in src/ai/workflows/*.md; do
+  case "$(basename "$workflow")" in
+    change.md|document.md|guided.md|investigate.md|trivial-change.md) ;;
+    *) fail "unexpected workflow file: $workflow" ;;
+  esac
+done
+check_contains "src/ai/AGENTS.md" ".ai/playbooks/"
+check_contains "src/ai/AGENTS.md" ".ai/operations/"
+check_contains "src/ai/HUMANS.md" "Playbooks"
+check_contains "src/ai/HUMANS.md" "Operations"
+
 tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' EXIT INT TERM
 
@@ -91,6 +116,14 @@ for tool in codex claude-code copilot opencode; do
     for role in conductor planner builder validator forger; do
       : > "$dest/.codex/agents/$role.md"
     done
+    mkdir -p "$dest/.ai/playbooks"
+    printf '%s\n' "custom-playbook-preserved" > "$dest/.ai/playbooks/README.md"
+    mkdir -p "$dest/.ai/workflows" "$dest/.ai/plans"
+    : > "$dest/.ai/workflows/define-playbook.md"
+    : > "$dest/.ai/workflows/run-playbook.md"
+    : > "$dest/.ai/plans/01-bootstrap.md"
+    : > "$dest/.ai/plans/02-refresh-context.md"
+    : > "$dest/.ai/plans/03-create-overlays.md"
   fi
   (cd "$dest" && SRC_DIR="$ROOT" sh "$ROOT/install.sh" "$tool")
 done
@@ -102,6 +135,21 @@ done
 
 check_file "$tmp/codex/.codex/AGENTS.md"
 check_file "$tmp/codex/.codex/config.toml"
+check_file "$tmp/codex/.ai/playbooks/README.md"
+check_contains "$tmp/codex/.ai/playbooks/README.md" "custom-playbook-preserved"
+check_file "$tmp/claude-code/.ai/playbooks/README.md"
+check_file "$tmp/codex/.ai/templates/playbook.template.md"
+check_file "$tmp/codex/.ai/operations/README.md"
+check_file "$tmp/codex/.ai/operations/bootstrap.md"
+check_file "$tmp/codex/.ai/operations/refresh-context.md"
+check_file "$tmp/codex/.ai/operations/create-overlays.md"
+check_file "$tmp/codex/.ai/operations/define-playbook.md"
+check_file "$tmp/codex/.ai/operations/run-playbook.md"
+check_absent "$tmp/codex/.ai/workflows/define-playbook.md"
+check_absent "$tmp/codex/.ai/workflows/run-playbook.md"
+check_absent "$tmp/codex/.ai/plans/01-bootstrap.md"
+check_absent "$tmp/codex/.ai/plans/02-refresh-context.md"
+check_absent "$tmp/codex/.ai/plans/03-create-overlays.md"
 check_absent "$tmp/claude-code/.claude/skills"
 check_file "$tmp/copilot/.github/instructions/ai.instructions.md"
 check_file "$tmp/opencode/.opencode/AGENTS.md"

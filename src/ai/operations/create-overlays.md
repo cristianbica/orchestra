@@ -1,13 +1,13 @@
-# Plan: Create Overlays
+# Operation: Create Overlays
 
 Date: <YYYY-MM-DD when you run this>
 
 Run this when:
 - You want built-in overlay guidance available by default in `.ai/overlays/`
-- You need workflow- and role-level defaults for selecting overlays
+- You need workflow-, operation-, and role-level defaults for selecting overlays
 - You want a consistent precedence model: workflow gates > roles > overlays
 
-Execute via the `change` workflow.
+Execute through the `change` workflow or as a direct Conductor operation when the request is only to create/update Orchestra overlay guidance.
 
 ## Goal
 - Add a small built-in overlay set to the blueprint
@@ -39,9 +39,9 @@ Execute via the `change` workflow.
    - When to apply
    - Output focus
 
-### Phase 2: Add plan artifact
-1. Add `src/ai/plans/03-create-overlays.md`.
-2. Keep style aligned with existing plan files (`01-bootstrap.md`, `02-refresh-context.md`).
+### Phase 2: Add operation artifact
+1. Add `src/ai/operations/create-overlays.md`.
+2. Keep style aligned with existing operation files (`bootstrap.md`, `refresh-context.md`).
 3. Include clear goal/non-goals/scope/steps and verification.
 
 ### Phase 3: Wire overlays into core prompts
@@ -69,11 +69,11 @@ Execute via the `change` workflow.
    - `src/ai/AGENTS.md`
    - `src/ai/HUMANS.md`
    - `src/ai/docs/patterns/architecture.md`
-2. Reflect model: workflows > roles > overlays.
+2. Reflect model: workflows and operations > roles > overlays.
 
 ## Verification
 - Confirm `src/ai/overlays/` exists with exactly 5 built-ins.
-- Confirm `src/ai/plans/03-create-overlays.md` exists.
+- Confirm `src/ai/operations/create-overlays.md` exists.
 - Confirm `install.sh` includes overlays in copy/install flow.
 - Run quick grep/read checks for overlay references across agents/workflows/docs.
 

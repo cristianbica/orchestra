@@ -2,15 +2,17 @@
 
 ## What it is
 
-The `.ai/` system uses four primary workflows plus a guided wrapper:
+The `.ai/` system uses five development lifecycle workflows:
 
 | Workflow | When to use | Approver required? | Planning required? |
 |----------|-------------|-------------------|--------------------|
-| **document** (primary) | Create/refresh `.ai/docs/**` | No | Yes (bootstrap/refresh) |
+| **document** (primary) | Create/refresh `.ai/docs/**` | No | Uses bootstrap/refresh operations for major setup |
 | **change** (primary) | Implement `feature`, `bug`, or `refactor` work | Yes (plan approval) | Yes |
 | **investigate** (primary) | Reduce uncertainty and produce a recommendation/report | No (unless promoted to implementation workflow) | Yes |
 | **trivial-change** (primary) | Typos, formatting only | No | No |
 | **guided** (wrapper) | Run a target workflow step-by-step with user confirmation | Follows target workflow gates | Follows target workflow rules |
+
+Side tasks live in `.ai/operations/`, not `.ai/workflows/`: `bootstrap`, `refresh-context`, `create-overlays`, `define-playbook`, and `run-playbook`.
 
 ## Intake & gates
 
@@ -30,6 +32,7 @@ Handoffs should name files to load instead of pasting full canonical files. Non-
 ## Key invariants
 
 - **NEVER implement without an approved plan** (on non-trivial workflows)
+- **NEVER bypass playbook invocation policy** when a workflow or operation uses a playbook
 - **NEVER create a new plan unless the user explicitly asks** (when working on a plan)
 - **ALWAYS enforce doc hygiene** — use `doc impact: updated | none | deferred`
 - **ALWAYS enforce memory hygiene** — add durable facts only (max ~200 lines total in MEMORY.md)
@@ -45,4 +48,4 @@ Handoffs should name files to load instead of pasting full canonical files. Non-
 - [src/ai/workflows/change.md](../../../src/ai/workflows/change.md) — Feature/bug/refactor workflow
 - [src/ai/workflows/investigate.md](../../../src/ai/workflows/investigate.md) — Investigation workflow
 - [src/ai/workflows/guided.md](../../../src/ai/workflows/guided.md) — Hand-held wrapper over target workflows
-- [src/ai/plans/01-bootstrap.md](../../../src/ai/plans/01-bootstrap.md) — Initial setup plan (4-phase discovery & documentation)
+- [src/ai/operations/README.md](../../../src/ai/operations/README.md) — Built-in operation taxonomy

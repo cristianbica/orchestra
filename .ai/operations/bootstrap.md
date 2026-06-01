@@ -1,9 +1,11 @@
-# Plan: Day 1 Bootstrap
+# Operation: Bootstrap
 
 ## Goal
 - Establish validated, high-signal context for all future agent work
 - Document tech stack, commands, invariants, and critical patterns
 - Verify all commands actually work before documenting them
+
+Execute through the `document` workflow or as a direct Conductor operation routed to Validator.
 
 ## Non-goals
 - Documenting every feature (start with 2-3 most critical)

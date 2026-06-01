@@ -17,13 +17,22 @@ Overlay selection:
 - Conductor chooses overlays by following `.ai/agents/guides/delegation.md`, inspecting `.ai/overlays/`, and recording an explicit `Active overlays` decision for delegated work.
 - Default to no overlays when the question is local and an overlay would not change the investigation.
 
+Playbook use:
+- Planner may recommend or invoke `.ai/playbooks/**` to gather evidence, fetch issue details, run smoke checks, or prepare local investigation context.
+- Playbooks may ask scoped runtime questions for missing inputs.
+- Any playbook with `suggest-first` or `explicit-only` policy requires approval before execution.
+- Production, production-derived data, secrets, paid services, external systems, and mutating steps require explicit per-run approval.
+
 Precedence:
-- Workflow rules and approved plans for follow-on changes override overlay guidance.
+- Workflow rules, role boundaries, approved plan scope, and playbook invocation policy all constrain execution.
+- Stricter approval requirements win when constraints overlap.
+- Overlays are supporting context only.
 
 Steps:
 1. Conductor routes to Planner.
 2. Planner performs a timeboxed, read-only investigation and looks for existing code, patterns, and reusable utilities first.
    - Keep the context budget lean: name canonical files, include targeted evidence, and skip unrelated folders/adapters.
+   - Check relevant playbooks when reusable procedures could reduce uncertainty.
 3. Planner produces an **investigation report** (file or inline):
    - Default: `.ai/plans/<YYYY-MM-DD>-<INDEX>-<slug>.md`
    - Inline is preferred when short (<= 30 non-empty lines), especially in the 20-30 line range.

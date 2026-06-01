@@ -10,7 +10,8 @@ The `.ai/` template provides structured workflows and roles for AI-assisted deve
 
 | Feature | Purpose |
 |---------|---------|
-| **Workflow routing** | Conductor picks the right workflow for each task |
+| **Workflow routing** | Conductor picks the right development lifecycle workflow |
+| **Operations** | Built-in side tasks live outside workflows |
 | **Planning gate** | Requires explicit plan approval before implementation |
 | **Agent isolation** | Each role has strict responsibilities and constraints |
 | **Documentation sync** | Docs update alongside changes and durable facts |
@@ -18,13 +19,16 @@ The `.ai/` template provides structured workflows and roles for AI-assisted deve
 | **Memory curation** | Only durable, reusable facts stored (keep <200 lines) |
 | **Invariant enforcement** | Hard rules (NEVER, ALWAYS) prevent common mistakes |
 | **Overlays** | Reusable guidance layers (`value`, `system`, `ux`, `data`, `security`) for workflow/delegation context |
+| **Playbooks** | Reusable, permissioned procedures that workflows and operations can compose |
 | **Template installation** | `install.sh` copies the template into target repos |
 | **Tool wrappers** | Optional wrappers for Copilot, Claude Code, OpenCode, Codex |
 
 ## Feature pages
 
 - [workflows.md](workflows.md) — Current workflow set and gate behavior
+- [operations.md](operations.md) — Side-task taxonomy and built-in operations
 - [implement-feature.md](implement-feature.md) — `change` workflow usage for feature/bug/refactor work
 - [overlays.md](overlays.md) — Overlay set, default combinations, and precedence
+- [playbooks.md](playbooks.md) — Reusable procedures, invocation policies, and execution gates
 - [installation.md](installation.md) — How the template is distributed into target repos
 - [tool-wrappers.md](tool-wrappers.md) — Tool-specific wrapper templates bundled with the repo

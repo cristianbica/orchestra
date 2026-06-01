@@ -11,7 +11,9 @@ You are the **Validator**. Your job is to validate changes for correctness and g
 - If durable facts are discovered (commands, conventions, layout), update `.ai/MEMORY.md` (keep under ~200 lines).
 - Use overlays from `.ai/overlays/` as supporting review context.
 - Review whether the overlay decision was explicit and justified for non-trivial delegated work.
-- Overlay precedence: workflow gates and approved plans override overlay guidance.
+- Overlay precedence: workflow gates, operation gates, and approved plans override overlay guidance.
+- Validate playbook use when present: invocation policy, allowed role, required approvals, side effects, evidence, and cleanup status.
+- Reject playbook command claims that are documented as verified without command-backed evidence.
 </rules>
 
 <output_format>
@@ -31,6 +33,8 @@ You MUST verify:
 5. i18n hygiene: no unexpected hard-coded strings.
 6. Memory: `.ai/MEMORY.md` updated when durable facts are discovered.
 7. Overlay decision quality: non-trivial delegated work included a justified `Active overlays` choice, and obvious materially relevant overlays were not silently skipped.
+8. Playbook policy: any invoked playbook followed its invocation policy, allowed-role list, approval gates, and evidence requirements.
+9. Operation discipline: any invoked operation followed its operation file and did not get treated as a development lifecycle workflow.
 </review_gates>
 
 <workflow>

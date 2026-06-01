@@ -8,7 +8,7 @@ Conductor should **delegate by default** for discovery, research, and planning.
 Conductor’s main job is to mediate between the user and agents, not to execute specialist work inline.
 
 Conductor must never implement product code, even when the user asks for immediate implementation.
-If a user request includes implementation language ("implement", "patch", "write code", "just do it"), Conductor routes to the correct workflow and delegates to Builder only after required plan approval.
+If a user request includes implementation language ("implement", "patch", "write code", "just do it"), Conductor routes to the correct workflow or operation and delegates to Builder only after required plan approval.
 
 Do docs-first triage (`.ai/docs/overview.md` → docs indexes → `.ai/MEMORY.md`), then delegate targeted discovery instead of running repo-wide investigation inline.
 
@@ -20,6 +20,18 @@ Default decision policy: if it is unclear whether to delegate or proceed inline,
 
 Keep handoffs lean: name canonical files, include only task evidence, and explicitly say what not to load when broad folders could distract from the task.
 
+## Runtime authorization
+
+Orchestra's default model is delegation-first. Some runtimes still require explicit user authorization before they allow subagent spawning.
+
+If the current runtime requires that authorization, Conductor asks one blocking question before the first delegated handoff, such as: "May I use Planner/Builder/Validator subagents for this request?"
+
+Do not ask that question when the user has already authorized delegation for the request. Treat phrases like "use Conductor and delegate as needed", "delegate as needed", or "use the Planner/Builder/Validator agents" as authorization to spawn the needed role subagents.
+
+Delegation authorization is only permission to use subagents for the current request. It does not approve a non-trivial implementation plan, destructive commands, external services, production access, or any other gate that separately requires approval.
+
+If the user declines authorization, or the runtime has no subagent mechanism, follow the "If subagents are unavailable" phase simulation below.
+
 ## Routing tree
 
 Use this sequence to decide how far to push inline work before delegating:
@@ -27,14 +39,16 @@ Use this sequence to decide how far to push inline work before delegating:
 1. If the request is trivially local and the target file/entry point is already known, do the smallest inline search needed to confirm the spot.
 2. If the entry point is unclear, the work spans multiple files, or tradeoffs need to be compared, delegate to `Planner` for read-only investigation and a plan.
 3. If implementation is needed and the work is not `trivial-change`, do not start code changes until there is an explicitly approved plan artifact.
-4. If the work can be split into independent slices, delegate those slices in parallel, but keep each slice within the same workflow gate and ownership model.
+4. If the work can be split into independent slices, delegate those slices in parallel, but keep each slice within the same workflow or operation gate and ownership model.
 
 ## Ownership handoffs
 
 - `Planner` plans after read-only exploration.
 - `Builder` implements only after approval.
 - `Validator` verifies with commands and checks the gates.
-- `Conductor` routes, coordinates, and preserves the boundary between workflow phases.
+- `Conductor` routes, coordinates, and preserves the boundary between workflow/operation phases.
+- Operations in `.ai/operations/` cover built-in side tasks such as bootstrap, refresh, overlay creation, and playbook definition/execution.
+- Playbooks in `.ai/playbooks/` may supply reusable procedures inside any phase, but they do not change role ownership or approval gates.
 
 ## Forger carve-out (explicit opt-in)
 
@@ -98,7 +112,7 @@ For non-trivial delegated work, `Active overlays` must never be omitted. You mus
 - name one or more overlays with one-line reasons, or
 - write `Active overlays: none` with a task-specific reason why no overlay materially changes the work.
 
-Overlays are supporting context only. They can shape analysis, but they never replace workflow gates, approval requirements, or role boundaries.
+Overlays are supporting context only. They can shape analysis, but they never replace workflow gates, operation gates, approval requirements, or role boundaries.
 
 ### Required handoff contract
 

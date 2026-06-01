@@ -41,10 +41,10 @@ With a plan:
 
 *Approval is required when an investigation is promoted into implementation (`change`).
 
-*Docs: Use bootstrap/refresh plans for major updates; incremental updates during ongoing workflows.
+*Docs: Use bootstrap/refresh operations for major updates; incremental updates during ongoing workflows.
 
 ## See also
 
-- [src/ai/plans/01-bootstrap.md](../../../src/ai/plans/01-bootstrap.md) — Example plan structure (Phase 1–4)
+- [src/ai/operations/bootstrap.md](../../../src/ai/operations/bootstrap.md) — Example operation with phased execution
 - [src/ai/templates/plan.template.md](../../../src/ai/templates/plan.template.md) — Plan template
 - [src/ai/agents/planner.md](../../../src/ai/agents/planner.md) — Planner role + discovery checklist

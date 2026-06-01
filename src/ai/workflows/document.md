@@ -11,14 +11,20 @@ Optional follow-ups (only if relevant):
 
 Purpose:
 - Build or refresh `.ai/docs/` from the current app codebase.
-- For first-time setup, execute `.ai/plans/01-bootstrap.md` (copy it to your repo first).
-- For major refresh or migration, execute `.ai/plans/02-refresh-context.md`.
+- For first-time setup, Conductor routes to the `.ai/operations/bootstrap.md` operation.
+- For major refresh or migration, Conductor routes to the `.ai/operations/refresh-context.md` operation.
 
 Overlay selection:
 - Conductor chooses overlays by following `.ai/agents/guides/delegation.md`, inspecting `.ai/overlays/`, and recording an explicit `Active overlays` decision for delegated work.
 
+Playbook use:
+- Validator may use approved playbooks to verify documented commands or procedures.
+- Creating or updating reusable procedures belongs in the `define-playbook` operation, not this workflow, unless the doc edit is purely descriptive.
+
 Precedence:
-- Workflow gates and approved plans override overlay guidance.
+- Workflow gates, role boundaries, approved plan scope, and playbook invocation policy all constrain execution.
+- Stricter approval requirements win when constraints overlap.
+- Overlays are supporting context only.
 
 Steps:
 1. Validator scans the codebase.

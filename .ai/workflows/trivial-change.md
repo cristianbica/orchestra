@@ -9,6 +9,7 @@ Conductor asks (only if unclear):
 Use ONLY for:
 - Typo fixes, formatting, comments
 - Small edits with no behavior changes (typically <= 10 lines)
+- Trivial wording corrections in existing playbooks, with no command/policy/behavior change.
 
 Overlay selection:
 - Conductor chooses overlays by following `.ai/agents/guides/delegation.md`; use `Active overlays: none` only with a brief reason when overlays are intentionally unnecessary.

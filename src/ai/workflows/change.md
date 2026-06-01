@@ -16,8 +16,15 @@ Overlay selection:
 - Conductor chooses overlays by following `.ai/agents/guides/delegation.md`, inspecting `.ai/overlays/`, and recording an explicit `Active overlays` decision for delegated work.
 - Default to no overlays for tightly local work; add overlays only when they materially change planning, implementation, or validation.
 
+Playbook use:
+- Planner may recommend `.ai/playbooks/**` for implementation support or verification when they fit the task.
+- Plans that invoke playbooks must name the playbook, required inputs, side effects, invocation policy, and approval requirements.
+- Plan approval authorizes a playbook only when the plan names the exact playbook and its execution scope; stricter playbook approval gates still win.
+
 Precedence:
-- Workflow gates and approved plans override overlay guidance.
+- Workflow gates, role boundaries, approved plan scope, and playbook invocation policy all constrain execution.
+- Stricter approval requirements win when constraints overlap.
+- Overlays are supporting context only.
 
 Steps:
 1. Conductor routes to Planner.
@@ -32,7 +39,7 @@ Steps:
 	- Default: Builder implements the approved plan.
 	- Opt-in: if user explicitly selected `Forger`, Forger implements in single-agent non-delegating mode.
 4a. Feedback handling (user feedback == validator findings): if user feedback arrives after plan approval, treat it as adjustment work under the same approved plan unless scope changes materially.
-5. Verification: run the most relevant checks and report what was run. Prefer command-backed checks over code-reading-only confirmation.
+5. Verification: run the most relevant checks and report what was run. Prefer command-backed checks over code-reading-only confirmation. Use approved playbooks when they are the clearest verification path.
 6. Validator validates plan adherence and gates; updates docs/memory as needed.
 7. Closeout: explicitly state `doc impact` and `memory impact`.
 

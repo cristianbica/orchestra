@@ -27,6 +27,12 @@ cleanup_legacy_files() {
   remove_if_exists "$AI_DIR/workflows/implement-feature.md"
   remove_if_exists "$AI_DIR/workflows/fix-bug.md"
   remove_if_exists "$AI_DIR/workflows/refactor.md"
+  remove_if_exists "$AI_DIR/workflows/define-playbook.md"
+  remove_if_exists "$AI_DIR/workflows/run-playbook.md"
+
+  remove_if_exists "$AI_DIR/plans/01-bootstrap.md"
+  remove_if_exists "$AI_DIR/plans/02-refresh-context.md"
+  remove_if_exists "$AI_DIR/plans/03-create-overlays.md"
 
   remove_if_exists "$DEST_DIR/.claude/agents/architect.md"
   remove_if_exists "$DEST_DIR/.claude/agents/archivist.md"
@@ -108,15 +114,12 @@ for item in "$BLUEPRINT_SRC"/*; do
       ;;
     plans)
       if [ -e "$dest" ]; then
-        if [ -f "$item/01-bootstrap.md" ]; then
-          cp -f "$item/01-bootstrap.md" "$dest/"
-        fi
-        if [ -f "$item/02-refresh-context.md" ]; then
-          cp -f "$item/02-refresh-context.md" "$dest/"
-        fi
-        if [ -f "$item/03-create-overlays.md" ]; then
-          cp -f "$item/03-create-overlays.md" "$dest/"
-        fi
+        continue
+      fi
+      cp -R "$item" "$AI_DIR/"
+      ;;
+    playbooks)
+      if [ -e "$dest" ]; then
         continue
       fi
       cp -R "$item" "$AI_DIR/"

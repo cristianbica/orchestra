@@ -7,6 +7,7 @@ Orchestra treats verification as a required gate in every non-trivial workflow. 
 ## How it shows up here
 
 - `.ai/MEMORY.md` is where verified commands are documented.
+- `.ai/playbooks/` is where complex verification procedures live when they need inputs, approvals, setup, teardown, or evidence rules.
 - The template repo itself has no build/test suite; verification is typically limited to script inspection or manual checks.
 
 ## Why it matters
