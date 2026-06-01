@@ -124,6 +124,59 @@ for tool in codex claude-code copilot opencode; do
     : > "$dest/.ai/plans/01-bootstrap.md"
     : > "$dest/.ai/plans/02-refresh-context.md"
     : > "$dest/.ai/plans/03-create-overlays.md"
+    mkdir -p "$dest/.codex/agents"
+    cat > "$dest/.codex/agents/builder.toml" <<'EOF'
+name = "builder"
+description = "Custom local builder"
+sandbox_mode = "read-only"
+model = "local-codex-model"
+EOF
+    cat > "$dest/.codex/config.toml" <<'EOF'
+[agents]
+max_threads = 9
+max_depth = 4
+local_limit = 2
+EOF
+  fi
+  if [ "$tool" = "copilot" ]; then
+    mkdir -p "$dest/.github/agents"
+    cat > "$dest/.github/agents/builder.agent.md" <<'EOF'
+---
+name: Builder
+target: vscode
+user-invocable: false
+tools: ['read']
+x-local: keep
+---
+
+Custom local body.
+EOF
+  fi
+  if [ "$tool" = "claude-code" ]; then
+    mkdir -p "$dest/.claude/agents"
+    cat > "$dest/.claude/agents/builder.md" <<'EOF'
+---
+name: builder
+tools: Read
+model: local-claude-model
+memory: local
+---
+
+Custom local body.
+EOF
+  fi
+  if [ "$tool" = "opencode" ]; then
+    mkdir -p "$dest/.opencode/agents"
+    cat > "$dest/.opencode/agents/builder.md" <<'EOF'
+---
+mode: all
+permission:
+  edit: deny
+  bash: deny
+---
+
+Custom local body.
+EOF
   fi
   (cd "$dest" && SRC_DIR="$ROOT" sh "$ROOT/install.sh" "$tool")
 done
@@ -143,9 +196,30 @@ check_file "$tmp/codex/.codex/AGENTS.md"
 check_file "$tmp/codex/.codex/config.toml"
 check_file "$tmp/codex-file-collision/.codex/AGENTS.md"
 check_file "$tmp/codex-file-collision/.codex/config.toml"
+check_contains "$tmp/codex/.codex/agents/builder.toml" 'description = "Custom local builder"'
+check_contains "$tmp/codex/.codex/agents/builder.toml" 'sandbox_mode = "read-only"'
+check_contains "$tmp/codex/.codex/agents/builder.toml" 'model = "local-codex-model"'
+check_contains "$tmp/codex/.codex/config.toml" '^max_threads = 9'
+check_contains "$tmp/codex/.codex/config.toml" '^max_depth = 4'
+check_contains "$tmp/codex/.codex/config.toml" '^local_limit = 2'
 check_file "$tmp/codex/.ai/playbooks/README.md"
 check_contains "$tmp/codex/.ai/playbooks/README.md" "custom-playbook-preserved"
 check_file "$tmp/claude-code/.ai/playbooks/README.md"
+check_contains "$tmp/claude-code/.claude/agents/builder.md" '^tools: Read'
+check_contains "$tmp/claude-code/.claude/agents/builder.md" '^model: local-claude-model'
+check_contains "$tmp/claude-code/.claude/agents/builder.md" '^memory: local'
+check_contains "$tmp/claude-code/.claude/agents/builder.md" 'Custom local body'
+check_file "$tmp/claude-code/.claude/agents/conductor.md"
+check_contains "$tmp/copilot/.github/agents/builder.agent.md" '^user-invocable: false'
+check_contains "$tmp/copilot/.github/agents/builder.agent.md" "tools: \['read'\]"
+check_contains "$tmp/copilot/.github/agents/builder.agent.md" '^x-local: keep'
+check_contains "$tmp/copilot/.github/agents/builder.agent.md" 'Custom local body'
+check_file "$tmp/copilot/.github/agents/conductor.agent.md"
+check_contains "$tmp/opencode/.opencode/agents/builder.md" '^mode: all'
+check_contains "$tmp/opencode/.opencode/agents/builder.md" '  edit: deny'
+check_contains "$tmp/opencode/.opencode/agents/builder.md" '  bash: deny'
+check_contains "$tmp/opencode/.opencode/agents/builder.md" 'Custom local body'
+check_file "$tmp/opencode/.opencode/agents/conductor.md"
 check_file "$tmp/codex/.ai/templates/playbook.template.md"
 check_file "$tmp/codex/.ai/operations/README.md"
 check_file "$tmp/codex/.ai/operations/bootstrap.md"
@@ -161,6 +235,20 @@ check_absent "$tmp/codex/.ai/plans/03-create-overlays.md"
 check_absent "$tmp/claude-code/.claude/skills"
 check_file "$tmp/copilot/.github/instructions/ai.instructions.md"
 check_file "$tmp/opencode/.opencode/AGENTS.md"
+
+dest="$tmp/copilot-force"
+mkdir -p "$dest/.github/agents"
+cat > "$dest/.github/agents/builder.agent.md" <<'EOF'
+---
+name: Builder
+tools: ['read']
+---
+
+Custom local body.
+EOF
+(cd "$dest" && ORCHESTRA_INSTALL_FORCE=1 SRC_DIR="$ROOT" sh "$ROOT/install.sh" copilot)
+check_contains "$dest/.github/agents/builder.agent.md" "tools: \['vscode', 'execute', 'read'"
+check_contains "$dest/.github/agents/builder.agent.md" '^user-invocable: true'
 
 line_budget=$(wc -l < src/ai/AGENTS.md)
 [ "$line_budget" -le 80 ] || fail "src/ai/AGENTS.md exceeds 80 lines: $line_budget"

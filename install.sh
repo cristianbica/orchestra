@@ -32,6 +32,35 @@ remove_file_blocking_template_dirs() {
   done
 }
 
+copy_if_missing() {
+  file_src=$1
+  file_dest=$2
+
+  if [ -e "$file_dest" ]; then
+    return
+  fi
+  mkdir -p "$(dirname "$file_dest")"
+  cp -f "$file_src" "$file_dest"
+}
+
+install_template_dir() {
+  dir_src=$1
+  dir_dest=$2
+
+  (cd "$dir_src" && find . -type d -print) | while IFS= read -r rel; do
+    [ "$rel" = "." ] && continue
+    target="$dir_dest/${rel#./}"
+    if [ -e "$target" ] && [ ! -d "$target" ]; then
+      rm -f "$target"
+    fi
+    mkdir -p "$target"
+  done
+
+  (cd "$dir_src" && find . ! -type d -print) | while IFS= read -r rel; do
+    copy_if_missing "$dir_src/${rel#./}" "$dir_dest/${rel#./}"
+  done
+}
+
 cleanup_legacy_files() {
   remove_if_exists "$AI_DIR/agents/architect.md"
   remove_if_exists "$AI_DIR/agents/archivist.md"
@@ -172,5 +201,9 @@ if [ -n "$TOOL_NAME" ]; then
     cleanup_codex_markdown_agents
   fi
   remove_file_blocking_template_dirs "$TOOL_SRC" "$DEST_DIR"
-  cp -R "$TOOL_SRC"/. "$DEST_DIR/"
+  if [ "${ORCHESTRA_INSTALL_FORCE-}" = "1" ]; then
+    cp -R "$TOOL_SRC"/. "$DEST_DIR/"
+  else
+    install_template_dir "$TOOL_SRC" "$DEST_DIR"
+  fi
 fi

@@ -16,7 +16,9 @@ The repository ships an install script that copies the template into a target re
 
 If a tool name is passed, the script also copies the corresponding wrapper from `src/tools/<tool-name>/` into the target repo root.
 
-Codex adapter installs clean up stale Markdown role wrappers (`.codex/agents/*.md`) before copying the TOML custom-agent files.
+Existing tool wrapper files are preserved by default. If a wrapper file already exists, the installer leaves it unchanged so configured models, tools, permissions, and similar runtime parameters survive reinstall.
+
+Set `ORCHESTRA_INSTALL_FORCE=1` to replace existing tool wrapper files with the template versions. Codex adapter installs still clean up stale Markdown role wrappers (`.codex/agents/*.md`) before copying TOML custom-agent files.
 
 ## See also
 

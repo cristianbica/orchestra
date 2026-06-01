@@ -23,7 +23,9 @@ The repo includes optional wrappers that tailor Orchestra instructions to specif
 
 ## Installation behavior
 
-`install.sh` copies the wrapper directory contents into the target repo root after installing `.ai/`. Codex installs also remove old Markdown role wrappers from `.codex/agents/`.
+`install.sh` installs wrapper files after `.ai/`. Existing wrapper files are left unchanged, so repo-specific model, tools, permissions, and similar runtime parameters are preserved.
+
+Set `ORCHESTRA_INSTALL_FORCE=1` to overwrite existing wrapper files with the template. Codex installs also remove old Markdown role wrappers from `.codex/agents/`.
 
 ## See also
 

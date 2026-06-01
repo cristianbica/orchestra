@@ -83,6 +83,7 @@ This is a template distribution repo. No traditional build/test/lint commands ap
 - 2026-02-10: `.ai/` mirror updated alongside `src/ai/` to exercise workflows in this repo
 - install.sh pulls from GitHub by default or uses `SRC_DIR` when provided
 - install.sh preserves existing `.ai/docs/`, `.ai/playbooks/`, `.ai/MEMORY.md`, and `.ai/plans/` when present
+- install.sh preserves existing tool wrapper files by default; set `ORCHESTRA_INSTALL_FORCE=1` to overwrite wrappers
 - Built-in side tasks live in `.ai/operations/`; `.ai/plans/` is reserved for generated/approved artifacts
 - Agent roles are strict: each has NEVER/ALWAYS rules to prevent overreach and enforce separation of concerns
 - Memory discipline critical: `.ai/MEMORY.md` must stay under ~200 lines or older entries are pruned

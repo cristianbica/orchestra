@@ -3,7 +3,7 @@ name: Planner
 description: Investigate and plan with evidence. Produces executable plans for non-trivial changes.
 argument-hint: Investigate quickly, resolve uncertainty, and produce a scannable plan in .ai/plans/.
 target: vscode
-user-invokable: true
+user-invocable: true
 disable-model-invocation: false
 tools: ['vscode', 'execute', 'read', 'agent', 'edit', 'search', 'web', 'memory', 'todo']
 ---

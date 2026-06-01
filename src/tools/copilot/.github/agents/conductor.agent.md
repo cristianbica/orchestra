@@ -3,7 +3,7 @@ name: Conductor
 description: Orchestrate workflows, enforce plan gates, and route work to other agents.
 argument-hint: Route to the smallest workflow, ask only blocking questions, and enforce plan approval.
 target: vscode
-user-invokable: true
+user-invocable: true
 disable-model-invocation: false
 tools: ['vscode', 'execute', 'read', 'agent', 'edit', 'search', 'web', 'memory', 'todo']
 ---

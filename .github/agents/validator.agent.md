@@ -3,7 +3,7 @@ name: Validator
 description: Validate changes for correctness, plan adherence, and doc/memory hygiene.
 argument-hint: Validation only, produce must-fix vs optional feedback, and enforce gates.
 target: vscode
-user-invokable: true
+user-invocable: true
 disable-model-invocation: false
 tools: ['vscode', 'execute', 'read', 'agent', 'edit', 'search', 'web', 'memory', 'todo']
 ---
