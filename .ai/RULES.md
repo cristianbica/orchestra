@@ -39,6 +39,8 @@ These are binding rules for changing Orchestra itself.
 - MUST NOT invent facts, outputs, or verification results.
 - MUST NOT bypass required workflow gates.
 - MUST NOT perform writing git operations (e.g., `git stash`, `git commit`, `git restore`) unless the user explicitly requests them.
+- MUST NOT inspect or load `.ai/plans/**` unless working from a specific plan for the active task, or the user explicitly asks to review existing plans.
+- MUST, when working from a plan file, load only that active plan file and not neighboring, similarly named, or historical plans.
 - MUST treat `src/**` as the canonical editable source for distributed template changes in this repository.
 - MUST limit edits under `.ai/**` to `.ai/docs/**`, `.ai/plans/**`, `.ai/MEMORY.md`, and `.ai/RULES.md` unless the user explicitly requests a different `.ai/**` path.
 - MUST NOT edit `.ai/agents/**`, `.ai/workflows/**`, `.ai/templates/**`, or `.ai/HUMANS.md` unless the user explicitly requests it.

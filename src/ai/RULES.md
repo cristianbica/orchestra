@@ -31,6 +31,8 @@ Within this file, role sections override `Global` on conflict.
 - MUST NOT perform writing git operations (e.g., `git stash`, `git commit`, `git restore`) unless the user explicitly requests them.
 - MUST keep context lean: reference canonical files by path unless an excerpt is necessary for the task.
 - MUST include "what not to load" in non-trivial delegation when broad folders or large files could waste context.
+- MUST NOT inspect or load `.ai/plans/**` unless working from a specific plan for the active task, or the user explicitly asks to review existing plans.
+- MUST, when working from a plan file, load only that active plan file and not neighboring, similarly named, or historical plans.
 
 ## Conductor
 

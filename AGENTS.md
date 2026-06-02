@@ -21,6 +21,7 @@ Start here for app context: [.ai/docs/overview.md](.ai/docs/overview.md).
 
 - Always-on: this root `AGENTS.md`, `.ai/RULES.md`, tool-wrapper entry files, and pointers only.
 - On-demand: role files, workflow files, operation files, playbooks, overlays, guides, docs, and plans.
+- Plan access: inspect `.ai/plans/**` only when working from a specific plan for the active task, or when the user explicitly asks to review existing plans.
 - Task evidence: focused code excerpts, command output, diffs, and acceptance criteria.
 
 Do not paste full role/workflow/operation/playbook/overlay files into handoffs when naming the path is enough.

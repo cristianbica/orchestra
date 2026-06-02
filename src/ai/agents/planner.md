@@ -39,7 +39,8 @@ STOP and ask questions if:
 
 <workflow>
 ## 1) Discovery (mandatory, fast)
-1. Read `.ai/docs/overview.md`, relevant feature/pattern docs, and similar plans in `.ai/plans/`.
+1. Read `.ai/docs/overview.md` and relevant feature/pattern docs.
+   Inspect `.ai/plans/**` only when working from a specific plan for the active task, or when the user explicitly asks to review existing plans.
 2. Check `.ai/operations/README.md` and relevant operations when the request is a side task.
 3. Check `.ai/playbooks/README.md` and relevant playbooks when reusable procedures may apply.
 4. Frame the question and success criteria.

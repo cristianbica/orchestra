@@ -27,7 +27,7 @@ This is a template distribution repo. No traditional build/test/lint commands ap
 - **Core rules**: Orchestra changes must preserve controllable flow, context-aware development, token economics, tool portability, and evidence-based trust
 - **Memory**: Only durable facts (commands, conventions, invariants, layout); max ~200 lines total
 - **Canonical sources**: `src/ai/` + `src/tools/` are the template sources when present
-- **Context budget**: Keep always-on context lean; load roles/workflows/operations/overlays/docs/plans on demand; non-trivial handoffs include `Active overlays` and `Do not load`
+- **Context budget**: Keep always-on context lean; load roles/workflows/operations/overlays/docs on demand; load `.ai/plans/**` only for the active plan or explicit plan-review requests; non-trivial handoffs include `Active overlays` and `Do not load`
 - **Prompt compaction**: Reduce cost through smaller prompts, phased handoffs, and role-specific context
 - **Codex adapter**: `.codex/config.toml` carries the minimal Orchestra conductor identity inline; project custom agents are standalone `.codex/agents/*.toml` files with `name`, `description`, and `developer_instructions`; `[agents]` config defaults to `max_threads = 6`, `max_depth = 1`
 - **Docs source of truth (this repo)**: `.ai/docs/**` is canonical project context; `src/ai/docs/**` is boilerplate template content
@@ -39,7 +39,7 @@ This is a template distribution repo. No traditional build/test/lint commands ap
 2. **NEVER implement without an explicitly approved plan** — Non-trivial workflows and operations require plan in `.ai/plans/` + user approval unless their gate says otherwise
 3. **NEVER bypass doc hygiene** — Every task must state `doc impact: updated | none | deferred`
 4. **NEVER bypass memory hygiene** — Only durable, reusable facts; keep under ~200 lines
-5. **ALWAYS do discovery-first planning** — Planner must read `.ai/docs/**` + existing plans before drafting
+5. **ALWAYS do discovery-first planning** — Planner must read relevant `.ai/docs/**`; `.ai/plans/**` is only for the active plan or explicit plan-review requests
 6. **ALWAYS verify commands before documenting** — Phase 2 of bootstrap validates commands; status: ✓/⚠/✗
 
 ## Repo layout

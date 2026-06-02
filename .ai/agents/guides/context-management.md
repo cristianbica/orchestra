@@ -37,6 +37,7 @@ Avoid:
 - Mixing multiple tasks/asks in one prompt; split into separate requests.
 - Pasting full canonical role, workflow, operation, or overlay files when a path reference is enough.
 - Loading `ideas/`, archives, old plans, or unrelated adapters unless the task explicitly asks for them.
+- Browsing `.ai/plans/**` because a historical plan name partially matches the current task. Load only the active plan file, or review plans only when explicitly asked.
 
 ## Context budget contract
 
