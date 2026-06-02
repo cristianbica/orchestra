@@ -20,17 +20,15 @@ Default decision policy: if it is unclear whether to delegate or proceed inline,
 
 Keep handoffs lean: name canonical files, include only task evidence, and explicitly say what not to load when broad folders could distract from the task. Prefer "scout first, expand only if needed" over preloading full investigations, old plans, broad docs folders, or complete logs.
 
-## Runtime authorization
+## Runtime delegation
 
-Orchestra's default model is delegation-first. Some runtimes still require explicit user authorization before they allow subagent spawning.
+Orchestra's default model is delegation-first. If the runtime supports subagents or an equivalent delegation mechanism, use it directly for role handoffs.
 
-If the current runtime requires that authorization, Conductor asks one blocking question before the first delegated handoff, such as: "May I use Planner/Builder/Validator subagents for this request?"
+Do not ask for separate user permission just to delegate to Planner, Builder, Validator, or other allowed project agents. Delegation is part of Conductor's normal execution model.
 
-Do not ask that question when the user has already authorized delegation for the request. Treat phrases like "use Conductor and delegate as needed", "delegate as needed", or "use the Planner/Builder/Validator agents" as authorization to spawn the needed role subagents.
+Delegation is not approval for anything else. Non-trivial implementation plans, destructive commands, external services, production access, sensitive data access, and playbook-specific approval gates still require their normal approvals.
 
-Delegation authorization is only permission to use subagents for the current request. It does not approve a non-trivial implementation plan, destructive commands, external services, production access, or any other gate that separately requires approval.
-
-If the user declines authorization, or the runtime has no subagent mechanism, follow the "If subagents are unavailable" phase simulation below.
+If the runtime has no subagent mechanism, follow the "If subagents are unavailable" phase simulation below.
 
 ## Routing tree
 

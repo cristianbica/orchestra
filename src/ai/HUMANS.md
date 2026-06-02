@@ -67,7 +67,7 @@ Overlays let you specialize agent guidance for your architecture, product domain
 
 Use `Conductor` by default for larger or more involved tasks. Delegation keeps context focused per phase, improves gate discipline, and reduces context saturation that can increase hallucination risk. Handoffs should include only the current phase's evidence and explicit files to load.
 
-Some runtimes require explicit permission before Conductor can spawn subagents. To avoid an extra prompt, start with a phrase like: "Use Conductor and delegate as needed." That authorizes Planner, Builder, and Validator subagents for the current request, but it does not approve implementation plans, destructive commands, production access, or other separate approval gates.
+Conductor delegates to Planner, Builder, and Validator as part of normal execution when the runtime supports subagents or an equivalent mechanism. Delegation does not approve implementation plans, destructive commands, production access, sensitive data access, or other separate approval gates.
 
 Use `Forger` when you explicitly want faster single-agent execution for tightly scoped work. This can be quicker, but long or complex tasks can fill context faster, cost more, and increase risk of drift.
 

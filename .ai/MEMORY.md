@@ -30,6 +30,7 @@ This is a template distribution repo. No traditional build/test/lint commands ap
 - **Context budget**: Keep always-on context lean; load roles/workflows/operations/overlays/docs on demand; load `.ai/plans/**` only for the active plan or explicit plan-review requests; non-trivial handoffs include `Active overlays` and `Do not load`
 - **Prompt compaction**: Reduce cost through smaller prompts, phased handoffs, and role-specific context
 - **Codex adapter**: `.codex/config.toml` carries the minimal Orchestra conductor identity inline; project custom agents are standalone `.codex/agents/*.toml` files with `name`, `description`, and `developer_instructions`; `[agents]` config defaults to `max_threads = 6`, `max_depth = 1`
+- **Delegation approvals**: Conductor does not ask for separate user permission just to delegate to subagents; normal plan, destructive-command, playbook, production/external, and sensitive-data approval gates still apply
 - **Docs source of truth (this repo)**: `.ai/docs/**` is canonical project context; `src/ai/docs/**` is boilerplate template content
 - **Repo editing policy (this repo)**: Edit only `.ai/docs/`, `.ai/plans/`, `.ai/MEMORY.md`; never edit `.ai/agents/`, `.ai/workflows/`, `.ai/templates/`, `.ai/HUMANS.md`; treat `src/` as canonical and keep it generic (distributed)
 
