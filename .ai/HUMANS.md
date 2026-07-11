@@ -1,12 +1,14 @@
 # Humans: how to work with Orchestra
 
-Orchestra is the operating model for AI-assisted development in this repo, built around overlays, workflows, and role-based execution.
+Orchestra is the operating model for AI-assisted development in this repo, built around workflows, operations, role-based execution, playbooks, and overlays.
 
-It exists to keep changes predictable: shared context in `.ai/`, explicit workflow boundaries, and specialization through overlays.
+It exists to keep changes predictable: shared context in `.ai/`, explicit workflow and operation boundaries, reusable playbooks, and specialization through overlays.
+
+It reduces token cost through smaller prompts: compact always-on instructions, phased work, role-specific context, and file-path references instead of repeated pasted context.
 
 ## Core operating loop
 
-1. Start with `Conductor` and select a workflow.
+1. Start with `Conductor` and select a workflow or operation.
 2. For non-trivial work, `Planner` creates a plan artifact (inline for short plans; `.ai/plans/` file for larger plans).
 3. Human explicitly approves the plan.
 4. `Builder` implements only approved scope (or `Forger` if explicitly selected).
@@ -16,7 +18,7 @@ It exists to keep changes predictable: shared context in `.ai/`, explicit workfl
 
 | Agent | Directive |
 | --- | --- |
-| `Conductor` | Route requests to the right workflow, enforce gates, and coordinate delegation. |
+| `Conductor` | Route requests to the right workflow or operation, enforce gates, and coordinate delegation. |
 | `Planner` | Investigate quickly and produce evidence-backed executable plans. |
 | `Builder` | Implement approved plans with minimal, safe, scoped changes. |
 | `Validator` | Validate correctness, plan adherence, and docs/memory hygiene. |
@@ -32,7 +34,30 @@ It exists to keep changes predictable: shared context in `.ai/`, explicit workfl
 | `trivial-change` | Tiny no-behavior edits (typos/formatting/docs wording), no plan required. |
 | `guided` | Hand-held wrapper that keeps normal workflow gates intact. |
 
-You can define additional workflows for your repo when needed.
+Workflows are for the development lifecycle only. You can define additional workflows for your repo when needed, but side tasks belong in operations.
+
+## Operations
+
+| Operation | Description |
+| --- | --- |
+| `bootstrap` | Establish initial `.ai/docs/**` and `.ai/MEMORY.md` context. |
+| `refresh-context` | Refresh stale context after major repo or framework changes. |
+| `create-overlays` | Add or update overlay guidance. |
+| `define-playbook` | Create or update a reusable procedure with explicit policy, risks, inputs, and evidence. |
+| `run-playbook` | Execute one reusable procedure while enforcing its invocation policy and approval gates. |
+
+Operations are Orchestra side tasks stored in `.ai/operations/`. They may use normal roles and plan approval gates, but they are not development lifecycle workflows.
+
+## Playbooks
+
+Playbooks are reusable procedures stored in `.ai/playbooks/`. Use them for complex repo-local operations such as running UI smoke tests, fetching issue context, preparing local investigation data, or validating a release path.
+
+Each playbook defines:
+- when to use it and when not to use it;
+- invocation policy: `auto`, `suggest-first`, or `explicit-only`;
+- allowed roles, required inputs, side effects, approval gates, steps, evidence, and failure handling.
+
+Workflows and operations may compose multiple playbooks, and users may directly run a playbook through the `run-playbook` operation. A playbook never bypasses workflow gates, operation gates, or role boundaries. For production, production-derived data, secrets, paid services, or external systems, require explicit per-run approval.
 
 ## Overlays
 
@@ -40,16 +65,19 @@ Overlays let you specialize agent guidance for your architecture, product domain
 
 ## Conductor vs Forger
 
-Use `Conductor` by default for larger or more involved tasks. Delegation keeps context focused per phase, improves gate discipline, and reduces context saturation that can increase hallucination risk.
+Use `Conductor` by default for larger or more involved tasks. Delegation keeps context focused per phase, improves gate discipline, and reduces context saturation that can increase hallucination risk. Handoffs should include only the current phase's evidence and explicit files to load.
 
-Use `Forger` when you explicitly want faster single-agent execution for tightly scoped work. This can be quicker, but long or complex tasks can fill context faster and increase risk of drift.
+Conductor delegates to Planner, Builder, and Validator as part of normal execution when the runtime supports subagents or an equivalent mechanism. Delegation does not approve implementation plans, destructive commands, production access, sensitive data access, or other separate approval gates.
+
+Use `Forger` when you explicitly want faster single-agent execution for tightly scoped work. This can be quicker, but long or complex tasks can fill context faster, cost more, and increase risk of drift.
 
 ## Precedence rules
 
-- Workflows and workflow gates are highest priority.
-- Roles execute inside the selected workflow.
+- Workflows and operation gates are highest priority for the selected route.
+- Roles execute inside the selected workflow or operation.
+- Playbook invocation policy constrains reusable procedure execution.
 - Overlays in `.ai/overlays/` are supporting context.
-- Approved plans and workflow gates override overlays.
+- Approved plans, workflow gates, operation gates, and stricter playbook approval requirements override overlays.
 
 ## Examples
 
@@ -120,8 +148,8 @@ Validator: updates docs based on intake answers
 
 ```
 User: Conductor refresh context
-Conductor: routes to Validator to execute refresh plan
-Validator: executes context refresh plan in .ai/plans/02-refresh-context.md
+Conductor: routes to Validator to execute the refresh-context operation
+Validator: executes the refresh-context operation in .ai/operations/refresh-context.md
 ```
 
 ### Trivial change (no plan required)

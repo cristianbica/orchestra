@@ -35,6 +35,37 @@ Include:
 Avoid:
 - Dumping whole repos, large unrelated logs, or many near-duplicate files.
 - Mixing multiple tasks/asks in one prompt; split into separate requests.
+- Pasting full canonical role, workflow, operation, or overlay files when a path reference is enough.
+- Loading `ideas/`, archives, old plans, or unrelated adapters unless the task explicitly asks for them.
+- Browsing `.ai/plans/**` because a historical plan name partially matches the current task. Load only the active plan file, or review plans only when explicitly asked.
+
+## Context budget contract
+
+For non-trivial handoffs, include:
+- Files to load by path, not by pasted contents, unless a short excerpt is required.
+- Active overlays, or `none` with a task-specific reason.
+- What not to load, especially broad folders and stale artifacts.
+- Evidence needed for the current phase only: acceptance criteria for planning, diffs and command output for validation.
+- Relevant operations and playbooks by path when a side task or reusable procedure is being recommended, planned, or executed.
+
+When `.ai/agents/guides/routing.md` requires a plan, prefer inline plans when short (<= 30 non-empty lines). Use plan files when the plan needs persistence, exceeds that size, or the user asks for a file. Do not introduce plans for planless routes.
+
+## Prompt compaction
+
+Orchestra reduces cost through prompt design: smaller always-on files, narrower handoffs, and phased work.
+
+Use scout-first context gathering:
+- Load only enough docs/code to choose the next correct phase.
+- Expand only when the current evidence is insufficient or suspicious.
+- Split broad work into phases instead of sending one large prompt.
+- Reference canonical files by path instead of pasting them unless a short excerpt is essential.
+
+Phase-specific defaults:
+- Planner receives the request, route, constraints, relevant docs, and target files; it investigates only enough to produce the route-owned plan or report.
+- Builder receives the approved plan when required, or the exact planless scope, plus target files and verification commands; it should not reread the full investigation by default.
+- Validator receives the approved plan when required, or requested scope plus diff for planless work, and verification evidence; it expands into surrounding files only when gates or evidence look risky.
+
+Always-on prompt files should contain routing, precedence, gates, and pointers. Move examples, explanations, and long rationale into on-demand docs.
 
 ## Long documents: use explicit boundaries
 

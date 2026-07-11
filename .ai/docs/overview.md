@@ -5,14 +5,18 @@
 ## What this app does
 
 This is the **canonical template for AI-assisted development workflows**. It provides:
-- A multi-agent system (4 roles: Conductor, Planner, Builder, Validator)
-- Four primary workflows plus a guided wrapper for step-by-step execution
-- A built-in overlay system (`value`, `system`, `ux`, `data`, `security`) to shape planning and delegation
+- A multi-agent system (Conductor, Planner, Builder, Validator, and opt-in Forger)
+- Five development lifecycle workflows plus built-in operations for Orchestra side tasks
+- A built-in overlay library that shapes planning, delegation, review, and implementation context
+- A playbook system for reusable, permissioned repo-local procedures
 - Reusable documentation templates and agent guides
 - Tool-specific wrappers (GitHub Copilot, Claude Code, OpenCode, Codex)
+- Context-budget rules that keep always-on prompts lean and lazy-load detailed context
 - An installation system to bootstrap `.ai/` dirs in target repositories
 
-Designed for teams building with AI agents, this system enforces planning gates, documentation hygiene, and verified commands before implementation.
+Designed for teams building with AI agents, this system enforces route-specific plan or preview gates, documentation hygiene, and command-backed verification.
+
+Changes to Orchestra are governed by five core rules: controllable flow, context-aware development, token economics, tool portability, and evidence-based trust. See [RULES.md](../RULES.md).
 
 ## Tech stack
 
@@ -21,6 +25,7 @@ Designed for teams building with AI agents, this system enforces planning gates,
 - **Installation**: `bash install.sh [tool-name]` (copies template to target repo)
 - **Tool integrations**: GitHub Copilot, Claude Code, OpenCode, Codex
 - **No runtime dependencies**: Pure docs + scripts
+- **Verification**: `scripts/verify.sh` checks installer and adapter smoke expectations
 
 ## Repo landmarks
 
@@ -28,16 +33,18 @@ Designed for teams building with AI agents, this system enforces planning gates,
   - `.ai/docs/**` — source of truth for this repository's current documentation context
   - `src/ai/docs/**` — boilerplate template content for installed user repos (not source of truth for this repo)
 - **Template authoring sources** (what gets distributed):
-  - [src/ai/](../../src/ai/) — agent roles, workflows, templates, docs
+  - [src/ai/](../../src/ai/) — agent roles, workflows, operations, templates, docs
   - [src/tools/](../../src/tools/) — tool-specific wrapper templates
 - **Installed in user repos as**: `.ai/` (copy of `src/ai/`)
   - User repos edit `.ai/` locally; never edit `src/ai/` directly
   - `src/ai/docs/` serves as a template; user repos copy it and customize for their app
 - **Local mirror**: `.ai/` (this repo only) — a working copy used to exercise the workflows
-- **Agent definitions**: [src/ai/agents/](../../src/ai/agents/) — Conductor, Planner, Builder, Validator
+- **Agent definitions**: [src/ai/agents/](../../src/ai/agents/) - Conductor, Planner, Builder, Validator, and Forger
 - **Workflow definitions**: [src/ai/workflows/](../../src/ai/workflows/) — document, investigate, change, trivial-change, guided
+- **Operation definitions**: [src/ai/operations/](../../src/ai/operations/) — bootstrap, refresh-context, create-overlays, define-playbook, run-playbook
+- **Playbook definitions**: [src/ai/playbooks/](../../src/ai/playbooks/) — reusable procedure registry and guidance
 - **Documentation templates**: [src/ai/docs/](../../src/ai/docs/) — overview, features, patterns
-- **Bootstrap plan**: [src/ai/plans/01-bootstrap.md](../../src/ai/plans/01-bootstrap.md) — initial setup for target repos
+- **Bootstrap operation**: [src/ai/operations/bootstrap.md](../../src/ai/operations/bootstrap.md) — initial setup for target repos
 - **Installation script**: [install.sh](../../install.sh) — distributes `.ai/` and tool wrappers to target repos
 - **Tool templates**: [src/tools/](../../src/tools/) — Copilot, Claude Code, OpenCode, Codex wrappers
 
@@ -48,7 +55,7 @@ These rules apply when contributing to **this repository**.
 ### Allowed edits
 
 - `.ai/docs/` — Keep documentation of the current project.
-- `.ai/plans/` — Keep current plans.
+- `.ai/plans/` — Keep current plan artifacts.
 - `.ai/MEMORY.md` — Keep curated, durable repo facts.
 
 ### Forbidden edits
@@ -76,3 +83,4 @@ Not applicable (this is a template/framework, not a domain application).
 - **Planning & discovery**: Planner role, plan structure, investigation patterns
 - **Implementation**: Builder role, minimal safe changes, verification
 - **Validation & docs hygiene**: Validator role, gate checks, docs and memory curation
+- **Reusable procedures**: Playbooks with invocation policy, runtime inputs, approval gates, and evidence reporting

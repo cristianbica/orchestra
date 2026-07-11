@@ -1,34 +1,26 @@
 # Workflow: trivial-change
 
+This planless workflow applies an obvious non-behavioral correction. Its authoritative contract is the `trivial-change` row in `.ai/agents/guides/routing.md`.
+
 ## Intake (Conductor)
-Conductor asks (only if unclear):
-1) Confirm scope: Is this strictly formatting/typos/docs wording only (no behavior change)?
-2) Target location: Which file(s)/section(s)?
-3) Constraints: Any wording preferences or terminology to preserve?
 
-Use ONLY for:
-- Typo fixes, formatting, comments
-- Small edits with no behavior changes (typically <= 10 lines)
+Ask only when unclear:
+1. Exact target and requested correction.
+2. Confirmation that behavior, policy, commands, schemas, and public contracts do not change.
+3. Wording or formatting constraints.
 
-Overlay selection:
-- Conductor chooses overlays by following `.ai/agents/guides/delegation.md`; use `Active overlays: none` only with a brief reason when overlays are intentionally unnecessary.
+Eligible work is limited to typos, formatting, comments, and narrow wording-only corrections. Size is supporting evidence, not proof of triviality. Any uncertainty about behavior or policy requires promotion to `change`.
 
-Precedence:
-- Workflow constraints for trivial scope override overlay guidance.
+## Procedure
 
-Steps:
-1. Builder makes the minimal change.
-2. Explicitly state: "trivial-change: <what> in <file>"
-2a. No plan is required for this workflow.
-2b. Builder must not request a plan for this workflow.
-3. Doc impact: none (by definition)
-4. Validator spot-checks (30 seconds max)
+1. Conductor records `Active overlays: none` with a local-scope reason unless a material overlay applies.
+2. Builder applies only the requested correction. No plan or plan approval is required or requested.
+3. Builder reports `trivial-change: <what> in <file>`, the diff, applicable lightweight checks, explicit skips, doc impact, and memory impact.
+4. Validator checks the requested scope plus actual diff, confirms no behavior/policy change, and reruns a lightweight check when applicable.
+5. Validator returns review status `approve` or `needs changes`. Conductor maps `approve` to `complete`; it maps `needs changes` to `blocked` or promotes to `change` when the diff is not genuinely trivial.
 
-If you're unsure whether it's trivial → use `change` instead.
+## Done criteria
 
-Outputs:
-- The minimal change (no plan required)
-
-Done criteria:
-- Change is documented in the commit/PR description
-- Validator confirmed it's genuinely trivial
+- The requested scope and diff are both minimal and non-behavioral.
+- Applicable checks and skips are reported.
+- Validator confirmed eligibility without relying on a commit or pull-request description.

@@ -1,139 +1,190 @@
 # Orchestra: AI Docs + Agents Template
 
-## What Orchestra is
+Orchestra is an operating model for AI-assisted development, built around workflows, operations, role-based execution, playbooks, and overlays.
 
-Orchestra is a copy-paste operating model for AI-assisted development, built around overlays, workflows, and role-based execution.
+It keeps changes predictable: shared context lives in `.ai/`, development work follows explicit workflow boundaries, side tasks live in operations, reusable procedures live in playbooks, and overlays specialize guidance without changing the core gates.
 
-It helps teams build and maintain project documentation so agents work with stronger context, follow clear workflows with explicit boundaries, and use overlays for specialization when domain needs differ.
+It keeps token cost down through prompt design: compact always-on instructions, phase-sized handoffs, role-specific context, and path references instead of repeated pasted docs.
 
-In practice, Orchestra gives your repo:
+The [canonical routing guide](src/ai/agents/guides/routing.md) defines each route's intake, artifact, approval, ownership, validation, and terminal contract.
 
-- Canonical project context in `.ai/` (docs, patterns, plans, overlays, memory)
-- Role-based execution (`Conductor`, `Planner`, `Builder`, `Validator`, optional `Forger`)
-- Repeatable workflows with gates (`change`, `investigate`, `document`, `trivial-change`, `guided`)
-- A hard plan/approval gate for non-trivial changes
+## What You Get
+
+- Canonical project context in `.ai/`:
+  - docs, patterns, operations, workflows, playbooks, overlays, plans, and memory
+- Role-based execution:
+  - `Conductor`, `Planner`, `Builder`, `Validator`, and opt-in `Forger`
+- Development lifecycle workflows:
+  - `change`, `investigate`, `document`, `trivial-change`, and `guided`
+- Built-in operations:
+  - `bootstrap`, `refresh-context`, `create-overlays`, `define-playbook`, and `run-playbook`
+- Route-specific plans, previews, approvals, and planless evidence
+- Tool wrappers for Codex, Claude Code, GitHub Copilot, and OpenCode
+
+## Core Operating Loop
+
+1. Start with `Conductor` and select a workflow or operation.
+2. When the selected route requires a plan, `Planner` creates an inline or file plan artifact.
+3. Human explicitly approves the plan before implementation; planless routes proceed with their declared scope or report evidence.
+4. `Builder` implements the approved or explicitly planless scope and runs every applicable check, or `Forger` runs the phases if explicitly selected.
+5. `Validator` checks correctness, route-specific evidence, and docs/memory hygiene.
 
 ## Agents
 
 | Agent | Directive |
 | --- | --- |
-| `Conductor` | Route requests to the right workflow, enforce gates, and coordinate delegation. |
-| `Planner` | Investigate quickly and produce evidence-backed executable plans. |
-| `Builder` | Implement approved plans with minimal, safe, scoped changes. |
-| `Validator` | Validate correctness, plan adherence, and docs/memory hygiene. |
-| `Forger` (opt-in) | Run the full flow in one agent thread with explicit phase boundaries. |
+| `Conductor` | Route requests to the right workflow or operation, enforce gates, and coordinate delegation. |
+| `Planner` | Investigate read-only and produce evidence-backed inline or file plans/reports. |
+| `Builder` | Implement approved or explicitly planless scope and run every applicable check. |
+| `Validator` | Validate route-specific evidence and maintain docs/memory hygiene without product implementation. |
+| `Forger` (opt-in) | Run Planner, approval, Builder, and Validator phases in one thread without delegation or gate changes. |
 
 ## Workflows
 
+Workflows are for the development lifecycle only.
+
 | Workflow | Description |
 | --- | --- |
-| `change` | Feature/bug/refactor workflow with planning + explicit approval gate. |
-| `investigate` | Timeboxed investigation to reduce uncertainty and recommend next workflow. |
-| `document` | Create or refresh `.ai/docs/` from current source of truth. |
-| `trivial-change` | Tiny no-behavior edits (typos/formatting/docs wording), no plan required. |
-| `guided` | Hand-held wrapper that keeps normal workflow gates intact. |
+| `change` | Feature/bug/refactor workflow with an inline or file plan and explicit approval. |
+| `investigate` | Planless, read-only investigation that produces a report and recommends a next step. |
+| `document` | Planless, target-scoped `.ai/docs/` work from the current source of truth. |
+| `trivial-change` | Planless no-behavior edits, such as typos or formatting. |
+| `guided` | Hand-held wrapper that inherits the selected route's gates unchanged. |
 
-Note: you can define your own workflows for your repo when the defaults are not enough.
+## Operations
+
+Operations are Orchestra side tasks stored in `.ai/operations/`. Their route rows define the required artifacts, approvals, and owners; they are not development lifecycle workflows.
+
+| Operation | Description |
+| --- | --- |
+| `bootstrap` | Establish initial context after explicit approval of an inline per-run preview. |
+| `refresh-context` | Refresh stale context after explicit approval of an inline per-run preview. |
+| `create-overlays` | Add or update overlay guidance. |
+| `define-playbook` | Create or update a reusable procedure with explicit policy, risks, inputs, and evidence. |
+| `run-playbook` | Execute one reusable procedure while enforcing its invocation policy and approval gates. |
+
+## Playbooks
+
+Playbooks are reusable procedures stored in `.ai/playbooks/`. Use them for complex repo-local operations such as running UI smoke tests, fetching issue context, preparing local investigation data, or validating a release path.
+
+Each playbook defines when to use it, invocation policy, allowed roles, required inputs, side effects, approval gates, steps, evidence, and failure handling.
+
+Workflows and operations may compose playbooks. A user may directly run one with:
+
+```text
+Conductor run playbook: <playbook-slug>
+```
 
 ## Overlays
 
-Overlays let you specialize agent guidance for your architecture, product domain, and risk profile without changing core workflows; they keep decisions contextual while preserving shared gates and consistency. Current overlays: `value.md`, `ux.md`, `system.md`, `data.md`, `security.md`. You can also define your own overlays for your repo.
+Overlays specialize agent guidance for architecture, product domain, and risk profile without changing core workflows. Load them only when they materially affect the task; trivial/local work should usually use no overlays.
+
+Built-in overlays include `value`, `ux`, `system`, `data`, `security`, `webdev`, `frontend`, `api`, `integration`, `devops`, `performance`, `testing`, `review`, `payments`, `privacy`, `dx`, `i18n`, `reliability`, and `mobile`.
 
 ## Conductor vs Forger
 
-Use `Conductor` by default for larger or more involved tasks. Delegation keeps context focused per phase, improves gate discipline, and reduces context saturation that can increase hallucination risk.
+Use `Conductor` by default for larger or more involved tasks. Delegation keeps context focused per phase, improves gate discipline, and reduces context saturation.
 
-Use `Forger` when you explicitly want faster single-agent execution for tightly scoped work. This can be quicker, but long or complex tasks can fill context faster and increase risk of drift.
+Conductor should pass only the current phase's evidence: Planner gets enough to plan, Builder gets the approved plan plus target files, and Validator gets the plan, diff summary, and verification output.
 
-## Quick start
+Some runtimes require explicit permission before Conductor can spawn subagents. To avoid an extra prompt, start with:
 
-### Install Orchestra into your repository root:
+```text
+Use Conductor and delegate as needed.
+```
+
+That authorizes Planner, Builder, and Validator subagents for the current request. It does not approve implementation plans, destructive commands, production access, or other separate approval gates.
+
+Use `Forger` only when explicitly selected. It never delegates; on a plan-required route it creates the plan and stops for explicit approval before implementation, while planless routes retain their declared gates.
+
+## Install
+
+Run from the root of the repository where you want Orchestra installed:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/refs/heads/master/install.sh | sh
 ```
 
-<details>
-<summary>Other install options</summary>
+Install with a tool wrapper:
 
-Install from a specific branch/tag/SHA:
+```sh
+curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/refs/heads/master/install.sh | sh -s -- codex
+curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/refs/heads/master/install.sh | sh -s -- claude-code
+curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/refs/heads/master/install.sh | sh -s -- copilot
+curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/refs/heads/master/install.sh | sh -s -- opencode
+```
+
+Install from a specific branch, tag, or SHA:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/refs/heads/next/install.sh | REF=next sh
 ```
 
-Include a tool wrapper during install:
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/refs/heads/master/install.sh | sh -s -- copilot
-curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/refs/heads/master/install.sh | sh -s -- claude-code
-curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/refs/heads/master/install.sh | sh -s -- opencode
-curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/refs/heads/master/install.sh | sh -s -- codex
-```
-
-Manual copy (no script), from your target repository root:
+Manual copy from a local checkout:
 
 ```sh
 mkdir -p .ai
-cp -R /path/to/orchestra/src/. .ai/
-cp /path/to/orchestra/src/AGENTS.md ./AGENTS.md
+cp -R /path/to/orchestra/src/ai/. .ai/
+cp /path/to/orchestra/src/ai/AGENTS.md ./AGENTS.md
 
 # Optional: tool-specific wrapper
-cp -R /path/to/orchestra/src/tools/copilot/. .
-cp -R /path/to/orchestra/src/tools/claude-code/. .
-cp -R /path/to/orchestra/src/tools/opencode/. .
 cp -R /path/to/orchestra/src/tools/codex/. .
+cp -R /path/to/orchestra/src/tools/claude-code/. .
+cp -R /path/to/orchestra/src/tools/copilot/. .
+cp -R /path/to/orchestra/src/tools/opencode/. .
 ```
 
-</details>
+## Quick Start
 
-### Then bootstrap initial context:
+After installing, bootstrap initial context:
 
-```
+```text
 User: Conductor bootstrap this
-
-Outcome: initial context is seeded under .ai/docs/ (and patterns under .ai/docs/patterns/ as needed)
+Conductor: presents an inline per-run preview
+User: explicitly approves the preview before commands or broad writes
 ```
 
-## Examples
+Then use the normal operating loop:
 
-### Implement a feature (plan gate enforced)
+```text
+User: Use Conductor and delegate as needed. Change: feature add a dark mode toggle.
 
-```
-User: Conductor change: feature add a dark mode toggle
-
-Conductor: asks 1–3 intake questions
-Planner: writes a plan in .ai/plans/
+Conductor: asks intake questions
+Planner: writes an inline plan or a plan in .ai/plans/
 User: explicitly approves the plan
-Builder: implements ONLY the approved plan
-Validator: reviews for correctness + plan adherence and updates docs/memory as needed
+Builder: implements only the approved plan and runs every applicable check
+Validator: reviews correctness, verification, docs, and memory
 ```
 
-### Fix a bug
+Run a playbook:
 
-```
-User: Conductor fix bug: API returns stale cached data
-
-Conductor: intake questions (expected vs actual, repro, evidence)
-Planner: writes a fix plan
-Builder: implements the fix
-Validator: verifies the change matches the plan
+```text
+User: Conductor run playbook: rails-ui-smoke
 ```
 
-### Trivial change (no plan required)
+## Repository Notes
 
-```
-User: Conductor trivial-change: fix typos in docs
+This repository is the canonical Orchestra template. Template sources live under `src/ai/` and `src/tools/`.
 
-Conductor: confirms wording-only scope
-Builder: applies minimal doc edit
-Validator: quick spot-check
+When installed into another repository:
+
+- `.ai/` is copied from `src/ai/`
+- tool wrappers are copied from `src/tools/<tool-name>/`
+- user repos customize their local `.ai/docs/**`, `.ai/MEMORY.md`, `.ai/plans/**`, and `.ai/playbooks/**`
+
+## Verification
+
+For this repository, run:
+
+```sh
+scripts/verify.sh
 ```
+
+The verifier runs `scripts/verify-control-plane.sh` and checks installer behavior, tool wrapper references, Codex agent metadata, operation/playbook layout, and root instruction size.
 
 ## Contributing
 
-- Follow the same process Orchestra enforces: non-trivial changes require a plan in `.ai/plans/` and explicit approval before implementation.
-- Keep docs high-signal: update `.ai/docs/` when behavior or conventions change.
-- Keep memory durable: add only long-lived conventions to `.ai/MEMORY.md`.
-
-If you’re contributing changes to this template itself, open a PR and include verification notes (commands run, doc impact, memory impact).
+- Use Orchestra's own process: select the route and enforce its plan, preview, approval, or planless evidence contract.
+- Keep docs high-signal and update `.ai/docs/**` when behavior or conventions change.
+- Keep memory durable: add only long-lived facts to `.ai/MEMORY.md`.
+- Include verification notes in PRs: commands run, doc impact, and memory impact.

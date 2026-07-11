@@ -1,40 +1,35 @@
-# Workflow: document (initial / refresh)
+# Workflow: document (target-scoped)
+
+This planless workflow creates or refreshes named `.ai/docs/**` content from current repository evidence. Its authoritative contract is the `document` row in `.ai/agents/guides/routing.md`.
 
 ## Intake (Conductor)
-Conductor asks:
-1) Target doc(s): Which file(s) should be created/updated? (path(s) or "not sure")
-2) Audience + intent: Who is this for and what should they be able to do after reading?
-3) Source of truth: What inputs should the doc reflect (code, ticket, decision record), and what's explicitly out-of-scope?
 
-Optional follow-ups (only if relevant):
-- Format constraints: any required structure (sections/checklists/examples)?
+Ask only for missing blocking facts:
+1. Target doc path(s), or the narrow topic when the path is unknown.
+2. Audience and what the reader should be able to understand or do.
+3. Source of truth, format constraints, and explicit exclusions.
 
-Purpose:
-- Build or refresh `.ai/docs/` from the current app codebase.
-- For first-time setup, execute `.ai/plans/01-bootstrap.md` (copy it to your repo first).
-- For major refresh or migration, execute `.ai/plans/02-refresh-context.md`.
+## Route boundaries
 
-Overlay selection:
-- Conductor chooses overlays by following `.ai/agents/guides/delegation.md`, inspecting `.ai/overlays/`, and recording an explicit `Active overlays` decision for delegated work.
+- No plan artifact or plan approval is required.
+- Validator owns the documentation work and validation.
+- Writes are limited to requested `.ai/docs/**` targets and verified durable facts in `.ai/MEMORY.md`.
+- Initial repository setup belongs to `bootstrap`; broad context migration/refresh belongs to `refresh-context`.
+- Product/app code or behavior changes require promotion to `change` before mutation.
+- Reusable procedure creation belongs to `define-playbook`; descriptive documentation may remain here.
 
-Precedence:
-- Workflow gates and approved plans override overlay guidance.
+## Procedure
 
-Steps:
-1. Validator scans the codebase.
-2. Update app overview: `.ai/docs/overview.md` (what the app does, tech stack, repo landmarks).
-3. Update feature index: `.ai/docs/features/README.md`.
-4. Create/update feature pages (for example: `.ai/docs/features/<slug>.md`).
-5. Update pattern index: `.ai/docs/patterns/README.md`.
-6. Update core pattern docs (i18n/testing/architecture) as discovered.
-6a. Feedback handling (user feedback == Validator findings): if the user provides feedback at any time during or after this workflow run, treat it like validator findings and implement it as an adjustment pass within the same workflow run. Never create a new plan unless the user explicitly asks.
-7. Add durable discoveries to `.ai/MEMORY.md`.
+1. Conductor confirms targets, exclusions, source evidence, and overlays for delegated work.
+2. Validator inspects only the code, config, commands, and existing docs needed to support the targets.
+3. Validator updates the named docs without speculation and preserves existing indexes/links when applicable.
+4. Validator runs applicable link, reference, formatting, or documented-command checks and reports explicit skips.
+5. Validator records only concise, verified durable facts in `.ai/MEMORY.md`.
+6. Conductor reports completion, blockage, or promotion with the target list and evidence.
 
-Outputs:
-- `.ai/docs/overview.md`
-- `.ai/docs/features/README.md` and multiple feature pages.
-- `.ai/docs/patterns/README.md` and pattern docs.
+User feedback may drive another target-scoped adjustment pass without creating a plan. Promote if the requested adjustment crosses route boundaries.
 
-Done criteria:
-- Docs reflect what exists in code (no speculation).
-- Memory updated with key commands/conventions.
+## Done criteria
+
+- Requested docs accurately reflect inspected sources and stay within the named scope.
+- Checks, changed targets, source evidence, doc impact, and memory impact are reported.

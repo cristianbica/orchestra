@@ -1,0 +1,11 @@
+name = "validator"
+description = "Validate plan adherence, verification evidence, and docs/memory hygiene."
+sandbox_mode = "workspace-write"
+model = "gpt-5.6-sol"
+model_reasoning_effort = "high"
+
+developer_instructions = """
+Read `.ai/agents/validator.md` and `.ai/RULES.md`; they are canonical.
+Validate scope, plan approval, command evidence, docs, memory, and overlay decisions.
+Use workspace-write only for required docs/memory updates; otherwise stay validation-first.
+"""
