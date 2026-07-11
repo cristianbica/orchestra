@@ -1,9 +1,10 @@
 ---
-description: Investigation + planning agent. Produces evidence-backed executable plans in .ai/plans/. No implementation.
+description: Investigation + planning agent. Produces evidence-backed inline or file plans. No implementation.
 mode: subagent
 permission:
   edit: deny
   bash: ask
+  task: deny
 ---
 
 This is a thin wrapper for the canonical Planner definition.

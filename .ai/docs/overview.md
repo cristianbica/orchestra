@@ -5,16 +5,16 @@
 ## What this app does
 
 This is the **canonical template for AI-assisted development workflows**. It provides:
-- A multi-agent system (4 roles: Conductor, Planner, Builder, Validator)
+- A multi-agent system (Conductor, Planner, Builder, Validator, and opt-in Forger)
 - Five development lifecycle workflows plus built-in operations for Orchestra side tasks
-- A built-in overlay system (`value`, `system`, `ux`, `data`, `security`) to shape planning and delegation
+- A built-in overlay library that shapes planning, delegation, review, and implementation context
 - A playbook system for reusable, permissioned repo-local procedures
 - Reusable documentation templates and agent guides
 - Tool-specific wrappers (GitHub Copilot, Claude Code, OpenCode, Codex)
 - Context-budget rules that keep always-on prompts lean and lazy-load detailed context
 - An installation system to bootstrap `.ai/` dirs in target repositories
 
-Designed for teams building with AI agents, this system enforces planning gates, documentation hygiene, and verified commands before implementation.
+Designed for teams building with AI agents, this system enforces route-specific plan or preview gates, documentation hygiene, and command-backed verification.
 
 Changes to Orchestra are governed by five core rules: controllable flow, context-aware development, token economics, tool portability, and evidence-based trust. See [RULES.md](../RULES.md).
 
@@ -39,7 +39,7 @@ Changes to Orchestra are governed by five core rules: controllable flow, context
   - User repos edit `.ai/` locally; never edit `src/ai/` directly
   - `src/ai/docs/` serves as a template; user repos copy it and customize for their app
 - **Local mirror**: `.ai/` (this repo only) — a working copy used to exercise the workflows
-- **Agent definitions**: [src/ai/agents/](../../src/ai/agents/) — Conductor, Planner, Builder, Validator
+- **Agent definitions**: [src/ai/agents/](../../src/ai/agents/) - Conductor, Planner, Builder, Validator, and Forger
 - **Workflow definitions**: [src/ai/workflows/](../../src/ai/workflows/) — document, investigate, change, trivial-change, guided
 - **Operation definitions**: [src/ai/operations/](../../src/ai/operations/) — bootstrap, refresh-context, create-overlays, define-playbook, run-playbook
 - **Playbook definitions**: [src/ai/playbooks/](../../src/ai/playbooks/) — reusable procedure registry and guidance

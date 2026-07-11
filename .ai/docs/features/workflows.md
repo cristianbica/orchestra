@@ -1,51 +1,51 @@
-# Feature: Current Workflow Set
+# Feature: Workflow Routes
 
-## What it is
+## Canonical contract
 
-The `.ai/` system uses five development lifecycle workflows:
+The authoritative route, gate, ownership, and completion contract is
+[the routing matrix](../../../src/ai/agents/guides/routing.md). Workflow files add
+procedure but do not add or remove matrix gates.
 
-| Workflow | When to use | Approver required? | Planning required? |
-|----------|-------------|-------------------|--------------------|
-| **document** (primary) | Create/refresh `.ai/docs/**` | No | Uses bootstrap/refresh operations for major setup |
-| **change** (primary) | Implement `feature`, `bug`, or `refactor` work | Yes (plan approval) | Yes |
-| **investigate** (primary) | Reduce uncertainty and produce a recommendation/report | No (unless promoted to implementation workflow) | Yes |
-| **trivial-change** (primary) | Typos, formatting only | No | No |
-| **guided** (wrapper) | Run a target workflow step-by-step with user confirmation | Follows target workflow gates | Follows target workflow rules |
+Conductor selects exactly one route before execution. A direct answer needs no
+specialist or file change and stays with Conductor.
 
-Side tasks live in `.ai/operations/`, not `.ai/workflows/`: `bootstrap`, `refresh-context`, `create-overlays`, `define-playbook`, and `run-playbook`.
+## Workflow set
 
-## Intake & gates
+| Workflow | Artifact and approval | Execution and validation |
+| --- | --- | --- |
+| `change` | Inline or file plan; explicit approval before implementation | Planner plans, Builder implements, Validator reviews |
+| `document` | No plan or route approval | Validator updates named `.ai/docs/**` targets from evidence |
+| `investigate` | Report, not an implementation plan; no route approval | Planner performs read-only investigation and reports findings |
+| `trivial-change` | No plan or route approval | Builder applies the narrow correction; Validator checks scope plus diff |
+| `guided` | Inherits the selected target route exactly | Changes cadence only; target ownership and validation remain intact |
 
-Each non-trivial workflow follows this pattern:
+`change` covers non-trivial product/app features, bugs, and refactors. If a
+planless route stops fitting, work stops before out-of-route writes and is
+promoted through the newly selected route's normal gates.
 
-1. **Conductor intake** (asks 1–3 blocking questions)
-2. **Planner discovery & plan/report** (writes to `.ai/plans/` by default)
-3. **Plan approval gate** (user explicitly approves)
-4. **Builder implementation** (executes plan only)
-5. **Verification** (run tests/commands + record results)
-6. **Validator review + docs/memory hygiene** (update `.ai/docs/**` and `.ai/MEMORY.md` as needed)
+## Evidence and verification
 
-## Context budget
+- Planner may write only route-owned inline or `.ai/plans/**` plan/report
+  artifacts; product/source investigation remains read-only.
+- Builder runs every verification category applicable to the touched surface.
+  One passing category does not replace another, and unavailable checks are
+  reported explicitly.
+- Validator reviews an approved plan when the route requires one. For planless
+  work, requested scope plus diff and route-specific evidence are sufficient.
+- Validator may update `.ai/docs/**` and `.ai/MEMORY.md`, but never product/app
+  code.
 
-Handoffs should name files to load instead of pasting full canonical files. Non-trivial handoffs include `Active overlays` and `Do not load` so agents avoid unrelated folders, stale plans, and irrelevant adapter files.
+## Shortcuts
 
-## Key invariants
-
-- **NEVER implement without an approved plan** (on non-trivial workflows)
-- **NEVER bypass playbook invocation policy** when a workflow or operation uses a playbook
-- **NEVER create a new plan unless the user explicitly asks** (when working on a plan)
-- **ALWAYS enforce doc hygiene** — use `doc impact: updated | none | deferred`
-- **ALWAYS enforce memory hygiene** — add durable facts only (max ~200 lines total in MEMORY.md)
-- **Verify before documenting** — validation relies on evidence (commands run or explicit constraints)
-
-## Legacy phrase mapping
-
-- `implement feature`, `fix bug`, and `refactor` are treated as `change` workflow requests.
+Command and legacy aliases classify intent only. They must match the boundary
+grammar in the routing guide and then rejoin normal intake, gates, ownership,
+validation, and terminal handling. Incidental substrings are not shortcuts.
 
 ## See also
 
-- [src/ai/workflows/document.md](../../../src/ai/workflows/document.md) — Full workflow definition
-- [src/ai/workflows/change.md](../../../src/ai/workflows/change.md) — Feature/bug/refactor workflow
-- [src/ai/workflows/investigate.md](../../../src/ai/workflows/investigate.md) — Investigation workflow
-- [src/ai/workflows/guided.md](../../../src/ai/workflows/guided.md) — Hand-held wrapper over target workflows
-- [src/ai/operations/README.md](../../../src/ai/operations/README.md) — Built-in operation taxonomy
+- [change workflow](../../../src/ai/workflows/change.md)
+- [document workflow](../../../src/ai/workflows/document.md)
+- [investigate workflow](../../../src/ai/workflows/investigate.md)
+- [trivial-change workflow](../../../src/ai/workflows/trivial-change.md)
+- [guided wrapper](../../../src/ai/workflows/guided.md)
+- [operations](operations.md)

@@ -2,68 +2,84 @@
 
 ## Purpose
 
-- <what reusable procedure this performs>
+- <reusable procedure and expected result>
 
 ## Use when
 
-- <when an agent should consider this playbook>
+- <concrete trigger>
 
 ## Do not use when
 
-- <clear exclusion cases>
+- <clear exclusion or promotion condition>
 
 ## Invocation policy
 
-- Mode: `suggest-first`
+- Mode: `suggest-first` # auto | suggest-first | explicit-only
 - Allowed roles: `<planner | builder | validator | forger>`
 - Requires approval before execution: `yes`
 - Requires approval before steps:
-  - <step or risk, if any>
+  - <step, resource, or risk and required scope; or none>
+- Enclosing route/plan requirement: <route and approved plan requirement; or none>
 
 ## Risk profile
 
 - Side effects: `<none | starts-server | writes-files | mutates-db | external-network | production-access | other>`
+- Write/artifact paths: <normalized bounded paths, or none>
 - Data sensitivity: `<none | local-only | user-data | production-derived | secrets>`
-- Expected duration: `<timebox>`
-- Cleanup required: `<yes/no + what>`
+- External or paid systems: <systems and account scope, or none>
+- Expected duration: <timebox>
 
 ## Inputs
 
 Required:
-- <input name>: <description>
+- <input name>: <description and validation>
 
 Optional:
-- <input name>: <description>
+- <input name>: <description and default>
 
 ## Runtime questions
 
-Ask only when required inputs are missing:
-1. <question>
+Ask only when a required input is missing:
+1. <scoped question>
 
 ## Steps
 
-1. <step>
-2. <step>
-3. <step>
+1. <setup>
+2. <ordered execution>
+3. <evidence capture>
 
 ## Commands
 
-- `<command>`
+- `<exact command, working directory, timeout, and expected side effects>`
 
 ## May call
 
-- <child playbook slug, or none>
+- <direct child playbook slug, or none>
+
+## Cleanup
+
+- On success: <run-owned resources to stop/remove and verification>
+- On failure: <run-owned resources to stop/remove and verification>
+- Rollback: <named snapshot/manifest/transaction and restore verification, or unavailable>
 
 ## Evidence to report
 
-- <command output summary, files written, screenshots, data provenance, cleanup status>
+- <preflight facts, approvals, command summary, files/artifacts, child results, cleanup, residual risk>
 
 ## Failure handling
 
-- <how to stop, clean up, and report partial results>
+- <stop conditions, partial-result handling, cleanup, and escalation>
+
+## Terminal contract
+
+- Allowed terminal states: `<complete | blocked | failed | rolled back>`
+- `complete`: <required success and cleanup evidence>
+- `blocked`: <missing gate/input evidence>
+- `failed`: <failure and cleanup evidence, or not allowed>
+- `rolled back`: <restoration evidence, or not allowed>
 
 ## Verification status
 
 - Status: `<draft | provisional | verified | deprecated>`
 - Last verified: `<YYYY-MM-DD or unknown>`
-- Verification notes: <what was run or why it is provisional>
+- Verification notes: <commands/evidence run, or unverified claims requiring acknowledgement>

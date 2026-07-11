@@ -24,6 +24,8 @@ check_contains() {
 
 cd "$ROOT"
 
+"$ROOT/scripts/verify-control-plane.sh"
+
 sh -n install.sh
 
 for f in src/tools/codex/.codex/agents/*.toml .codex/agents/*.toml; do
@@ -39,7 +41,7 @@ for role in conductor planner builder validator forger; do
 done
 
 check_contains "src/tools/codex/.codex/config.toml" '^\[agents\]'
-check_contains "src/tools/codex/.codex/config.toml" '^max_threads = 6'
+check_contains "src/tools/codex/.codex/config.toml" '^max_threads = 1'
 check_contains "src/tools/codex/.codex/config.toml" '^max_depth = 1'
 
 if command -v python3 >/dev/null 2>&1; then
@@ -68,7 +70,8 @@ for path in targets:
     for ref in pattern.findall(path.read_text()):
         if "*" in ref:
             continue
-        candidate = root / ref
+        parts = pathlib.PurePosixPath(ref).parts
+        candidate = root / "src" / "ai" / pathlib.Path(*parts[1:]) if parts[0] == ".ai" else root / ref
         if not candidate.exists():
             raise SystemExit(f"verify: {path} references missing {ref}")
 PY
@@ -246,9 +249,23 @@ tools: ['read']
 
 Custom local body.
 EOF
-(cd "$dest" && ORCHESTRA_INSTALL_FORCE=1 SRC_DIR="$ROOT" sh "$ROOT/install.sh" copilot)
+(cd "$dest" && FORCE=anything SRC_DIR="$ROOT" sh "$ROOT/install.sh" copilot)
 check_contains "$dest/.github/agents/builder.agent.md" "tools: \['vscode', 'execute', 'read'"
-check_contains "$dest/.github/agents/builder.agent.md" '^user-invocable: true'
+check_contains "$dest/.github/agents/builder.agent.md" '^user-invocable: false'
+
+dest="$tmp/copilot-legacy-force"
+mkdir -p "$dest/.github/agents"
+cat > "$dest/.github/agents/builder.agent.md" <<'EOF'
+---
+name: Builder
+tools: ['read']
+---
+
+Custom local body.
+EOF
+(cd "$dest" && ORCHESTRA_INSTALL_FORCE=1 SRC_DIR="$ROOT" sh "$ROOT/install.sh" copilot)
+check_contains "$dest/.github/agents/builder.agent.md" "tools: \['read'\]"
+check_contains "$dest/.github/agents/builder.agent.md" 'Custom local body'
 
 line_budget=$(wc -l < src/ai/AGENTS.md)
 [ "$line_budget" -le 80 ] || fail "src/ai/AGENTS.md exceeds 80 lines: $line_budget"

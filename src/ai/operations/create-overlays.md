@@ -1,93 +1,43 @@
 # Operation: Create Overlays
 
-Date: <YYYY-MM-DD when you run this>
+Create or update one repo-local analysis overlay. Follow the `create-overlays` row in `.ai/agents/guides/routing.md`; overlays support routes and never replace their gates or role boundaries.
 
-Run this when:
-- You want built-in overlay guidance available by default in `.ai/overlays/`
-- You need workflow-, operation-, and role-level defaults for selecting overlays
-- You want a consistent precedence model: workflow gates > roles > overlays
+## Intake and scope
 
-Execute through the `change` workflow or as a direct Conductor operation when the request is only to create/update Orchestra overlay guidance.
+Conductor records the overlay goal, slug, analysis scope, intended consumers, constraints, and whether an index entry is required. Allowed writes are limited to `.ai/overlays/<slug>.md` and the repository's required overlay index.
 
-## Goal
-- Add a small built-in overlay set to the blueprint
-- Make overlays part of core context in agents/workflows
-- Preserve current gating behavior and plan approval requirements
+- Do not create a built-in overlay set, modify framework source, wire prompts/workflows, or change installer behavior here; route that rollout through `change`.
+- Preserve existing custom overlays unless the approved scope names one for update.
+- Use a stable lowercase kebab-case slug and keep guidance concise and domain-specific.
 
-## Non-goals
-- Building runtime overlay execution logic
-- Expanding beyond the built-in overlay set
-- Changing workflow gates or plan approval policy
+## Route and ownership
 
-## Scope + assumptions
-- Overlay set is fixed to exactly 5 built-ins
-- Existing repos may already have custom overlays that must not be clobbered
-- Changes remain concise and documentation-first
+1. Conductor selects this operation and records active overlays for each delegation.
+2. Planner performs read-only discovery of the requested consumers, related docs, and existing overlay patterns, then writes a scoped `change`-style plan artifact.
+3. The user explicitly approves the plan before implementation.
+4. Builder creates or updates the named overlay and required index only.
+5. Validator reviews plan approval, scope, schema, references, checks, and impact statuses.
 
-## Steps
+An exact wording-only correction to an existing overlay with no policy, scope, selection, or behavior change must instead use `trivial-change`; Validator then reviews requested scope plus diff without a plan. If triviality becomes uncertain, stop and return to the planned route. Forger may assume the phases only under the explicit opt-in and phase boundaries defined by the routing contract.
 
-### Phase 1: Add built-in overlays
-1. Create `.ai/overlays/` in blueprint source (`src/ai/overlays/`).
-2. Add exactly five concise files:
-   - `value.md`
-   - `system.md`
-   - `ux.md`
-   - `data.md`
-   - `security.md`
-3. Ensure each file contains:
-   - Purpose
-   - When to apply
-   - Output focus
+## Overlay contract
 
-### Phase 2: Add operation artifact
-1. Add `src/ai/operations/create-overlays.md`.
-2. Keep style aligned with existing operation files (`bootstrap.md`, `refresh-context.md`).
-3. Include clear goal/non-goals/scope/steps and verification.
+The overlay defines:
 
-### Phase 3: Wire overlays into core prompts
-1. Update agent prompts:
-   - `src/ai/agents/conductor.md`
-   - `src/ai/agents/planner.md`
-   - `src/ai/agents/builder.md`
-   - `src/ai/agents/validator.md`
-2. Update workflow docs:
-   - `src/ai/workflows/change.md`
-   - `src/ai/workflows/investigate.md`
-   - `src/ai/workflows/document.md`
-   - `src/ai/workflows/trivial-change.md`
-3. Add default overlay combinations by workflow intent.
-4. State precedence clearly: workflow gates/approved plans override overlays.
+- `Purpose`;
+- `When to apply`;
+- `Output focus`;
+- `Decision prompts`;
+- `Quality checks`.
 
-### Phase 4: Installer integration
-1. Update `install.sh` to include overlays in default install/copy behavior.
-2. Preserve existing behavior for all other directories/files.
-3. Do not overwrite existing custom overlays unintentionally.
+It must not redefine route gates, approvals, terminal states, allowed writes, or role ownership. Reference canonical guidance by path instead of copying it.
 
-### Phase 5: Documentation updates
-1. Update:
-   - `AGENTS.md` (repo root)
-   - `src/ai/AGENTS.md`
-   - `src/ai/HUMANS.md`
-   - `src/ai/docs/patterns/architecture.md`
-2. Reflect model: workflows and operations > roles > overlays.
+## Verification and completion
 
-## Verification
-- Confirm `src/ai/overlays/` exists with exactly 5 built-ins.
-- Confirm `src/ai/operations/create-overlays.md` exists.
-- Confirm `install.sh` includes overlays in copy/install flow.
-- Run quick grep/read checks for overlay references across agents/workflows/docs.
+Builder reports the approved plan or trivial scope, exact overlay/index diff, reference checks, applicable formatting checks, and explicit skips. Validator returns `approve` or `needs changes`; that is review status, not a route terminal state.
 
-## Doc impact
-- `AGENTS.md`
-- `src/ai/AGENTS.md`
-- `src/ai/HUMANS.md`
-- `src/ai/docs/patterns/architecture.md`
-- `src/ai/agents/*.md` (overlay defaults and precedence)
-- `src/ai/workflows/*.md` (overlay defaults and precedence)
+Conductor records only a routing-matrix terminal state: `complete` after Validator approval, `blocked` while approval or remediation is required, or `failed` when the run is closed without a valid result. Report doc impact and memory impact; do not widen writes solely to resolve those impacts.
 
 ## Rollback
-If overlay rollout is incorrect:
-1. Remove `src/ai/overlays/*` files.
-2. Revert overlay-related prompt/doc updates.
-3. Restore installer logic to previous behavior.
-4. Re-run verification and apply minimal fixes.
+
+Revert only the named overlay and index changes from this run. Preserve unrelated or concurrent custom-overlay edits and report any conflict instead of overwriting it.

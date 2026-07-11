@@ -14,7 +14,7 @@ Orchestra reduces cost through compact prompts, lazy loading, and phase-sized ha
 - Handoffs name files by path and include only task evidence needed for the current phase.
 - Non-trivial handoffs include `Active overlays` and `Do not load`.
 - Short plans should be inline; use `.ai/plans/` when size, persistence, or user request justifies it.
-- Planner gets enough context to make a decision-complete plan; Builder gets the approved plan and target files; Validator gets the plan, diff summary, and verification evidence.
+- Planner gets enough context for the route-owned plan or report; Builder gets the approved plan when required or exact planless scope; Validator gets the required plan or requested scope plus diff and verification evidence.
 - Broad work is split into phases instead of packed into one large prompt.
 
 ## See also

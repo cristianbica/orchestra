@@ -24,6 +24,8 @@ Each playbook declares one mode:
 
 Sensitive playbooks, including production or production-derived data, secrets, paid services, external systems, or non-trivial local artifacts, require explicit per-run approval.
 
+The repo-local quality-test playbook automatically selects a substantial public merged Ruby PR with bounded `bundle install` and no external-service requirement, pins every generated workspace to its base, and shows an exact-command plan for approval. It compares a direct clean-room vanilla implementation with bootstrapped Orchestra plan-then-implement runs; one requested Orchestra branch or SHA adds `orchestra-<ref>/`. Codex, Claude Code, OpenCode, and GitHub Copilot CLI use explicit unattended command forms. Bootstrap tokens, time, and cost are excluded; the actual PR is inspected only after generated runs and checks complete.
+
 ## See also
 
 - [src/ai/playbooks/README.md](../../../src/ai/playbooks/README.md)

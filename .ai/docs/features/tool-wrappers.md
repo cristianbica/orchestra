@@ -1,32 +1,63 @@
 # Feature: Tool Wrappers
 
-## What it is
+## What they are
 
-The repo includes optional wrappers that tailor Orchestra instructions to specific tools. These are installed alongside `.ai/` when `install.sh` is called with a tool name.
+The optional templates under `src/tools/` translate Orchestra roles into each
+tool's native configuration shape. Canonical route and role policy remains in
+`.ai/agents/guides/routing.md` and `.ai/agents/**`; wrappers must stay thin and
+must not maintain a competing route list.
 
-## Available wrappers
+## Template capabilities
 
-- **Copilot**: [src/tools/copilot/](../../../src/tools/copilot/) - `.github/` wrapper content
-- **Claude Code**: [src/tools/claude-code/](../../../src/tools/claude-code/) - `.claude/` wrapper content
-- **OpenCode**: [src/tools/opencode/](../../../src/tools/opencode/) - `.opencode/` wrapper content
-- **Codex**: [src/tools/codex/](../../../src/tools/codex/) - `.codex/` wrapper content
+| Wrapper | Relevant declared capability |
+| --- | --- |
+| [Codex](../../../src/tools/codex/) | Planner uses a writable sandbox so it can persist route-owned `.ai/plans/**` artifacts; canonical role rules still prohibit product implementation |
+| [Claude Code](../../../src/tools/claude-code/) | Conductor declares the native `Agent` delegation tool; always-on guidance accepts inline or file plans |
+| [Copilot](../../../src/tools/copilot/) | Planner accepts inline or file plans; Forger is user-invocable but disables model invocation and declares no delegation tool |
+| [OpenCode](../../../src/tools/opencode/) | Validator may request edits only for `.ai/docs/**` and `.ai/MEMORY.md`; Forger denies task delegation and remains explicit opt-in |
 
-## Adapter shape
+Other wrapper structure remains tool-specific:
 
-- Wrappers stay thin and point to canonical `.ai/agents/**`, `.ai/workflows/**`, and `.ai/operations/**`.
-- Playbooks stay canonical under `.ai/playbooks/**`; wrappers do not translate them into tool-native skills in this pass.
-- Codex uses standalone `.codex/agents/*.toml` custom-agent files plus `[agents]` limits in `.codex/config.toml`.
-- Codex keeps the minimal Orchestra conductor identity directly in `.codex/config.toml`, then points to `.codex/AGENTS.md` and canonical `.ai/**` instructions for full role behavior.
-- Claude Code includes `CLAUDE.md` and role agents; it does not install project skills.
-- Copilot keeps global instructions lean and adds `.github/instructions/*.instructions.md` for path-specific guidance.
-- OpenCode agent wrappers use permissions to keep planning/validation read-only and implementation edit-capable.
+- Codex uses `.codex/agents/*.toml` custom agents and a compact conductor entry.
+- Claude Code uses `CLAUDE.md` plus project agents; no project skills are assumed.
+- Copilot uses global instructions, path-specific instructions, and custom agents.
+- OpenCode uses agent frontmatter permissions to translate write and delegation
+  boundaries.
 
-## Installation behavior
+## Shipped subagent defaults
 
-`install.sh` installs wrapper files after `.ai/`. Existing wrapper files are left unchanged, so repo-specific model, tools, permissions, and similar runtime parameters are preserved.
+| Role | Codex | Claude Code |
+| --- | --- | --- |
+| Conductor | `gpt-5.6-luna` / `xhigh` | `claude-sonnet-5` / `medium` |
+| Planner | `gpt-5.6-sol` / `high` | `claude-fable-5` / `high` |
+| Builder | `gpt-5.6-terra` / `xhigh` | `claude-sonnet-5` / `high` |
+| Validator | `gpt-5.6-sol` / `high` | `claude-opus-4-8` / `high` |
+| Forger | `gpt-5.6-sol` / `high` | `claude-fable-5` / `xhigh` |
 
-Set `ORCHESTRA_INSTALL_FORCE=1` to overwrite existing wrapper files with the template. Codex installs also remove old Markdown role wrappers from `.codex/agents/`.
+The five Codex agent TOMLs under `src/tools/codex/` are the distributed source;
+their repository-local `.codex/agents/` counterparts must remain byte-identical.
+
+Codex, Copilot, and OpenCode expose only Conductor and opt-in Forger to users;
+the other roles are delegation-only. Codex caps delegation at one active
+subagent and depth one. Copilot and OpenCode instruct user-facing roles to seek
+explicit approval before a second subagent for the same request. Claude Code
+does not provide a native restriction on direct custom-agent selection, so its
+user-selection behavior remains unchanged. Fable use requires acceptance of its
+retention policy and may route safety-sensitive work to Opus 4.8.
+
+These statements describe the checked-in templates and repository semantic
+checks. Native runtime discovery is separate evidence; do not treat template
+inspection as proof that a locally unavailable Claude Code or Copilot runtime
+loaded the configuration.
+
+## Installation boundary
+
+Installer behavior is unchanged by the control-plane consistency work. See the
+installation page for copy and overwrite behavior rather than inferring it from
+role capabilities.
 
 ## See also
 
-- [installation.md](installation.md) - Installation flow and script behavior
+- [installation](installation.md)
+- [agent roles](../patterns/agent-roles.md)
+- [workflow routes](workflows.md)

@@ -1,94 +1,37 @@
 # Workflow: investigate
 
+This planless workflow reduces uncertainty through read-only product/source investigation. Its authoritative contract is the `investigate` row in `.ai/agents/guides/routing.md`.
+
 ## Intake (Conductor)
-Conductor asks:
-1) Investigation question: What are we trying to learn/decide? (1–2 sentences) + what output do you want? (options | root cause | feature map | all)
-2) References: Any known entry points (file paths, feature names, endpoints) or similar existing flow to mirror? (path/link or "unknown")
-3) Constraints + timebox: Default is read-only. Allow temporary instrumentation / throwaway spikes? (yes/no) + timebox (e.g. 30/60/120 min)
 
-Optional follow-ups (only if relevant):
-- Environment: branch, flags, tenant/user role, platform.
-- Risk: is this security/data-sensitive?
+Ask only for missing blocking facts:
+1. Question or decision to support and desired report shape (`options`, `root cause`, `feature map`, or combined).
+2. Known entry points or `unknown`.
+3. Constraints, environment, risk, and timebox.
 
-Inputs:
-- A question to answer (what uncertainty to reduce) + timebox + constraints.
+## Route boundaries
 
-Overlay selection:
-- Conductor chooses overlays by following `.ai/agents/guides/delegation.md`, inspecting `.ai/overlays/`, and recording an explicit `Active overlays` decision for delegated work.
-- Default to no overlays when the question is local and an overlay would not change the investigation.
+- No pre-plan approval or implementation plan is required.
+- Planner's product/source work is read-only; temporary source instrumentation is outside this route.
+- Separate approval still applies before sensitive, external, paid, production, or otherwise gated commands.
+- The output is an investigation report, even when persisted under `.ai/plans/**`; it never authorizes implementation.
 
-Playbook use:
-- Planner may recommend or invoke `.ai/playbooks/**` to gather evidence, fetch issue details, run smoke checks, or prepare local investigation context.
-- Playbooks may ask scoped runtime questions for missing inputs.
-- Any playbook with `suggest-first` or `explicit-only` policy requires approval before execution.
-- Production, production-derived data, secrets, paid services, external systems, and mutating steps require explicit per-run approval.
+## Procedure
 
-Precedence:
-- Workflow rules, role boundaries, approved plan scope, and playbook invocation policy all constrain execution.
-- Stricter approval requirements win when constraints overlap.
-- Overlays are supporting context only.
+1. Conductor confirms the question, timebox, output, constraints, and overlay decision.
+2. Planner inspects the smallest evidence set that can answer the question, looking for existing patterns and reusable utilities first.
+3. Planner produces an inline report or a report under `.ai/plans/**` containing:
+   - intent, success criteria, scope, exclusions, and timebox;
+   - files inspected, commands run, and observations;
+   - findings, confidence, options when relevant, and recommendation;
+   - remaining unknowns and a tight next-route suggestion.
+4. Planner confirms the product/source diff is empty and reports any unavailable evidence.
+5. Conductor closes the route as `reported` or `blocked`, or proposes promotion to `change` or `document`.
 
-Steps:
-1. Conductor routes to Planner.
-2. Planner performs a timeboxed, read-only investigation and looks for existing code, patterns, and reusable utilities first.
-   - Keep the context budget lean: name canonical files, include targeted evidence, and skip unrelated folders/adapters.
-   - Check relevant playbooks when reusable procedures could reduce uncertainty.
-3. Planner produces an **investigation report** (file or inline):
-   - Default: `.ai/plans/<YYYY-MM-DD>-<INDEX>-<slug>.md`
-   - Inline is preferred when short (<= 30 non-empty lines), especially in the 20-30 line range.
-4. Promotion rule:
-   - If implementation is the next step, stop after the report and recommend the `change` workflow.
-   - Any code changes beyond explicitly-approved temporary instrumentation/spikes are deferred to the next workflow.
-5. Conductor confirms the recommended handoff and routes to the next workflow (`change` | `document`).
+If implementation is requested next, stop after the report and enter the new route's normal intake and gates. Do not relabel or pre-approve the report as a change plan.
 
-Outputs:
-- Investigation report: inline for short reports; `.ai/plans/<YYYY-MM-DD>-<INDEX>-<slug>.md` for longer reports.
-- Clear recommendation + handoff to next workflow.
+## Done criteria
 
-Done criteria:
-- Investigation reduced uncertainty with evidence.
-- Report includes a concrete recommendation and a tight next-step scope.
-- Any instrumentation/spike permission and actions are explicitly documented.
-
----
-
-## Investigation Report template
-
-1) **Intent**
-- Question to answer:
-- Success criteria:
-
-2) **Scope + constraints**
-- In-scope:
-- Out-of-scope:
-- Read-only default acknowledged: yes
-- Instrumentation/spikes allowed (explicit permission): yes/no
-- Timebox:
-
-3) **Evidence collected**
-- Files inspected:
-- Commands run:
-- Observations:
-- Reusable code/patterns considered first:
-
-4) **Findings**
-- How it works today (feature map summary, when relevant):
-- Root cause / repro (when relevant):
-- Confidence level (low/medium/high):
-
-5) **Options**
-- Option A:
-- Option B:
-- Option C (optional):
-- Recommendation + rationale:
-
-Keep lean-context when the investigation is narrow and self-contained: include only the files, commands, and observations needed to support the recommendation.
-
-6) **Handoff**
-- Next workflow: `change` | `document`
-- Proposed scope:
-- Verification plan:
-
-7) **Open questions**
-- Remaining unknowns:
-- Why they remain unknown:
+- Evidence reduced the stated uncertainty within the timebox.
+- The report distinguishes observations, inference, confidence, and unknowns.
+- No product/source mutation occurred and the recommended next route is explicit.

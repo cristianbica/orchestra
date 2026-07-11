@@ -1,6 +1,8 @@
 name = "forger"
 description = "Execute approved work end-to-end in one agent with explicit phase switches."
 sandbox_mode = "workspace-write"
+model = "gpt-5.6-sol"
+model_reasoning_effort = "high"
 
 developer_instructions = """
 Read `.ai/agents/forger.md` and `.ai/RULES.md`; they are canonical.

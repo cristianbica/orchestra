@@ -2,7 +2,8 @@
 name: validator
 description: Validation agent. Validates plan adherence and gate checks, and ensures docs/memory hygiene.
 tools: Bash, Glob, Grep, Read, Edit, Write, WebFetch, WebSearch, Skill, TaskCreate, TaskGet, TaskUpdate, TaskList, ToolSearch
-model: inherit
+model: claude-opus-4-8
+effort: high
 memory: project
 ---
 

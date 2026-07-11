@@ -201,7 +201,7 @@ if [ -n "$TOOL_NAME" ]; then
     cleanup_codex_markdown_agents
   fi
   remove_file_blocking_template_dirs "$TOOL_SRC" "$DEST_DIR"
-  if [ "${ORCHESTRA_INSTALL_FORCE-}" = "1" ]; then
+  if [ "${FORCE+x}" = "x" ]; then
     cp -R "$TOOL_SRC"/. "$DEST_DIR/"
   else
     install_template_dir "$TOOL_SRC" "$DEST_DIR"

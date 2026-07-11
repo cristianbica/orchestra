@@ -48,7 +48,7 @@ For non-trivial handoffs, include:
 - Evidence needed for the current phase only: acceptance criteria for planning, diffs and command output for validation.
 - Relevant operations and playbooks by path when a side task or reusable procedure is being recommended, planned, or executed.
 
-Prefer inline plans when short (<= 30 non-empty lines). Use plan files when the plan needs persistence, exceeds that size, or the user asks for a file.
+When `.ai/agents/guides/routing.md` requires a plan, prefer inline plans when short (<= 30 non-empty lines). Use plan files when the plan needs persistence, exceeds that size, or the user asks for a file. Do not introduce plans for planless routes.
 
 ## Prompt compaction
 
@@ -61,9 +61,9 @@ Use scout-first context gathering:
 - Reference canonical files by path instead of pasting them unless a short excerpt is essential.
 
 Phase-specific defaults:
-- Planner receives the request, constraints, relevant docs, and target files; it investigates only enough to make a decision-complete plan.
-- Builder receives the approved plan plus target files and verification commands; it should not reread the full investigation by default.
-- Validator receives the approved plan, diff summary, and verification evidence; it expands into surrounding files only when gates or evidence look risky.
+- Planner receives the request, route, constraints, relevant docs, and target files; it investigates only enough to produce the route-owned plan or report.
+- Builder receives the approved plan when required, or the exact planless scope, plus target files and verification commands; it should not reread the full investigation by default.
+- Validator receives the approved plan when required, or requested scope plus diff for planless work, and verification evidence; it expands into surrounding files only when gates or evidence look risky.
 
 Always-on prompt files should contain routing, precedence, gates, and pointers. Move examples, explanations, and long rationale into on-demand docs.
 

@@ -2,7 +2,8 @@
 name: planner
 description: Investigation + planning agent. Produces evidence-backed executable plans in .ai/plans/. Never implements product code.
 tools: Bash, Glob, Grep, Read, WebFetch, WebSearch, Skill, TaskCreate, TaskGet, TaskUpdate, TaskList, ToolSearch
-model: inherit
+model: claude-fable-5
+effort: high
 memory: project
 ---
 

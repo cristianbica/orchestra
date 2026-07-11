@@ -1,53 +1,40 @@
 # Workflow: change (feature | bug | refactor)
 
+This workflow implements non-trivial product/app changes. Its authoritative route contract is the `change` row in `.ai/agents/guides/routing.md`.
+
 ## Intake (Conductor)
-Conductor asks:
-1) Change type + summary: Is this a `feature`, `bug`, or `refactor`, and what is the goal?
-2) Outcome criteria: Top acceptance criteria (or expected vs actual + repro for bugs).
-3) Constraints: Hard limits (API/schema/UX), compatibility, timeline, and risk notes.
 
-Optional follow-ups (only if relevant):
-- Security/data sensitivity, authz, i18n, tenant/role scope.
+Ask only for missing blocking facts:
+1. Change type and goal: `feature`, `bug`, or `refactor`.
+2. Success criteria, including expected/actual behavior and repro for bugs.
+3. Constraints and material risk: compatibility, API/schema/UX, security/data, i18n, or role scope.
 
-Inputs:
-- A requested change plus constraints and success criteria.
+## Procedure
 
-Overlay selection:
-- Conductor chooses overlays by following `.ai/agents/guides/delegation.md`, inspecting `.ai/overlays/`, and recording an explicit `Active overlays` decision for delegated work.
-- Default to no overlays for tightly local work; add overlays only when they materially change planning, implementation, or validation.
+1. Conductor confirms the `change` route and records a reasoned overlay decision for delegated work.
+2. By default Planner performs focused, read-only discovery and produces an executable inline or file plan. In opted-in Forger mode, Forger assumes this Planner phase and its plan-artifact writes.
+3. The plan identifies scope/non-goals, critical files, reusable patterns, numbered steps, verification, and doc impact.
+4. **Approval gate:** stop until the user explicitly approves that exact plan artifact.
+5. By default Builder implements the approved plan. In opted-in Forger mode, Forger assumes this Builder phase and its approved product/source writes without delegating.
+6. The Builder phase runs every applicable verification category and reports commands, outcomes, and skips.
+7. By default Validator returns `approve` or `needs changes` after checking route eligibility, approval, plan adherence, diff scope, verification, docs, and memory. In opted-in Forger mode, Forger assumes this Validator phase and its allowed docs/memory writes.
+8. Conductor maps review status to `complete`, `blocked`, or `failed` and reports completion evidence; Forger performs this coordination only inside explicitly selected single-agent mode.
 
-Playbook use:
-- Planner may recommend `.ai/playbooks/**` for implementation support or verification when they fit the task.
-- Plans that invoke playbooks must name the playbook, required inputs, side effects, invocation policy, and approval requirements.
-- Plan approval authorizes a playbook only when the plan names the exact playbook and its execution scope; stricter playbook approval gates still win.
+## Playbooks and feedback
 
-Precedence:
-- Workflow gates, role boundaries, approved plan scope, and playbook invocation policy all constrain execution.
-- Stricter approval requirements win when constraints overlap.
-- Overlays are supporting context only.
+- A plan that invokes a playbook names its inputs, side effects, invocation policy, approvals, execution scope, and evidence.
+- Plan approval authorizes only named playbook scope; stricter playbook gates still apply.
+- Invocation approval never substitutes for approval of the `change` plan.
+- Feedback after approval may be handled inside the same plan only when it does not materially change scope or approach; otherwise stop for a plan update and renewed approval.
 
-Steps:
-1. Conductor routes to Planner.
-2. Planner performs focused, read-only discovery and produces an executable plan artifact (file or inline).
-	- Inline plan is preferred when short (<= 30 non-empty lines), especially in the 20-30 line range.
-	- Use `.ai/plans/` plan files when the plan is larger or when a file is explicitly requested.
-	- Handoffs name files to load and what not to load instead of pasting full canonical files.
-	- The plan must call out the critical files, reusable functions/patterns to reuse first, and the verification steps.
-	- For small independent work units, use lean-context: keep the plan minimal but still executable.
-3. Approval gate: do not implement until the plan artifact is explicitly approved.
-4. Implementation path:
-	- Default: Builder implements the approved plan.
-	- Opt-in: if user explicitly selected `Forger`, Forger implements in single-agent non-delegating mode.
-4a. Feedback handling (user feedback == validator findings): if user feedback arrives after plan approval, treat it as adjustment work under the same approved plan unless scope changes materially.
-5. Verification: run the most relevant checks and report what was run. Prefer command-backed checks over code-reading-only confirmation. Use approved playbooks when they are the clearest verification path.
-6. Validator validates plan adherence and gates; updates docs/memory as needed.
-7. Closeout: explicitly state `doc impact` and `memory impact`.
+## Outputs
 
-Outputs:
-- Plan: inline in-chat OR `.ai/plans/<YYYY-MM-DD>-<INDEX>-<slug>.md`
-- Updated docs when behavior/conventions changed.
+- Explicitly approved inline plan or `.ai/plans/<YYYY-MM-DD>-<INDEX>-<slug>.md`.
+- Scoped implementation diff and command-backed verification.
+- Doc impact and memory impact.
 
-Done criteria:
-- Plan artifact exists, was explicitly approved, and was followed.
-- Change is complete within scope and verified.
-- `doc impact` and `memory impact` are explicitly reported.
+## Done criteria
+
+- The exact plan was explicitly approved before implementation and followed within scope.
+- Every applicable check ran or has an explicit skip reason.
+- Validator returned a review status, and Conductor mapped it to a route-valid terminal state with required evidence.

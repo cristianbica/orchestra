@@ -1,132 +1,58 @@
 # Operation: Bootstrap
 
-## Goal
-- Establish validated, high-signal context for all future agent work
-- Document tech stack, commands, invariants, and critical patterns
-- Verify all commands actually work before documenting them
+Initialize trusted Orchestra context in a target repository. This operation follows the `bootstrap` row in `.ai/agents/guides/routing.md`; it is not the `document` workflow and its preview is not a `change` plan.
 
-Execute through the `document` workflow or as a direct Conductor operation routed to Validator.
+## Intake and boundaries
 
-## Non-goals
-- Documenting every feature (start with 2-3 most critical)
-- Documenting every pattern (start with 2-3 most used)
-- 100% coverage on day 1 (breadth over depth; expand later)
+Conductor records the target repository, desired context scope, constraints, permitted commands, exclusions, and acceptable side effects. Bootstrap may write only paths named in its approved preview, normally `.ai/docs/**` and `.ai/MEMORY.md` plus its run archive.
 
-## Scope + assumptions
-- Assumes the repo builds and tests run (or can be fixed quickly)
-- Assumes README/CONTRIBUTING/CI configs exist with some guidance
-- Discovery first, documentation second (validate before writing)
+- Do not mutate product/app files. Stop and route that work to `change`.
+- Do not run commands or perform broad writes while preparing the preview.
+- Do not inspect historical plans under `.ai/plans/**`.
+- Do not follow symlinks outside the target repository or archive data outside the approved scope.
 
-## Steps
+## Approval gate
 
-### Phase 1: Discovery (Archivist - read-only scan)
-1. Scan repo structure:
-   - Main code locations (src/, app/, lib/, etc.)
-   - Test locations and framework (test/, spec/, __tests__/)
-   - Config files (package.json, Gemfile, requirements.txt, pyproject.toml, etc.)
-   - CI/CD files (.github/workflows/, .gitlab-ci.yml, Jenkinsfile, etc.)
-   - Documentation (README.md, CONTRIBUTING.md, docs/)
-   - Build scripts (Makefile, scripts/, package.json scripts)
-2. Identify tech stack from dependencies/imports
-3. **Identify business domains** (if applicable):
-   - Look for folder grouping (e.g., billing/, inventory/, users/, admin/)
-   - Check for domain models or bounded contexts
-   - Review feature organization in code
-   - If 3+ clear domains exist: plan to organize docs by domain
-   - If <3 domains or unclear: use flat feature structure
-4. Catalog obvious patterns (routing, data access, testing style)
-5. Note: DO NOT write docs yet - just gather findings
+Before any command or broad write, Conductor presents one inline per-run preview containing:
 
-### Phase 2: Command Verification (Archivist - test every command)
-For each discovered command, actually run it:
-1. **Bootstrap/install**: Run dependency install; note any missing system deps or errors
-2. **Build**: Run build; verify it completes (errors are OK if expected)
-3. **Test**: Run test suite; verify command works (failing tests OK, just verify command runs)
-4. **Lint**: Run linting; verify it executes
-5. **Dev/Run**: Start dev server or run app (if applicable); verify it starts
+- a timestamped UTC run ID (`YYYYMMDDTHHMMSSZ`, with a collision suffix when needed) and target root;
+- exact commands, working directories, timeouts, expected outputs, and known side effects;
+- normalized repository-relative read, write, create, archive, and cleanup paths;
+- docs/features/patterns to create or update and evidence sources to inspect;
+- processes that may start, their readiness checks, and stop method;
+- snapshot, manifest verification, rollback, and residual-risk steps.
 
-For each command:
-- Record exact command string
-- Record result (✓ success / ⚠ warning / ✗ failed)
-- Record timing (if >10s, note it)
-- Record any workarounds needed
+The user must explicitly approve that preview. Any added command, widened path, or new side effect requires a revised preview and fresh approval before proceeding.
 
-### Phase 3: Invariant Discovery (Archivist + Architect)
-Search for non-negotiable rules:
-1. **Security patterns**: Auth checks, sanitization, validation gates
-2. **Data integrity**: Transactions, consistency checks, immutability rules
-3. **Architectural boundaries**: Layering rules, what can call what
-4. **Performance constraints**: N+1 prevention, caching requirements
-5. **Multi-tenancy/scoping**: Tenant isolation patterns (if applicable)
+## Execution (Validator)
 
-Discovery sources:
-- Comments with "IMPORTANT", "NEVER", "ALWAYS", "WARNING", "CRITICAL"
-- Validation rules and guards in code
-- CI checks and pre-commit hooks
-- Recent PR comments about violations
-- Test patterns that enforce rules
+1. Create a new timestamped `.ai-archive/<run-id>/` without replacing an existing archive.
+2. Before any target mutation or side-effecting command, snapshot every existing approved write path and every path a command may mutate. Preserve file bytes, modes, directory entries, and symlinks without following them.
+3. Write a manifest containing the run ID, target root, approved preview reference, every scoped path, its pre-run existence/type/metadata/digest, its snapshot location, and every approved command/process.
+4. Verify the manifest inventory and snapshot bytes/metadata against the source. Stop with no target mutation if the snapshot is incomplete, escapes scope, or fails verification.
+5. Start a run ledger. Record each command result, file state immediately before and after each write, created file/directory, and process ID started by this run. Refuse a write if its pre-write state differs from the verified snapshot or preceding ledger state.
+6. Inspect the approved repository sources, identify the stack, landmarks, critical domains, commands, conventions, and invariants, then verify only the approved commands. Never guess results.
+7. Write concise, source-linked context only to approved paths. Populate the overview, memory, indexes, and the previewed high-value feature/pattern docs; label gaps and unverified claims.
+8. Stop every run-owned temporary process using its recorded PID and verify it exited. Perform all previewed cleanup and record the result.
 
-### Phase 4: Documentation (Archivist - write validated context)
-1. **Fill `.ai/docs/overview.md`**:
-   - What the app does (2-3 sentences)
-   - Tech stack (verified from package files + imports)
-   - Repo landmarks (main code, tests, config locations)
-   - Business domains (if identified in Phase 1)
+## Verification and closeout
 
-2. **Populate `.ai/MEMORY.md`**:
-   - Commands (verified): exact commands with ✓/⚠/✗ status and timing
-   - Conventions: discovered from code patterns
-   - Invariants: non-negotiable rules from Phase 3
-   - Repo layout: main paths
-   - Business domains: list of domains (if applicable)
-   - Discovered quirks: workarounds, timing issues, known problems
+Validator checks that:
 
-3. **Create 2-3 feature docs** (`.ai/docs/features/<slug>.md` or `.ai/docs/features/<domain>/<slug>.md`):
-   - **If domains identified**: Create domain subdirectories under `features/`
-     - Example: `.ai/docs/features/billing/invoices.md`, `.ai/docs/features/membership/subscriptions.md`
-     - Pick 1 key feature per major domain (2-3 total)
-   - **If no clear domains**: Use flat structure
-     - Example: `.ai/docs/features/user-auth.md`, `.ai/docs/features/dashboard.md`
-   - Keep each to one screen
-   - Link to actual code locations
+- the approved preview matches commands, writes, side effects, and cleanup;
+- the archive and manifest were verified before target mutation;
+- documented commands include actual result and useful timing evidence;
+- claims and links resolve to inspected repository evidence;
+- created and changed paths, command results, process cleanup, doc impact, memory impact, and residual risks are reported.
 
-4. **Create 2-3 pattern docs** (`.ai/docs/patterns/<slug>.md`):
-   - Document the most-used patterns (testing, data access, routing, etc.)
-   - Reference actual examples from the codebase
-   - Keep concise
-
-5. **Update indexes**:
-   - Business domains identified (if applicable) with brief descriptions
-   - Verified commands (with status + timing)
-   - Discovered invariants (critical rules)
-   - Features documented (with brief rationale and domain grouping if used)
-   - Patterns documented (with usage frequency)
-   - Known gaps + recommended next
-   - Red flags (anything broken, concerning, or unclear)
-
-## Verification
-Run through this checklist before declaring bootstrap complete:
-- [ ] overview.md lists business domains (if applicable)
-- [ ] MEMORY.md has verified commands with ✓/⚠/✗ status and timing
-- [ ] MEMORY.md has at least 3 invariants/constraints documented
-- [ ] MEMORY.md has repo layout section filled
-- [ ] MEMORY.md lists business domains (if applicable)
-- [ ] At least 2-3 feature pages created and indexed (organized by domain if domains exist)
-- [ ] At least 2-3 pattern pages created and indexed
-- [ ] Bootstrap plan documents known gaps and next priorities
-- [ ] All commands in MEMORY.md were actually run (not guessed)
-
-## Doc impact (flat or domain-organized)
-- `.ai/docs/overview.md`
-- `.ai/docs/features/README.md` + 2-3 feature pages
-- `.ai/docs/patterns/README.md` + 2-3 pattern pages
-- `.ai/MEMORY.md` populated with verified commands/conventions/invariants
-
-If domains are identified:
-- Feature pages may be organized under `.ai/docs/features/<domain>/<slug>.md`
+Validator returns review status `approve` or `needs changes`. Conductor alone records the route terminal state: `complete` after approval, `blocked` when remediation or approval is required, or `rolled back` after verified rollback.
 
 ## Rollback
-If bootstrap is incomplete or wrong:
-1. Delete all generated docs under `.ai/docs/`
-2. Clear `.ai/MEMORY.md` (except the structure template)
-3. Re-run this plan with fixes
+
+Rollback uses the manifest and run ledger; it never deletes `.ai/docs/**` wholesale.
+
+1. Stop only processes whose PIDs were recorded as started by this run.
+2. Restore only pre-existing paths changed by this run from the verified snapshot.
+3. Delete only files and directories recorded as created by this run, removing a directory only when it is empty after owned files are removed.
+4. Before each reversal, require the current state to match the ledger's run-produced state. On concurrent or unowned changes, stop and report the path for manual resolution.
+5. Verify restored metadata/digests, absence of owned creations, and process cleanup; retain the archive and final rollback record.

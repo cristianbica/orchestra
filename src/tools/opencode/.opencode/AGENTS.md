@@ -4,11 +4,12 @@ This repository uses `.ai/` as the canonical source of agent roles, workflows, p
 
 ## Start here
 - Read /AGENTS.md (repo root).
-- Use workflows in `.ai/workflows/`.
+- Use `.ai/agents/guides/routing.md` for the authoritative route and gate contract.
+- Load workflows and operations on demand for the selected route.
 
 ## Hard gates
 - Prefer minimal scope; do not expand requirements.
-- For any non-trivial code change: require a plan in `.ai/plans/` and explicit user approval before implementing.
+- For a plan-required change: require an inline or `.ai/plans/**` plan artifact and explicit user approval before implementing.
 - Keep always-on context lean; load role, workflow, overlay, docs, and plan files on demand.
 
 ## Working modes (roles)
@@ -19,7 +20,11 @@ When asked to act in a role, follow the canonical role file:
 - Builder: `.ai/agents/builder.md` (implement only after plan approval)
 - Validator: `.ai/agents/validator.md` (review diffs vs plan + docs/memory hygiene)
 
-Agent wrappers use OpenCode permissions: planner/conductor/validator are read-only, while builder/forger can request edits.
+Agent wrappers use OpenCode permissions to translate each canonical role's write and delegation boundaries.
+
+## Delegation limits
+- Treat Conductor and opt-in Forger as the only user-facing roles; Planner, Builder, and Validator are delegation-only.
+- Run at most one subagent at a time. Obtain the user's explicit approval before launching a second subagent for the same request, including after the first completes.
 
 If anything in this file conflicts with `.ai/agents/*.md`, the canonical file wins.
 

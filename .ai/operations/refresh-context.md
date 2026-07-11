@@ -1,172 +1,59 @@
 # Operation: Refresh Context
 
-Date: <YYYY-MM-DD when you run this>
+Refresh existing Orchestra context from current repository evidence. This operation follows the `refresh-context` row in `.ai/agents/guides/routing.md`; it is not the `document` workflow and its preview is not a `change` plan.
 
-Run this when:
-- Major changes were done to the repo (tech stack upgrade, architecture refactor, etc.)
-- The app used a previous version of `.ai/` structure
-- Documentation is stale or misaligned with current codebase
-- Migrating from different agent system (ai-try-1, ai-try-2, custom docs, etc.)
+## Intake and boundaries
 
-Execute through the `document` workflow or as a direct Conductor operation routed to Validator.
+Conductor records the refresh goals, target repository, stale context, exclusions, run constraints, permitted commands, and acceptable side effects. Refresh may write only paths named in its approved preview, normally existing `.ai/docs/**` and `.ai/MEMORY.md` plus its run archive.
 
-## Goal
-- Preserve valuable existing documentation
-- Restructure to current `.ai/` conventions (domains, templates, etc.)
-- Enrich with missing context (commands, invariants, gaps)
-- Validate everything still works
+- Preserve verified useful context; replace or archive content only when current evidence supports it.
+- Do not mutate product/app files. Stop before those writes and route them to `change`.
+- Do not run commands or perform broad writes while preparing the preview.
+- Do not inspect historical plans under `.ai/plans/**`; they are execution artifacts, not refresh evidence.
+- Do not follow symlinks outside the target repository or archive data outside approved scope.
 
-## Non-goals
-- Starting from scratch (use `bootstrap.md` for that)
-- Preserving documentation that's now wrong/obsolete
-- 100% coverage on first pass (focus on critical updates)
+## Approval gate
 
-## Scope + assumptions
-- Existing docs have some value worth preserving
-- Repo is in working state (builds, tests can run)
-- Willing to delete/replace obsolete content
+Before any command or broad write, Conductor presents one inline per-run preview containing:
 
-## Steps
+- a timestamped UTC run ID (`YYYYMMDDTHHMMSSZ`, with a collision suffix when needed) and target root;
+- exact commands, working directories, timeouts, expected outputs, and known side effects;
+- normalized repository-relative read, write, move, archive, create, and cleanup paths;
+- context sources, stale claims to re-check, intended restructures, and explicit exclusions;
+- processes that may start, their readiness checks, and stop method;
+- snapshot, manifest verification, rollback, and residual-risk steps.
 
-### Phase 1: Inventory Existing Docs (Archivist - audit what exists)
-1. **Scan current `.ai/` structure** (if exists):
-   - What's in `.ai/docs/features/`? (flat vs domain-organized?)
-   - What's in `.ai/docs/patterns/`?
-   - What's in `.ai/MEMORY.md`?
-   - What's in `.ai/plans/`?
-   - Check `.ai/docs/overview.md` - is it filled or template?
+The user must explicitly approve that preview. Any added command, widened path, or new side effect requires a revised preview and fresh approval before proceeding.
 
-2. **Scan for legacy docs** (outside `.ai/`):
-   - Old CLAUDE.md, AGENTS.md, .cursorrules, etc.
-   - READMEs with outdated architecture notes
-   - Docs in previous agent system formats (ai-try-1, ai-try-2)
-   - Wiki pages, Notion exports, etc.
+## Execution (Validator)
 
-3. **Categorize findings**:
-   - **Keep + restructure**: valuable content, wrong format/location
-   - **Keep + update**: good content, just needs refresh
-   - **Archive**: outdated but might be useful for reference
-   - **Delete**: obsolete, wrong, or duplicated
+1. Create a new timestamped `.ai-archive/<run-id>/` without replacing an existing archive.
+2. Before any target mutation or side-effecting command, snapshot every existing approved write/move path and every path a command may mutate. Preserve file bytes, modes, directory entries, and symlinks without following them.
+3. Write a manifest containing the run ID, target root, approved preview reference, every scoped path, its pre-run existence/type/metadata/digest, its snapshot location, and every approved command/process.
+4. Verify the manifest inventory and snapshot bytes/metadata against the source. Stop with no target mutation if the snapshot is incomplete, escapes scope, or fails verification.
+5. Start a run ledger. Record each command result, file state immediately before and after each write/move, created file/directory, and process ID started by this run. Refuse a write if its pre-write state differs from the verified snapshot or preceding ledger state.
+6. Inventory only current context and approved legacy sources. Compare claims with current code, dependencies, configuration, CI, and commands; never treat stale prose as proof.
+7. Verify only approved commands, then update/restructure the previewed overview, memory, indexes, feature docs, and pattern docs. Keep verified content, remove or label disproven claims, repair links, and record remaining gaps.
+8. Stop every run-owned temporary process using its recorded PID and verify it exited. Perform all previewed cleanup and record the result.
 
-4. **Identify what's missing** compared to `bootstrap.md` expectations:
-   - Commands verified?
-   - Invariants documented?
-   - Business domains identified?
-   - Critical features covered?
-   - Core patterns documented?
+## Verification and closeout
 
-### Phase 2: Verify Current State (Archivist - test everything)
-Run the same command verification as `bootstrap.md` Phase 2:
-1. Bootstrap/install: Does it still work? Any new dependencies?
-2. Build: Still builds? New warnings/errors?
-3. Test: Test command changed? Suite still runs?
-4. Lint: Linter upgraded? New rules?
-5. Dev/Run: Start command changed?
+Validator checks that:
 
-Compare to existing `.ai/MEMORY.md` commands:
-- Which commands are stale or wrong?
-- Which commands are missing?
-- Record new timings (has build gotten slower?)
+- the approved preview matches commands, writes/moves, side effects, and cleanup;
+- the archive and manifest were verified before target mutation;
+- refreshed claims, commands, timings, conventions, invariants, and links have current evidence;
+- valuable removed content is present in the declared archive and obsolete content is not presented as current;
+- changed/created/moved paths, command results, process cleanup, doc impact, memory impact, and residual risks are reported.
 
-### Phase 3: Detect Changes (Architect - compare old vs current)
-1. **Tech stack changes**:
-   - Framework upgrades (Rails 6→7, React 17→18, etc.)
-   - New dependencies added
-   - Deprecated packages removed
-   - Language version changes
-
-2. **Architecture changes**:
-   - New domains added?
-   - Domain boundaries changed?
-   - Major refactors (monolith→microservices, etc.)
-   - New patterns introduced (GraphQL, event sourcing, etc.)
-
-3. **Invariants changes**:
-   - New security requirements?
-   - Changed data integrity rules?
-   - New performance constraints?
-   - Compliance changes (GDPR, SOC2, etc.)
-
-4. **Feature landscape**:
-   - Features added since last docs
-   - Features removed/deprecated
-   - Features significantly changed
-
-### Phase 4: Restructure + Migrate (Archivist - apply current conventions)
-1. **Restructure features** (if needed):
-   - **If current structure is flat but domains now exist**: Reorganize into domain subdirectories
-   - **If domains changed**: Move docs to new domain folders
-   - **If going flat→domain or domain→flat**: Restructure accordingly
-   - Update internal links
-
-2. **Migrate legacy docs**:
-   - Extract valuable content from old CLAUDE.md, AGENTS.md, .cursorrules
-   - Rewrite into current `.ai/docs/**` format
-   - Preserve examples, but update to current patterns
-   - Move to archive if not migrated
-
-3. **Update `.ai/docs/overview.md`**:
-   - Refresh tech stack (remove old versions, add new tools)
-   - Update repo landmarks if structure changed
-   - Add/update business domains section
-   - Keep concise (1-2 paragraphs + bullets)
-
-4. **Rebuild `.ai/MEMORY.md`**:
-   - Keep verified commands that still work (update if changed)
-   - Remove obsolete commands
-   - Add new commands discovered
-   - Update conventions from current code patterns
-   - Update invariants based on Phase 3 discoveries
-   - Add new quirks/workarounds
-   - Update repo layout if structure changed
-   - Update business domains if changed
-
-5. **Refresh feature docs** (`.ai/docs/features/**`):
-   - Update existing feature docs with changes from Phase 3
-   - Add 1-2 new feature docs for major additions
-   - Mark deprecated features clearly or remove
-   - Ensure all links to code still work
-
-6. **Refresh pattern docs** (`.ai/docs/patterns/**`):
-   - Update existing patterns if implementation changed
-   - Add 1-2 new patterns if major patterns introduced
-   - Remove patterns no longer used
-   - Update code examples to current syntax/conventions
-
-7. **Update indexes**:
-   - `.ai/docs/features/README.md` with current structure
-   - `.ai/docs/patterns/README.md` with current patterns
-
-### Phase 5: Enrich Gaps (Archivist - fill what's missing)
-Based on Phase 1 "missing" analysis:
-1. Add missing verified commands to MEMORY
-2. Document missing invariants discovered in Phase 3
-3. Add critical missing feature docs (1-2 most important)
-4. Add critical missing pattern docs (1-2 most important)
-5. Fill any TODO/placeholder sections left from migration
-
-## Verification
-Run through this checklist before declaring refresh complete:
-- [ ] All existing valuable docs migrated or explicitly archived
-- [ ] `.ai/docs/overview.md` reflects current tech stack and structure
-- [ ] `.ai/MEMORY.md` has verified commands (all tested, stale ones removed)
-- [ ] `.ai/MEMORY.md` reflects current invariants and conventions
-- [ ] Feature docs reflect current domain structure (if domains changed)
-- [ ] All internal links in docs still work
-- [ ] Pattern docs reflect current patterns in use
-- [ ] At least 1-2 new critical docs added (features or patterns)
-- [ ] Refresh plan documents what changed and why
-- [ ] Old/obsolete docs archived (not lost, but out of main path)
-
-## Doc impact
-Updates entire `.ai/docs/**` structure:
-- `.ai/docs/overview.md` (refreshed)
-- `.ai/docs/features/**` (restructured + updated + enriched)
-- `.ai/docs/patterns/**` (updated + enriched)
-- `.ai/MEMORY.md` (verified + updated)
+Validator returns review status `approve` or `needs changes`. Conductor alone records `complete` after approval, `blocked` when remediation or approval is required, `rolled back` after verified rollback, or `promoted` when product/app work moves to `change`.
 
 ## Rollback
-If refresh goes wrong:
-1. Restore from `.ai-archive/<YYYY-MM-DD>/`
-2. Revert changes to MEMORY.md, overview.md
-3. Consider running the `bootstrap` operation fresh instead
+
+Rollback uses the manifest and run ledger; it never performs an unscoped restore.
+
+1. Stop only processes whose PIDs were recorded as started by this run.
+2. Restore only pre-existing paths changed or moved by this run from the verified snapshot.
+3. Delete only files and directories recorded as created by this run, removing a directory only when it is empty after owned files are removed.
+4. Before each reversal, require the current state to match the ledger's run-produced state. On concurrent or unowned changes, stop and report the path for manual resolution.
+5. Verify restored metadata/digests, absence of owned creations, and process cleanup; retain the archive and final rollback record.

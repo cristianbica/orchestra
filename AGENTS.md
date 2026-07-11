@@ -30,7 +30,8 @@ Do not paste full role/workflow/operation/playbook/overlay files into handoffs w
 
 Select one route before loading detailed instructions:
 
-- Direct answer: answer questions/opinions that do not require file changes.
+- Authoritative routes and gates: [.ai/agents/guides/routing.md](.ai/agents/guides/routing.md).
+- Direct answer: answer questions/opinions that do not require file changes or specialist work.
 - Operation: use `.ai/operations/` for Orchestra side tasks: meta-tasks about the `.ai/` system, not product/app changes.
 	- [.ai/operations/bootstrap.md](.ai/operations/bootstrap.md)
 	- [.ai/operations/refresh-context.md](.ai/operations/refresh-context.md)
@@ -48,7 +49,7 @@ Select one route before loading detailed instructions:
 ## Precedence model
 
 - First select one route: direct answer, workflow, or operation.
-- Then apply that route's gates and role boundaries.
+- Then apply that route's matrix row and role boundaries exactly; aliases only classify intent and rejoin this routing.
 - Approved plans constrain implementation inside the selected route.
 - Playbook policy applies only when a playbook is invoked.
 - Overlays provide supporting context and never override gates.
@@ -72,7 +73,6 @@ Select one route before loading detailed instructions:
 - Do not invent missing canonical contents.
 Rules:
 - Prefer minimal scope; do not expand requirements.
-- Keep docs short; link instead of duplicating content.
 - When assembling/pasting context for an agent, follow [.ai/agents/guides/context-management.md](.ai/agents/guides/context-management.md).
 - Overlay precedence: workflow gates, operation gates, and approved plans override overlays.
 - If you discover a durable fact (commands, conventions, layout), update [.ai/MEMORY.md](.ai/MEMORY.md). If it is near or over 200 lines, consolidate/prune stale entries before appending.

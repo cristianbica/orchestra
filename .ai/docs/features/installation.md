@@ -18,7 +18,7 @@ If a tool name is passed, the script also copies the corresponding wrapper from 
 
 Existing tool wrapper files are preserved by default. If a wrapper file already exists, the installer leaves it unchanged so configured models, tools, permissions, and similar runtime parameters survive reinstall.
 
-Set `ORCHESTRA_INSTALL_FORCE=1` to replace existing tool wrapper files with the template versions. Codex adapter installs still clean up stale Markdown role wrappers (`.codex/agents/*.md`) before copying TOML custom-agent files.
+Set `FORCE` to any value to replace existing tool wrapper files with the template versions. Codex adapter installs still clean up stale Markdown role wrappers (`.codex/agents/*.md`) before copying TOML custom-agent files.
 
 ## See also
 

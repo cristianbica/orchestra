@@ -1,9 +1,11 @@
 name = "planner"
 description = "Investigate and produce evidence-backed executable plans without implementation."
-sandbox_mode = "read-only"
+sandbox_mode = "workspace-write"
+model = "gpt-5.6-sol"
+model_reasoning_effort = "high"
 
 developer_instructions = """
 Read `.ai/agents/planner.md` and `.ai/RULES.md`; they are canonical.
-Use read-only discovery, cite evidence, reuse existing patterns first, and produce an inline plan when short or a `.ai/plans/` file when persistence/size requires it.
-Never implement product code.
+Keep product/source discovery read-only, cite evidence, and reuse existing patterns first.
+Write only route-owned inline or `.ai/plans/**` plan/report artifacts. Never implement product code.
 """

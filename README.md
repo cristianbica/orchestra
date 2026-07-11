@@ -6,6 +6,8 @@ It keeps changes predictable: shared context lives in `.ai/`, development work f
 
 It keeps token cost down through prompt design: compact always-on instructions, phase-sized handoffs, role-specific context, and path references instead of repeated pasted docs.
 
+The [canonical routing guide](src/ai/agents/guides/routing.md) defines each route's intake, artifact, approval, ownership, validation, and terminal contract.
+
 ## What You Get
 
 - Canonical project context in `.ai/`:
@@ -16,26 +18,26 @@ It keeps token cost down through prompt design: compact always-on instructions, 
   - `change`, `investigate`, `document`, `trivial-change`, and `guided`
 - Built-in operations:
   - `bootstrap`, `refresh-context`, `create-overlays`, `define-playbook`, and `run-playbook`
-- A hard approval gate for non-trivial implementation
+- Route-specific plans, previews, approvals, and planless evidence
 - Tool wrappers for Codex, Claude Code, GitHub Copilot, and OpenCode
 
 ## Core Operating Loop
 
 1. Start with `Conductor` and select a workflow or operation.
-2. For non-trivial work, `Planner` creates a plan artifact.
-3. Human explicitly approves the plan.
-4. `Builder` implements only approved scope, or `Forger` runs the flow if explicitly selected.
-5. `Validator` checks correctness, plan adherence, and docs/memory hygiene.
+2. When the selected route requires a plan, `Planner` creates an inline or file plan artifact.
+3. Human explicitly approves the plan before implementation; planless routes proceed with their declared scope or report evidence.
+4. `Builder` implements the approved or explicitly planless scope and runs every applicable check, or `Forger` runs the phases if explicitly selected.
+5. `Validator` checks correctness, route-specific evidence, and docs/memory hygiene.
 
 ## Agents
 
 | Agent | Directive |
 | --- | --- |
 | `Conductor` | Route requests to the right workflow or operation, enforce gates, and coordinate delegation. |
-| `Planner` | Investigate quickly and produce evidence-backed executable plans. |
-| `Builder` | Implement approved plans with minimal, safe, scoped changes. |
-| `Validator` | Validate correctness, plan adherence, and docs/memory hygiene. |
-| `Forger` (opt-in) | Run the full flow in one agent thread with explicit phase boundaries. |
+| `Planner` | Investigate read-only and produce evidence-backed inline or file plans/reports. |
+| `Builder` | Implement approved or explicitly planless scope and run every applicable check. |
+| `Validator` | Validate route-specific evidence and maintain docs/memory hygiene without product implementation. |
+| `Forger` (opt-in) | Run Planner, approval, Builder, and Validator phases in one thread without delegation or gate changes. |
 
 ## Workflows
 
@@ -43,20 +45,20 @@ Workflows are for the development lifecycle only.
 
 | Workflow | Description |
 | --- | --- |
-| `change` | Feature/bug/refactor workflow with planning and explicit approval. |
-| `investigate` | Timeboxed investigation to reduce uncertainty and recommend a next step. |
-| `document` | Create or refresh `.ai/docs/` from the current source of truth. |
-| `trivial-change` | Tiny no-behavior edits, such as typos or formatting. |
-| `guided` | Hand-held wrapper that keeps normal workflow gates intact. |
+| `change` | Feature/bug/refactor workflow with an inline or file plan and explicit approval. |
+| `investigate` | Planless, read-only investigation that produces a report and recommends a next step. |
+| `document` | Planless, target-scoped `.ai/docs/` work from the current source of truth. |
+| `trivial-change` | Planless no-behavior edits, such as typos or formatting. |
+| `guided` | Hand-held wrapper that inherits the selected route's gates unchanged. |
 
 ## Operations
 
-Operations are Orchestra side tasks stored in `.ai/operations/`. They may use normal roles and plan approval gates, but they are not development lifecycle workflows.
+Operations are Orchestra side tasks stored in `.ai/operations/`. Their route rows define the required artifacts, approvals, and owners; they are not development lifecycle workflows.
 
 | Operation | Description |
 | --- | --- |
-| `bootstrap` | Establish initial `.ai/docs/**` and `.ai/MEMORY.md` context. |
-| `refresh-context` | Refresh stale context after major repo or framework changes. |
+| `bootstrap` | Establish initial context after explicit approval of an inline per-run preview. |
+| `refresh-context` | Refresh stale context after explicit approval of an inline per-run preview. |
 | `create-overlays` | Add or update overlay guidance. |
 | `define-playbook` | Create or update a reusable procedure with explicit policy, risks, inputs, and evidence. |
 | `run-playbook` | Execute one reusable procedure while enforcing its invocation policy and approval gates. |
@@ -93,7 +95,7 @@ Use Conductor and delegate as needed.
 
 That authorizes Planner, Builder, and Validator subagents for the current request. It does not approve implementation plans, destructive commands, production access, or other separate approval gates.
 
-Use `Forger` only when you explicitly want faster single-agent execution for tightly scoped work.
+Use `Forger` only when explicitly selected. It never delegates; on a plan-required route it creates the plan and stops for explicit approval before implementation, while planless routes retain their declared gates.
 
 ## Install
 
@@ -138,6 +140,8 @@ After installing, bootstrap initial context:
 
 ```text
 User: Conductor bootstrap this
+Conductor: presents an inline per-run preview
+User: explicitly approves the preview before commands or broad writes
 ```
 
 Then use the normal operating loop:
@@ -146,9 +150,9 @@ Then use the normal operating loop:
 User: Use Conductor and delegate as needed. Change: feature add a dark mode toggle.
 
 Conductor: asks intake questions
-Planner: writes a plan in .ai/plans/
+Planner: writes an inline plan or a plan in .ai/plans/
 User: explicitly approves the plan
-Builder: implements only the approved plan
+Builder: implements only the approved plan and runs every applicable check
 Validator: reviews correctness, verification, docs, and memory
 ```
 
@@ -176,11 +180,11 @@ For this repository, run:
 scripts/verify.sh
 ```
 
-The verifier checks installer behavior, tool wrapper references, Codex agent metadata, operation/playbook layout, and root instruction size.
+The verifier runs `scripts/verify-control-plane.sh` and checks installer behavior, tool wrapper references, Codex agent metadata, operation/playbook layout, and root instruction size.
 
 ## Contributing
 
-- Use Orchestra’s own process: non-trivial changes require a plan and explicit approval.
+- Use Orchestra's own process: select the route and enforce its plan, preview, approval, or planless evidence contract.
 - Keep docs high-signal and update `.ai/docs/**` when behavior or conventions change.
 - Keep memory durable: add only long-lived facts to `.ai/MEMORY.md`.
 - Include verification notes in PRs: commands run, doc impact, and memory impact.

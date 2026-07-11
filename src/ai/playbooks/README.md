@@ -1,25 +1,35 @@
 # Playbooks
 
-Playbooks are reusable, repo-local procedures. They describe how to perform a known procedure safely and repeatably, while workflows and operations still control why the work is happening, which role owns it, and which gates apply.
+Playbooks are reusable, repo-local procedures. They describe how to perform known work safely; `.ai/agents/guides/routing.md` remains authoritative for route selection, mutation scope, plan approval, ownership, validation, and terminal handling.
 
-Use playbooks for procedures that are too complex for `.ai/MEMORY.md`, such as running a UI smoke test, preparing a local data snapshot, or validating a repo-specific release path.
-
-## Rules
-
-- Workflow gates and role boundaries still apply.
-- A playbook may be recommended or run only according to its invocation policy.
-- Stricter approval requirements win when workflow approval and playbook policy overlap.
-- Child playbooks must be listed in `May call`, and each child playbook keeps its own invocation policy.
-- Production, production-derived data, secrets, paid services, and external systems require explicit per-run approval.
+Use playbooks for procedures too detailed for `.ai/MEMORY.md`, such as a UI smoke test, bounded local data preparation, or repo-specific release validation. Start from `.ai/templates/playbook.template.md` and store each playbook as `.ai/playbooks/<slug>.md`.
 
 ## Invocation policies
 
-- `auto` - agents may run the playbook when relevant inside an authorized workflow. Use only for low-risk, bounded, read-only procedures.
-- `suggest-first` - agents may recommend the playbook and wait for approval before running it.
-- `explicit-only` - agents may run the playbook only when the user names or explicitly approves that playbook.
+- `auto`: only bounded, low-risk, read-only work inside an already authorized route.
+- `suggest-first`: recommend the exact playbook and wait for per-run approval.
+- `explicit-only`: run only when the user names or explicitly approves the exact playbook.
 
-## Files
+Production, production-derived data, secrets, paid services, external systems, destructive steps, and non-trivial local artifacts require explicit scoped approval regardless of mode. Invocation or risk approval never substitutes for required approval of an enclosing `change` plan.
 
-- Add repo playbooks as `.ai/playbooks/<slug>.md`.
-- Start from `.ai/templates/playbook.template.md`.
-- Keep each playbook concise and operational.
+## Lifecycle
+
+- `draft`: incomplete and not executable.
+- `provisional`: executable only with explicit per-run acknowledgement of unverified claims.
+- `verified`: command-backed at the recorded date; all current route and approval gates still apply.
+- `deprecated`: not executable.
+
+Playbooks declare allowed terminal states from `complete`, `blocked`, `failed`, and `rolled back`. Validator returns review status `approve` or `needs changes`; Conductor sets the route terminal state.
+
+## Composition
+
+- `May call` lists every possible direct child slug, or `none`.
+- Every child retains its own status, roles, inputs, invocation/step approvals, risk, cleanup, evidence, and terminal contract.
+- `run-playbook` recursively preflights the complete declared graph before execution, rejects missing children and cycles, and permits no undeclared child.
+- A child handoff does not transfer permissions or satisfy approval. Forger never delegates.
+
+## Required execution contract
+
+Each playbook defines concrete use/exclusion cases, allowed roles, required/optional inputs, runtime questions, commands, side effects, data sensitivity, approval gates, child calls, evidence, cleanup, failure handling, lifecycle status, and terminal evidence. Rollback may be promised only when the procedure creates named recovery artifacts or uses an equivalent verified mechanism.
+
+For any non-trivial product/app mutation, the enclosing `change` plan must name the exact playbook, execution scope, writes, side effects, and verification, and the user must approve that plan before mutation.

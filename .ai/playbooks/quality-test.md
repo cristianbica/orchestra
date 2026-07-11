@@ -2,154 +2,96 @@
 
 ## Purpose
 
-- Evaluate Orchestra quality by reimplementing a real merged open-source PR in isolated workspaces, then comparing a vanilla CLI implementation, an Orchestra-guided CLI implementation, and the actual PR implementation.
+Measure whether bootstrapped Orchestra improves a clean-room implementation of a real merged public PR.
+
+Compare `vanilla/` (direct task), `orchestra/` (current local Orchestra, bootstrap, plan, implement), optional `orchestra-<ref>/` (one branch or SHA), and `actual/` (real PR inspected last).
 
 ## Use when
 
-- An Orchestra maintainer explicitly requests an end-to-end quality evaluation against a real public GitHub repository.
-- The goal is to test planning, bootstrap context, workflow gates, unattended CLI execution, implementation guidance, verification evidence, token cost, time cost, and final comparison quality.
+- An Orchestra maintainer explicitly requests an end-to-end quality evaluation against a real public Ruby PR.
 
 ## Do not use when
 
-- The user has not explicitly approved this playbook for the run.
-- The target work is local-only validation of this repository; use `orchestra-validation.md` instead.
-- The task requires secrets, production credentials, production or production-derived data, paid services, private repositories, or destructive actions.
-- The evaluator or any implementation run must inspect the real PR implementation before the vanilla and Orchestra implementations and their verification are complete.
-- The selected repository requires unsafe install scripts, unbounded setup, privileged host access, or access outside the approved temporary workspace.
+- The request is local-only validation of this repository, requires sensitive or paid resources, or cannot preserve the clean-room boundary.
 
 ## Invocation policy
 
 - Mode: `explicit-only`
-- Allowed roles: `builder`; `forger` only when explicitly opted in for the run
-- Execution model: CLI-driven unattended runs after one upfront run approval; do not use current-session subagents as the implementation executors
+- Allowed roles: `builder`; `forger` only when explicitly requested for the run
 - Requires approval before execution: `yes`
-- Requires approval before steps: `no`; the upfront unattended run approval must cover the full allowed action set below
+- Requires approval before steps:
+  - The exact approved command plan must cover every expanded command, its working directory, timeout, expected writes, network access, permissions, and cleanup.
+- Enclosing route/plan requirement: `run-playbook`; an approved `change` plan is also required before any non-trivial product/app mutation.
+- The caller selects one runner: `codex`, `opencode`, `claude`, or `copilot`; they may request one additional Orchestra branch or SHA.
+- Use `/tmp/orchestra-quality-test/<run-id>/`, 60-minute agent-command limits, and preserve the workspace until reporting completes.
+- Before any workspace, install, dependency, implementation, test, or actual-reference command, show the selected PR and every expanded command in an inline plan and obtain approval.
 
-Unattended run approval must explicitly cover:
-- GitHub and other required external network access for metadata, cloning, dependency installation, and tool execution.
-- Creating three isolated workspaces under the approved temporary parent directory: `orchestra/`, `vanilla/`, and `actual/` or a diff-only reference area.
-- Installing Orchestra in the `orchestra/` workspace only.
-- Running the configured `<tool-cli>` and `<runtime-tool-name>` commands; both default to `codex` unless the caller provides different values.
-- Running discovered dependency, build, lint, test, and project-specific verification commands inside the isolated workspaces.
-- Allowing implementation edits inside `orchestra/` and `vanilla/` only.
-- Inspecting the final actual PR diff, merge commit diff, or reference implementation only after both CLI implementations and their verification are complete.
-- Preserving or cleaning up the temporary workspace according to the approved cleanup preference.
-
-Hard stops:
-- Stop before using secrets, private repositories, production credentials, production data, production-derived data, paid services, destructive commands, privileged host operations, or unsafe install scripts.
-- Stop if the PR implementation, patch body, branch diff, merge commit diff, changed file contents, or equivalent implementation detail is accidentally exposed before both implementations and verification are complete.
-- Stop if a command attempts to write outside the approved temporary workspaces or requires permissions beyond the upfront approval.
+The approved plan must name:
+- workspace paths, working directory, timeout, expected writes, and network access for every command, including `bundle install`;
+- selected runner/model, pinned base, optional ref, project checks, and cleanup;
+- public-network access, temporary-workspace writes, dependency installation, and the selected runner's unattended full-permission mode.
 
 ## Risk profile
 
-- Side effects: `external-network`, `writes-files`, dependency installation, generated code in temporary workspaces, possible long runtime
-- Data sensitivity: `none` unless the selected repository, local configuration, environment, or tool account exposes secrets
-- Expected duration: caller-provided timebox for the full evaluation plus per-run timeboxes for CLI implementations
-- Cleanup required: `yes`; remove or preserve the temporary workspace according to the caller's cleanup preference
-
-Trust boundary:
-- Treat external OSS code, package manifests, install scripts, test commands, and generated implementation edits as untrusted.
-- Run only inside the approved temporary workspace parent.
-- Do not use secrets, production credentials, private accounts, paid services, or production-like data.
-- Keep the real PR implementation unavailable to both CLI implementation runs until their edits and verification are complete.
+- Side effects: `external-network`, `writes-files`, dependency installation, generated implementation edits in temporary workspaces, and long-running processes
+- Write/artifact paths: `/tmp/orchestra-quality-test/<run-id>/**` only, including run-owned logs and evidence
+- Data sensitivity: `none`; stop if secrets, private repositories, production or production-derived data are encountered
+- External or paid systems: public GitHub, package registries, and the selected runner account; paid services are prohibited
+- Expected duration: 60 minutes per runner command, plus the approved run timebox
 
 ## Inputs
 
 Required:
-- GitHub repository candidate or permission to choose one: public OSS repository to evaluate.
-- Temporary workspace path: parent directory for `orchestra/`, `vanilla/`, and `actual/` or diff-only reference artifacts; default is `/tmp/orchestra-quality-test/<repo-slug>-<run-id>`.
-- Tool CLI: command used for unattended implementation runs; default is `<tool-cli>=codex`.
-- Runtime tool name: tool wrapper to install for Orchestra; default is `<runtime-tool-name>=codex`.
-- Maximum runtime/timebox: stop condition for the full evaluation and for each unattended CLI implementation run; default is 4 hours for the full evaluation and 60 minutes for each unattended CLI implementation run.
-- Cleanup preference: delete temporary workspace, preserve it, or ask before cleanup.
+- PR: the named public merged PR or authorization to select one matching the stated Ruby and size constraints
+- Runner: one of `codex`, `opencode`, `claude`, or `copilot`
+- Current Orchestra source: this checkout for `orchestra/`
+- Run ID: a unique value used only below `/tmp/orchestra-quality-test/`
+- Exact-command approval: approval of the selected PR and all expanded commands, permissions, timeouts, writes, network access, project checks, and cleanup
 
 Optional:
-- Local Orchestra source path: use when testing the current checkout with `SRC_DIR=<orchestra-root> sh install.sh <runtime-tool-name>`.
-- PR selection constraints: labels, language, project area, age, or complexity bounds stricter than the defaults.
-- Actual implementation mode: full `actual/` checkout or diff-only reference after implementations and verification are complete.
+- Orchestra ref: one branch or SHA for `orchestra-<ref>/`; absent by default
 
 ## Runtime questions
 
-Ask only when required inputs or the upfront approval are missing:
-1. Which public GitHub repository should be used, or may I choose one?
-2. Use the default temporary workspace path `/tmp/orchestra-quality-test/<repo-slug>-<run-id>`, or provide a different parent path?
-3. Use the default timeboxes of 4 hours total and 60 minutes per unattended CLI implementation run, or provide different limits?
-4. Do you approve one unattended run covering GitHub/network access, clone/worktree creation, Orchestra install, CLI execution, dependency/test commands, implementation edits, final PR diff inspection only after both implementations and verification are complete, and the selected cleanup behavior?
-5. Should the temporary workspace be deleted, preserved, or confirmed before cleanup?
+Ask only when a required input is missing:
+1. Which permitted runner and optional Orchestra ref should be used?
+2. Do you approve the exact-command plan for this selected PR and run ID?
 
 ## Steps
 
-1. Confirm the user explicitly approved this playbook run, the upfront unattended action set, the timebox, `<tool-cli>`, `<runtime-tool-name>`, the temporary workspace path, and cleanup preference.
-2. Select a recent merged PR using metadata-only commands. The PR should have enough substance to evaluate quality, preferably `changedFiles >= 10` and `additions + deletions >= 300`.
-3. Record non-inspection proof:
-   - Exact metadata commands run.
-   - Confirmation that no PR file patches, PR file diffs, merge commit diff, branch diff, changed file contents, or implementation-equivalent artifacts were opened before implementation.
-4. Use only acceptable pre-implementation evidence:
-   - PR title.
-   - PR description.
-   - Linked issue or user-facing acceptance notes.
-   - Changed-file count.
-   - Addition/deletion stats.
-   - Dates.
-   - Labels.
-5. Create three isolated workspaces from the same pinned pre-PR base commit, preferably `baseRefOid` from GitHub PR metadata:
-   - `orchestra/`: install Orchestra and run the request through Orchestra via CLI.
-   - `vanilla/`: run the same implementation request with the same `<tool-cli>` and no Orchestra context.
-   - `actual/`: checkout or materialize the real PR implementation only after both CLI implementations and their verification are complete, or store a diff-only reference if a full checkout is unnecessary.
-6. Ensure both `orchestra/` and `vanilla/` are detached at the same pinned base commit. Do not check out a live base branch or other moving ref for implementation.
-7. Install Orchestra in `orchestra/` only. Do not install or copy Orchestra context into `vanilla/`.
-8. Build a single implementation prompt from the allowed pre-implementation evidence. Enforce prompt parity:
-   - Same PR metadata.
-   - Same no-diff-before-implementation constraint.
-   - Same timebox.
-   - Same allowed commands and hard stops.
-   - Same verification expectations.
-9. Run the vanilla implementation unattended with `<tool-cli>` in `vanilla/`. Record command logs, timestamps, token usage, files changed, implementation summary, and verification results.
-10. Run the Orchestra implementation unattended with `<tool-cli>` in `orchestra/`, using the installed Orchestra workflow and context. Record command logs, timestamps, token usage, generated `.ai/**` context summary, files changed, implementation summary, and verification results.
-11. For both CLI runs, track token evidence when available:
-   - Prompt/input tokens.
-   - Completion/output tokens.
-   - Total tokens.
-   - Model.
-   - Tool-reported timestamps and elapsed time.
-   - Fallback value `not reported by tool` for any unavailable token or model field.
-12. Run the most relevant target-project verification discovered during setup in both implementation workspaces, subject to the approved command set and hard stops. Record exact commands, exit status, timing, and failure details.
-13. After both implementations and their verification are complete, inspect the actual PR implementation in `actual/` or as a diff-only reference.
-14. Compare all three implementations: vanilla CLI vs Orchestra CLI vs actual PR.
-15. Apply the approved cleanup preference. Preserve partial evidence and logs even if cleanup removes cloned repositories.
+### Selection And Setup
+
+1. Select a public merged Ruby PR automatically, preferably at least 10 files and 300 changed lines. Require a `Gemfile` and bounded `bundle install`; record its URL, base, head, title, description, linked issue, and change statistics.
+2. Before generated runs finish, inspect only that metadata and the pre-PR base checkout. Use the base only to discover `bundle install` and the smallest verification commands; reject repositories requiring PostgreSQL, MySQL, Redis, Docker, browsers, queues, or other external services. Do not inspect PR patches, changed files, head/merge commits, branch diffs, or implementation-equivalent evidence.
+3. Clone the same detached pinned base into `vanilla/` and `orchestra/`; create `orchestra-<ref>/` only when requested. Run `bundle install` in every generated implementation workspace before bootstrap or implementation. Create or inspect `actual/` only after generated implementations and checks complete.
+4. Install current local Orchestra in `orchestra/` with `SRC_DIR=<current-orchestra-root> sh <current-orchestra-root>/install.sh <runner>`. Install the optional workspace with `curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/<ref>/install.sh | REF=<ref> sh -s -- <runner>`.
+
+### Runs
+
+1. Bootstrap `orchestra/` and optional `orchestra-<ref>/`; never bootstrap `vanilla/` or `actual/`. Bootstrap reads only the detached base checkout, may create `.ai/**`, and must preserve a log plus a generated-context summary. Exclude its tokens, time, and cost; stop before implementation if it fails or crosses the clean-room boundary.
+2. Run the same clean-room task directly in `vanilla/`.
+3. In each bootstrapped Orchestra workspace, write `.ai/plans/quality-test.md`, then run the fixed approval prompt to implement it. Both commands are measured and the plan is comparison evidence.
+4. Use the same task, runner/model, time limit, clean-room constraint, and project checks for every implementation. Record a log, changed files, elapsed time, and tool-reported tokens; use `not reported by tool` when unavailable. For every runner command, wait for its process to reach an actual exit or its timeout, confirm the process is no longer running, and record its PID, exit status, and timeout result. JSONL events (including Codex `--json` output) are progress evidence only and never establish completion.
+5. Run the discovered project checks in every generated workspace. Only then inspect `actual/` at the PR head or merge commit and compare it with the generated plans and implementations.
+
+Clean-room rule:
+- No generated run may inspect the selected PR, patch/diff, changed files, merge commit, or another solution.
+- All writes stay in the temporary workspaces.
+- Stop for secrets, private repositories, production data, paid services, unsafe install scripts, privileged host access, a clean-room exposure, bootstrap failure, or an unsupported unattended runner.
 
 ## Commands
 
-Metadata-only examples:
-- `gh pr list --repo <owner>/<repo> --state merged --limit 30 --json number,title,body,changedFiles,additions,deletions,mergedAt,baseRefName,baseRefOid,headRefName,labels,url`
-- `gh pr view <number> --repo <owner>/<repo> --json number,title,body,changedFiles,additions,deletions,createdAt,mergedAt,baseRefName,baseRefOid,headRefName,headRefOid,labels,url`
+Use the selected form for bootstrap, vanilla implementation, Orchestra planning, and Orchestra implementation. Replace `<workspace>` and `<prompt>` in the approved inline plan.
 
-Workspace setup examples:
-- `mkdir -p <temp-workspace>/{orchestra,vanilla,actual}`
-- `git clone https://github.com/<owner>/<repo>.git <temp-workspace>/orchestra`
-- `git clone https://github.com/<owner>/<repo>.git <temp-workspace>/vanilla`
-- `git -C <temp-workspace>/orchestra checkout --detach <baseRefOid>`
-- `git -C <temp-workspace>/vanilla checkout --detach <baseRefOid>`
+- Codex: `timeout 60m codex exec -C <workspace> --json --dangerously-bypass-approvals-and-sandbox "<prompt>"`
+- OpenCode: `cd <workspace> && timeout 60m opencode run --auto "<prompt>"`
+- Claude Code: `cd <workspace> && timeout 60m claude -p --output-format json --dangerously-skip-permissions "<prompt>"`
+- GitHub Copilot CLI: `cd <workspace> && timeout 60m copilot -p "<prompt>" --allow-all`
 
-Orchestra install examples:
-- `cd <temp-workspace>/orchestra && curl -fsSL https://raw.githubusercontent.com/cristianbica/orchestra/refs/heads/master/install.sh | sh -s -- <runtime-tool-name>`
-- `cd <temp-workspace>/orchestra && SRC_DIR=<orchestra-root> sh install.sh <runtime-tool-name>`
-
-Unattended CLI templates:
-- `cd <temp-workspace>/vanilla && <tool-cli> "<shared-implementation-prompt>"`
-- `cd <temp-workspace>/orchestra && <tool-cli> "<shared-implementation-prompt>"`
-
-Actual reference examples, only after both implementations and verification are complete:
-- `git clone https://github.com/<owner>/<repo>.git <temp-workspace>/actual`
-- `git -C <temp-workspace>/actual checkout --detach <headRefOid-or-merge-commit>`
-- `gh pr diff <number> --repo <owner>/<repo> > <temp-workspace>/actual/pr.diff`
-
-Prohibited before both implementations and verification are complete:
-- `gh pr diff <number>`
-- `gh pr view <number> --patch`
-- `git show <merge-commit>`
-- `git diff <base>..<head>`
-- Opening changed files from the PR branch or patch bodies from any source.
+- Bootstrap: `Bootstrap this repo - everything is pre-approved, you are running unattended. Work only in this checkout and do not inspect any PR, patch, diff, or other implementation-equivalent evidence.`
+- Vanilla: `Implement <task> - everything is pre-approved, you are running unattended; you are not allowed to inspect any PR that might have solved this - clean room implementation.`
+- Orchestra plan: `Write a plan to implement <task>; you are not allowed to inspect any PR that might have solved this - clean room implementation; write the plan in .ai/plans/quality-test.md.`
+- Orchestra implementation: `Plan .ai/plans/quality-test.md approved. Implement it - everything is pre-approved, you are running unattended; you are not allowed to inspect any PR that might have solved this - clean room implementation.`
 
 ## May call
 
@@ -157,32 +99,34 @@ Prohibited before both implementations and verification are complete:
 
 ## Evidence to report
 
-- Project and PR URL.
-- PR selection metadata, including changed-file count and additions/deletions.
-- Proof of no pre-implementation diff access, including exact metadata commands.
-- Upfront unattended run approval text or a concise reference to it.
-- Workspace paths for `orchestra/`, `vanilla/`, and `actual/` or diff-only reference artifacts.
-- Pinned pre-PR base commit, source of that commit such as `baseRefOid`, and checkout status for both implementation workspaces.
-- Orchestra install command and result.
-- Prompt parity evidence: shared prompt source, shared constraints, timeboxes, and allowed command set.
-- Vanilla CLI run: command logs, timestamps, model, prompt/input tokens, completion/output tokens, total tokens, files changed, implementation summary, verification commands, exit status, timing, and failure details.
-- Orchestra CLI run: command logs, timestamps, model, prompt/input tokens, completion/output tokens, total tokens, generated `.ai/**` context summary, files changed, implementation summary, verification commands, exit status, timing, and failure details.
-- `not reported by tool` for any unavailable token, model, timestamp, or elapsed-time field.
-- Actual PR reference source and final diff inspection commands.
-- Three-way comparison across vanilla CLI, Orchestra CLI, and actual PR for behavior, architecture, file coverage, test coverage, verification results, docs/changelog, risk handling, implementation size, token cost, and time cost.
-- Limitations, accidental exposure risks if any, and cleanup status.
+Report:
+- selected PR, pinned base, runner/model, optional ref, and exact approved commands;
+- generated Orchestra plans, files changed, and project-check results;
+- implementation-only tokens and elapsed time, with `not reported by tool` where needed;
+- correctness, architecture, file coverage, test coverage, and risk-handling differences from `actual/`.
+
+Preserve logs and partial evidence on failure. After the report, apply the cleanup declared in the approved inline plan; preserve evidence even when deleting workspaces.
+
+## Cleanup
+
+- On success: after reporting, apply the exact approved cleanup to only run-owned `/tmp/orchestra-quality-test/<run-id>/` workspaces; verify and report retained evidence or removal.
+- On failure: preserve logs and partial evidence, then apply the same bounded run-owned cleanup when safe; report any residual workspace or process.
+- Rollback: unavailable; generated implementation changes are isolated temporary artifacts and are not applied to this repository.
 
 ## Failure handling
 
-- Stop on missing upfront unattended run approval and report the missing approval.
-- Stop on network/auth failure, unsafe repository requirements, unbounded install steps, missing usable verification commands, command attempts outside approved workspaces, or accidental PR implementation exposure.
-- Stop if external code requests secrets, production credentials, private services, paid services, destructive commands, privileged host operations, or production-like data.
-- Stop if the selected tool cannot run unattended within the approved timebox or cannot preserve command logs.
-- Preserve partial evidence gathered so far, including commands run, timestamps, token reporting status, changed files, and outcomes.
-- Apply the approved cleanup preference when safe; if cleanup itself is risky or unclear, ask before proceeding.
+- Stop before any unapproved command, write, network action, permission, or timeout; stop on clean-room exposure, unsafe install script, unsupported unattended runner, secret/private/production/paid-service access, or a runner that does not exit before its timeout.
+- Preserve partial command, PID, timeout, exit-status, log, changed-file, and token evidence; run bounded failure cleanup and report residuals.
+
+## Terminal contract
+
+- Allowed terminal states: `complete`, `blocked`, `failed`
+- `complete`: every runner process reached a recorded successful terminal exit, all project checks completed, actual was inspected only afterward, the report is complete, and cleanup evidence is recorded.
+- `blocked`: a required input, exact-command approval, permitted runner, or approved environment fact is missing before execution.
+- `failed`: execution stopped on a declared failure condition or a non-successful/timeout runner exit; partial evidence and cleanup status are recorded.
 
 ## Verification status
 
 - Status: `provisional`
-- Last verified: `2026-05-25`
-- Verification notes: Updated from inspected local Orchestra docs, the playbook template, feature documentation, active overlays, memory, and the approved inline plan; this unattended three-way quality-test flow has not been executed.
+- Last verified: `2026-07-11`
+- Verification notes: The compact flow and runner forms were reviewed; this version has not been run end to end.

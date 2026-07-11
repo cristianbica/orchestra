@@ -4,16 +4,19 @@ This repository uses `.ai/` as the canonical source of agent roles, workflows, p
 
 ## Always-on context
 - Read /AGENTS.md (repo root).
+- Use `.ai/agents/guides/routing.md` for the authoritative route and gate contract.
 - Load role, workflow, overlay, docs, and plan files on demand.
 - Keep task handoffs lean: name files to load, include selected overlays, and state what not to load for non-trivial work.
 
 ## Hard gates
-- For any non-trivial code change: require a plan in `.ai/plans/` and explicit user approval before implementing.
+- For a plan-required change: require an inline or `.ai/plans/**` plan artifact and explicit user approval before implementing.
 - Do not expand scope beyond the approved plan.
 
 ## Delegation
 - When the task requires planning or repo-wide discovery, delegate to the appropriate agent role instead of doing everything inline.
 - Follow: `.ai/agents/guides/delegation.md`.
+- Treat Conductor and opt-in Forger as the only user-facing roles; Planner, Builder, and Validator are delegation-only.
+- Run at most one subagent at a time. Obtain the user's explicit approval before launching a second subagent for the same request, including after the first completes.
 
 ## Required reporting (end of each task)
 - Verification: list the exact tests/commands run (or explain why none).

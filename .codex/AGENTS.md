@@ -13,3 +13,8 @@ Read your role from `.codex/agents/conductor.toml`, then load canonical instruct
 - Use the project custom agent names: `planner`, `builder`, `validator`, and opt-in `forger`.
 - Do not assume a universal `spawn_agent` API.
 - Keep handoffs lean: name files to load, include `Active overlays`, and include `Do not load` for non-trivial work.
+
+## Delegation limits
+- Treat Conductor and opt-in Forger as the only user-facing roles; Planner, Builder, and Validator are delegation-only.
+- Run at most one subagent at a time and preserve the configured maximum delegation depth of one.
+- Before launching a second subagent for the same user request, including after the first completes, obtain the user's explicit approval.

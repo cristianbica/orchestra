@@ -2,13 +2,23 @@
 
 ## What it is
 
-Orchestra treats verification as a required gate in every non-trivial workflow. The Builder runs the most relevant command available, and the Validator checks that verification happened.
+Orchestra makes verification route- and surface-specific. Builder runs every
+applicable focused, aggregate, static, build/package, manual/negative, and
+route-specific category rather than treating one passing check as sufficient.
+Validator checks the evidence, reruns relevant checks, and uses a negative or
+edge-case probe when appropriate.
 
 ## How it shows up here
 
-- `.ai/MEMORY.md` is where verified commands are documented.
-- `.ai/playbooks/` is where complex verification procedures live when they need inputs, approvals, setup, teardown, or evidence rules.
-- The template repo itself has no build/test suite; verification is typically limited to script inspection or manual checks.
+- `.ai/MEMORY.md` records verified commands and durable verification conventions.
+- `.ai/playbooks/` holds complex verification procedures that need inputs,
+  approvals, setup, cleanup, or evidence rules.
+- `scripts/verify-control-plane.sh` runs focused semantic checks for routing,
+  roles, operations, playbooks, and adapter capability contracts.
+- `scripts/verify.sh` runs the focused verifier plus aggregate installer and
+  wrapper smoke checks.
+- Native runtime checks supplement the required semantic checks when the
+  corresponding CLI is available; unavailable checks are reported explicitly.
 
 ## Why it matters
 
