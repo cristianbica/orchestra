@@ -18,16 +18,11 @@ Overlays provide lightweight, task-specific context without changing workflow ga
 - Reduce missed constraints during investigation and implementation handoffs
 - Standardize context loading before delegation
 
-## Default combinations
+## Selection rules
 
-Workflow defaults currently documented in `.ai/workflows/`:
+Overlays are selected by material fit, not loaded by default. For local or trivial work, use `Active overlays: none` with a task-specific reason.
 
-| Workflow | Default overlays |
-|----------|------------------|
-| `change` | Feature: `value + system + ux`; Refactor: `system + security`; Bug: `system` (+ `data`/`security` as needed) |
-| `investigate` | `system + data` (add `security` when sensitive) |
-| `document` | `value + ux + system` |
-| `trivial-change` | `ux` |
+Load overlays only when they change the work or review criteria, such as security-sensitive changes, data migrations, UX behavior, performance concerns, or integration/API boundaries.
 
 ## Precedence and boundaries
 
@@ -40,9 +35,10 @@ Workflow defaults currently documented in `.ai/workflows/`:
 Delegation guide reference: `.ai/agents/guides/delegation.md`.
 
 Baseline process:
-1. Start from workflow defaults.
-2. Add overlays relevant to current task risk/scope.
-3. Include loaded overlay content in the delegation prompt context.
+1. Inspect `.ai/overlays/` before non-trivial delegation.
+2. Choose the smallest set relevant to current task risk/scope.
+3. Name selected overlays and one-line reasons in `Active overlays`.
+4. Include only needed excerpts; otherwise reference overlay files by path.
 
 ## Source files
 

@@ -1,6 +1,13 @@
 ---
 description: Validation agent. Validates plan adherence and gate checks, and ensures docs/memory hygiene.
-mode: all
+mode: subagent
+permission:
+  edit:
+    "*": deny
+    ".ai/docs/**": ask
+    ".ai/MEMORY.md": ask
+  bash: ask
+  task: deny
 ---
 
 This is a thin wrapper for the canonical Validator definition.

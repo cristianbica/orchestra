@@ -1,26 +1,36 @@
 # App overview
 
+> Context status: unbootstrapped template. This file intentionally makes no
+> claims about the application until repository evidence has been inspected.
+
 ## What this app does
 
-This app is a multi-tenant business application that manages core operational workflows (for example: members/customers, billing/payments, and admin configuration).
-
-It is used by staff to run day-to-day operations, and by administrators to configure company-level settings and report on activity.
+- Primary users: `<unknown; inspect product docs and entry points>`
+- User outcomes: `<unknown; describe verified workflows>`
+- Business/domain boundaries: `<unknown; do not infer from template examples>`
 
 ## Tech stack
 
-- Backend: <fill in> (e.g. Rails 7.x, Django, Node)
-- Database: <fill in> (e.g. Postgres)
-- Frontend: <fill in> (e.g. server-rendered + Hotwire / React)
-- Background jobs: <fill in> (e.g. Sidekiq)
-- Tests: <fill in> (e.g. Minitest/RSpec)
-- Deployment/CI: <fill in>
+- Runtime/framework: `<unknown; inspect manifests and configuration>`
+- Data stores: `<unknown>`
+- Frontend/client: `<unknown>`
+- Background processing: `<unknown>`
+- Tests and quality checks: `<unknown; run before documenting as verified>`
+- Deployment/CI: `<unknown; inspect repository configuration>`
 
 ## Repo landmarks
 
-- Primary app code: <fill in path>
-- Tests: <fill in path>
-- CI config: <fill in path>
+- Primary app code: `<unknown>`
+- Tests: `<unknown>`
+- CI/configuration: `<unknown>`
+- Operational entry points: `<unknown>`
 
-Rules:
-- Keep this file to a few paragraphs + bullet lists.
-- Prefer concrete commands/paths over vague descriptions.
+## Populate this context
+
+Use the `bootstrap` operation for initial broad context setup. Review its inline
+per-run preview and explicitly approve it before commands or broad writes. For a
+narrow update after setup, use the planless `document` workflow and name the
+target docs and evidence sources.
+
+Replace placeholders only with inspected facts. Label unknown or unverified
+claims, link to concrete repository paths, and keep this overview concise.

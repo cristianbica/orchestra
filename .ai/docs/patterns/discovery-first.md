@@ -27,7 +27,8 @@ Planner MUST verify before drafting:
 - [ ] I checked `.ai/docs/overview.md` for app context
 - [ ] I read `.ai/docs/features/README.md` and relevant feature pages
 - [ ] I read `.ai/docs/patterns/README.md` and affected pattern pages
-- [ ] I reviewed existing plans in `.ai/plans/` for similar work
+- [ ] I loaded the active `.ai/plans/` file only if this task is working from a specific plan
+- [ ] I did not browse historical plans unless the user explicitly asked for a plan review
 - [ ] I know how to verify success (tests/commands to run)
 - [ ] I identified which `.ai/docs/**` pages will need updating
 

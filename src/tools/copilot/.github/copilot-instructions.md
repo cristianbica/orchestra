@@ -2,18 +2,21 @@
 
 This repository uses `.ai/` as the canonical source of agent roles, workflows, plans, and documentation.
 
-## Start here
+## Always-on context
 - Read /AGENTS.md (repo root).
-- Use workflows in `.ai/workflows/`.
-- When starting a workflow, answer the intake questions (max 3 blocking ones; "unknown" is ok) to ensure smooth delegation.
+- Use `.ai/agents/guides/routing.md` for the authoritative route and gate contract.
+- Load role, workflow, overlay, docs, and plan files on demand.
+- Keep task handoffs lean: name files to load, include selected overlays, and state what not to load for non-trivial work.
 
 ## Hard gates
-- For any non-trivial code change: require a plan in `.ai/plans/` and explicit user approval before implementing.
+- For a plan-required change: require an inline or `.ai/plans/**` plan artifact and explicit user approval before implementing.
 - Do not expand scope beyond the approved plan.
 
 ## Delegation
 - When the task requires planning or repo-wide discovery, delegate to the appropriate agent role instead of doing everything inline.
 - Follow: `.ai/agents/guides/delegation.md`.
+- Treat Conductor and opt-in Forger as the only user-facing roles; Planner, Builder, and Validator are delegation-only.
+- Run at most one subagent at a time. Obtain the user's explicit approval before launching a second subagent for the same request, including after the first completes.
 
 ## Required reporting (end of each task)
 - Verification: list the exact tests/commands run (or explain why none).
@@ -26,6 +29,7 @@ This repository uses `.ai/` as the canonical source of agent roles, workflows, p
 - Pattern docs: `.ai/docs/patterns/`
 - Agent operation guides: `.ai/agents/guides/`
 - Curated memory: `.ai/MEMORY.md`
+- Path-specific `.ai/**` guidance: `.github/instructions/ai.instructions.md`
 
 ## Agents
 Custom Copilot agents live under `.github/agents/` and are thin wrappers around `.ai/agents/`.

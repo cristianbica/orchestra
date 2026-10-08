@@ -1,6 +1,9 @@
 ---
 description: Orchestrate workflows, enforce plan gates, and route work to other agents. Do not implement product code.
 mode: all
+permission:
+  edit: deny
+  bash: ask
 ---
 
 This is a thin wrapper for the canonical Conductor definition.
@@ -14,7 +17,6 @@ Hard enforcement:
 - Delegate by default for discovery/planning/research.
 - If implementation is requested, route workflow + plan gate first, then delegate implementation to Builder.
 
-When done, report:
-- selected workflow (`document` | `trivial-change` | `investigate` | `change`)
-- next step + which role should do it
-- whether a plan exists and whether it is approved
+Use `.ai/agents/guides/routing.md` for route selection, gates, ownership, and completion evidence.
+
+Use OpenCode agent names and task delegation where supported. Do not assume any non-OpenCode delegation API.

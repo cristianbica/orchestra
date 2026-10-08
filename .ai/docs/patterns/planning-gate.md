@@ -1,50 +1,47 @@
-# Pattern: Planning Gate
+# Pattern: Route-Specific Planning Gates
 
-## What it is
+## Rule
 
-The **planning gate** is a hard requirement: non-trivial changes cannot be implemented until an approved plan exists.
+Planning and approval come from the selected row in the authoritative
+[routing matrix](../../../src/ai/agents/guides/routing.md). There is no generic
+"non-trivial work" gate: a route with no plan must not receive an invented one.
 
-Plans go in `.ai/plans/<YYYY-MM-DD>-<INDEX>-<slug>.md`.
+| Route | Artifact and approval |
+| --- | --- |
+| `direct answer` | No plan or approval |
+| `change` | Inline or file plan; explicit approval before implementation |
+| `document` | No plan or route approval |
+| `investigate` | Report, not an implementation plan; no route approval |
+| `trivial-change` | No plan or route approval |
+| `guided` | Inherits the selected target route exactly |
+| `bootstrap`, `refresh-context` | Inline per-run preview; explicit approval before commands or broad writes |
+| `create-overlays`, `define-playbook` | Approved change-style plan unless eligible for `trivial-change` |
+| `run-playbook` | No plan for non-mutating runs; approved `change` plan for non-trivial product/app mutation |
 
-## Why it matters
+## Plan artifacts
 
-Without a plan:
-- ❌ Scope creep (feature expands mid-implementation)
-- ❌ Missed context (builder doesn't know all constraints)
-- ❌ Lost requirements (intake questions were never asked)
-- ❌ No verification strategy (how will we know it's done?)
+A required plan is either one in-chat message titled `Plan (inline)` or
+`.ai/plans/<YYYY-MM-DD>-<INDEX>-<slug>.md`. Prefer inline plans at no more than
+30 non-empty lines; use a file for larger, persistent, or explicitly requested
+plans.
 
-With a plan:
-- ✓ Requirements are explicit (intake captured them)
-- ✓ Scope is bounded (builder knows what NOT to do)
-- ✓ Verification is planned (tests/commands defined upfront)
-- ✓ Changes are traceable (future maintainers see the "why")
+Approval must explicitly identify the exact plan. A previous plan, investigation
+report, guided step confirmation, operation preview approval, playbook invocation
+approval, or destructive-command approval does not authorize a different gate.
 
-## How it works
+## Promotion
 
-1. **User** requests a change (e.g., "change workflow: feature")
-2. **Conductor** routes to Planner
-3. **Planner** writes `.ai/plans/<YYYY-MM-DD>-<INDEX>-<slug>.md` (planning only, no implementation)
-4. **User** reads and explicitly approves the plan
-5. **Builder** implements ONLY the approved plan
-6. **Verification** and **Validator** close out the task
+When planless eligibility stops holding, stop before out-of-route writes and
+select the route that covers the new work. The new route starts its normal intake
+and gates; earlier scope confirmation is evidence, not substitute approval.
 
-## Types of changes
-
-| Task | Plan required? | Approval required? |
-|------|----------------|--------------------|
-| Typo fix | No | No |
-| Formatting only | No | No |
-| Investigate | Yes (report plan) | No* |
-| Change (`bug`/`feature`/`refactor`) | Yes | Yes |
-| Docs update | Depends* | No |
-
-*Approval is required when an investigation is promoted into implementation (`change`).
-
-*Docs: Use bootstrap/refresh plans for major updates; incremental updates during ongoing workflows.
+Forger follows the same rule. On a plan-required route it performs discovery,
+creates the plan, and stops for approval before entering its implementation
+phase. On a planless route it records that no plan is required.
 
 ## See also
 
-- [src/ai/plans/01-bootstrap.md](../../../src/ai/plans/01-bootstrap.md) — Example plan structure (Phase 1–4)
-- [src/ai/templates/plan.template.md](../../../src/ai/templates/plan.template.md) — Plan template
-- [src/ai/agents/planner.md](../../../src/ai/agents/planner.md) — Planner role + discovery checklist
+- [plan template](../../../src/ai/templates/plan.template.md)
+- [Planner role](../../../src/ai/agents/planner.md)
+- [workflow routes](../features/workflows.md)
+- [operations](../features/operations.md)

@@ -17,6 +17,50 @@ remove_if_exists() {
   fi
 }
 
+remove_file_blocking_template_dirs() {
+  src=$1
+  dest_root=$2
+
+  for item in "$src"/.[!.]* "$src"/..?* "$src"/*; do
+    [ -e "$item" ] || continue
+    [ -d "$item" ] || continue
+    name=$(basename "$item")
+    dest="$dest_root/$name"
+    if [ -e "$dest" ] && [ ! -d "$dest" ]; then
+      rm -f "$dest"
+    fi
+  done
+}
+
+copy_if_missing() {
+  file_src=$1
+  file_dest=$2
+
+  if [ -e "$file_dest" ]; then
+    return
+  fi
+  mkdir -p "$(dirname "$file_dest")"
+  cp -f "$file_src" "$file_dest"
+}
+
+install_template_dir() {
+  dir_src=$1
+  dir_dest=$2
+
+  (cd "$dir_src" && find . -type d -print) | while IFS= read -r rel; do
+    [ "$rel" = "." ] && continue
+    target="$dir_dest/${rel#./}"
+    if [ -e "$target" ] && [ ! -d "$target" ]; then
+      rm -f "$target"
+    fi
+    mkdir -p "$target"
+  done
+
+  (cd "$dir_src" && find . ! -type d -print) | while IFS= read -r rel; do
+    copy_if_missing "$dir_src/${rel#./}" "$dir_dest/${rel#./}"
+  done
+}
+
 cleanup_legacy_files() {
   remove_if_exists "$AI_DIR/agents/architect.md"
   remove_if_exists "$AI_DIR/agents/archivist.md"
@@ -27,6 +71,12 @@ cleanup_legacy_files() {
   remove_if_exists "$AI_DIR/workflows/implement-feature.md"
   remove_if_exists "$AI_DIR/workflows/fix-bug.md"
   remove_if_exists "$AI_DIR/workflows/refactor.md"
+  remove_if_exists "$AI_DIR/workflows/define-playbook.md"
+  remove_if_exists "$AI_DIR/workflows/run-playbook.md"
+
+  remove_if_exists "$AI_DIR/plans/01-bootstrap.md"
+  remove_if_exists "$AI_DIR/plans/02-refresh-context.md"
+  remove_if_exists "$AI_DIR/plans/03-create-overlays.md"
 
   remove_if_exists "$DEST_DIR/.claude/agents/architect.md"
   remove_if_exists "$DEST_DIR/.claude/agents/archivist.md"
@@ -51,6 +101,14 @@ cleanup_legacy_files() {
   remove_if_exists "$DEST_DIR/.github/agents/inspector.agent.md"
   remove_if_exists "$DEST_DIR/.github/agents/researcher.agent.md"
   remove_if_exists "$DEST_DIR/.github/agents/reviewer.agent.md"
+}
+
+cleanup_codex_markdown_agents() {
+  remove_if_exists "$DEST_DIR/.codex/agents/builder.md"
+  remove_if_exists "$DEST_DIR/.codex/agents/conductor.md"
+  remove_if_exists "$DEST_DIR/.codex/agents/forger.md"
+  remove_if_exists "$DEST_DIR/.codex/agents/planner.md"
+  remove_if_exists "$DEST_DIR/.codex/agents/validator.md"
 }
 
 TMP_DIR=""
@@ -100,15 +158,12 @@ for item in "$BLUEPRINT_SRC"/*; do
       ;;
     plans)
       if [ -e "$dest" ]; then
-        if [ -f "$item/01-bootstrap.md" ]; then
-          cp -f "$item/01-bootstrap.md" "$dest/"
-        fi
-        if [ -f "$item/02-refresh-context.md" ]; then
-          cp -f "$item/02-refresh-context.md" "$dest/"
-        fi
-        if [ -f "$item/03-create-overlays.md" ]; then
-          cp -f "$item/03-create-overlays.md" "$dest/"
-        fi
+        continue
+      fi
+      cp -R "$item" "$AI_DIR/"
+      ;;
+    playbooks)
+      if [ -e "$dest" ]; then
         continue
       fi
       cp -R "$item" "$AI_DIR/"
@@ -142,5 +197,13 @@ if [ -n "$TOOL_NAME" ]; then
     echo "Template not found for tool: $TOOL_NAME" >&2
     exit 1
   fi
-  cp -R "$TOOL_SRC"/. "$DEST_DIR/"
+  if [ "$TOOL_NAME" = "codex" ]; then
+    cleanup_codex_markdown_agents
+  fi
+  remove_file_blocking_template_dirs "$TOOL_SRC" "$DEST_DIR"
+  if [ "${FORCE+x}" = "x" ]; then
+    cp -R "$TOOL_SRC"/. "$DEST_DIR/"
+  else
+    install_template_dir "$TOOL_SRC" "$DEST_DIR"
+  fi
 fi

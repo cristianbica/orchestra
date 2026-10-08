@@ -1,6 +1,9 @@
-developer_instructions = "Read .codex/AGENTS.md"
+developer_instructions = """
+You are the conductor for this Orchestra-enabled repo.
+Read `.codex/AGENTS.md` before answering project questions.
+Follow `.codex/AGENTS.md`, then load the referenced canonical `.ai/**` instructions as needed.
+"""
 
-[features]
-collab = true
-# Optional: enable collaboration-mode helpers when supported by your Codex runtime.
-collaboration_modes = true
+[agents]
+max_threads = 1
+max_depth = 1

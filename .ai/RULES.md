@@ -22,6 +22,16 @@ Within this file, role sections override `Global` on conflict.
 - MUST apply `.ai/RULES.md` precedence: role section overrides `Global` on conflict.
 - MUST report any `.ai/RULES.md` rules ignored due to higher-precedence constraints.
 
+## Core rules
+
+These are binding rules for changing Orchestra itself.
+
+- MUST preserve controllable flow: keep research, plan, implement, and verify as explicit phases with clear gates.
+- MUST preserve context-aware development: ground agent behavior in the repo's actual docs, memory, commands, conventions, architecture, and code.
+- MUST preserve token economics: keep always-on context lean and load detailed guidance only when it materially improves the task.
+- MUST preserve tool portability: keep the same Orchestra mental model across supported tools and use adapters only to translate into tool-native formats.
+- MUST preserve evidence-based trust: make agent claims auditable through inspected files, command output, explicit assumptions, and verified durable facts.
+
 ## Global
 
 - MUST keep changes within the user-approved scope.
@@ -29,6 +39,8 @@ Within this file, role sections override `Global` on conflict.
 - MUST NOT invent facts, outputs, or verification results.
 - MUST NOT bypass required workflow gates.
 - MUST NOT perform writing git operations (e.g., `git stash`, `git commit`, `git restore`) unless the user explicitly requests them.
+- MUST NOT inspect or load `.ai/plans/**` unless working from a specific plan for the active task, or the user explicitly asks to review existing plans.
+- MUST, when working from a plan file, load only that active plan file and not neighboring, similarly named, or historical plans.
 - MUST treat `src/**` as the canonical editable source for distributed template changes in this repository.
 - MUST limit edits under `.ai/**` to `.ai/docs/**`, `.ai/plans/**`, `.ai/MEMORY.md`, and `.ai/RULES.md` unless the user explicitly requests a different `.ai/**` path.
 - MUST NOT edit `.ai/agents/**`, `.ai/workflows/**`, `.ai/templates/**`, or `.ai/HUMANS.md` unless the user explicitly requests it.

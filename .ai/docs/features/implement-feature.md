@@ -36,4 +36,4 @@ Optional:
 
 - [src/ai/workflows/change.md](../../../src/ai/workflows/change.md) — Full workflow definition
 - [src/ai/agents/planner.md](../../../src/ai/agents/planner.md) — Planner role & discovery checklist
-- [src/ai/plans/01-bootstrap.md](../../../src/ai/plans/01-bootstrap.md) — Example plan structure
+- [src/ai/operations/bootstrap.md](../../../src/ai/operations/bootstrap.md) — Example phased operation structure
